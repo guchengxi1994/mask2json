@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:25:31
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-06-09 16:31:21
+@LastEditTime: 2020-06-10 09:06:50
 '''
 import base64
 import _io
@@ -20,4 +20,4 @@ def imgEncode(img_or_path):
     
     base64_data = base64.b64encode(i.read())
 
-    return base64_data
+    return base64_data.decode()

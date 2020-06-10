@@ -1,0 +1,23 @@
+<annotation>          
+	          <folder>HBXZ</folder>          
+	          <filename>aa</filename>          
+	          <path>asas\aa.xx</path>          
+	          <source>                    
+		                    <database>Unknown</database>                    
+	          </source>          
+	          <size>                    
+		                    <width>12</width>                    
+		                    <height>23</height>                    
+		                    <depth>1</depth>                    
+	          </size>          
+	          <segmented>0</segmented>          
+	          <object>                    
+		                    <name>aaa</name>                    
+		                    <bndbox>                              
+			                              <xmin>123</xmin>                              
+			                              <ymin>444</ymin>                              
+			                              <xmax>4523</xmax>                              
+			                              <ymax>664</ymax>                              
+		                    </bndbox>                    
+	          </object>          
+          <object>                                    <name>sadasd</name>                                    <difficult>0</difficult>                                    <bndbox>{'xmin': 1, 'ymin': 2, 'xmax': 3, 'ymax': 4}</bndbox>                          </object>              <object>                            <name>sadasd</name>                            <difficult>0</difficult>                            <bndbox>{'xmin': 1, 'ymin': 2, 'xmax': 3, 'ymax': 4}</bndbox>                    </object>          <object>                    <name>sadasd</name>                    <difficult>0</difficult>                    <bndbox>{'xmin': 1, 'ymin': 2, 'xmax': 3, 'ymax': 4}</bndbox>              </object>      <object>            <name>sadasd</name>            <difficult>0</difficult>            <bndbox>{'xmin': 1, 'ymin': 2, 'xmax': 3, 'ymax': 4}</bndbox>        </object>  <object>    <name>sadasd</name>    <difficult>0</difficult>    <bndbox>{'xmin': 1, 'ymin': 2, 'xmax': 3, 'ymax': 4}</bndbox>  </object><object /><object /><object /><test /></annotation>

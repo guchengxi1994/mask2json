@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-06-12 13:38:09
+ * @LastEditTime: 2020-06-12 14:58:44
 --> 
 # mask2json
  mask imgs to labelme jsons,and so on
@@ -48,6 +48,8 @@ Also ,for [labelimg](https://github.com/tzutalin/labelImg),a small tool to conve
 
 try [test.py](./test.py) !
 
+#### multiple objects in different classes
+
 manually_labeled image
 
 ![img1](./backup/manually_labeled_multi_objs.png)
@@ -55,6 +57,17 @@ manually_labeled image
 auto_labeled image
 
 ![img1](./backup/auto_labeled_multi_objs.png)
+
+#### multiple objects in same classes
+
+manually_labeled image
+
+![img1](./backup/manually_labeled_multi_objs_samelabel.png)
+
+auto_labeled image
+
+![img1](./backup/auto_labeled_labeled_multi_objs_samelabel.png)
+
 
 ##  SHORTCOMING
 

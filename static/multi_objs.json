@@ -7,7 +7,7 @@
     "shapes": [
         {
             "flags": {},
-            "group_id": "null",
+            "group_id": null,
             "label": "fruit1",
             "points": [
                 [
@@ -111,7 +111,7 @@
         },
         {
             "flags": {},
-            "group_id": "null",
+            "group_id": null,
             "label": "fruit2",
             "points": [
                 [
@@ -219,7 +219,7 @@
         },
         {
             "flags": {},
-            "group_id": "null",
+            "group_id": null,
             "label": "fruitn",
             "points": [
                 [

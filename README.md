@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-06-12 10:55:26
+ * @LastEditTime: 2020-06-12 13:38:09
 --> 
 # mask2json
  mask imgs to labelme jsons,and so on
@@ -58,7 +58,11 @@ auto_labeled image
 
 ##  SHORTCOMING
 
-objects connected to each other is not supported yet.
+1.~~objects connected to each other is not supported yet.~~
+
+this may happen if you labelling multiple-object-images with only 2 labels .Or some objects are of the same type and are connected to each other(eg. a bunch of grapes,it is hard to split one to the other).
+
+you can try [json2mask.py](./json2mask.py) to generate mask-files.
 
 
 

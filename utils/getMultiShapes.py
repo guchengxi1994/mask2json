@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-06-15 15:16:35
+@LastEditTime: 2020-06-15 16:22:40
 '''
 import cv2
 import numpy as np
@@ -36,13 +36,20 @@ def readYmal(filepath,labeledImg=None):
         """
         labeledImg = np.array(labeledImg,dtype=np.uint8)
 
-        # for one class
         labeledImg[labeledImg>127] = 255
         labeledImg[labeledImg!=255] = 0
-        labeledImg = labeledImg/255
+        # labeledImg = labeledImg/255
+
+        # _, labels = cv2.connectedComponents(labeledImg)
+        _, labels, stats, centroids = cv2.connectedComponentsWithStats(labeledImg)
+
+        labels = np.max(labels)
+        labels = [x for x in range(1,labels)]
+  
 
 
-        labels = labeledImg.ravel()[np.flatnonzero(labeledImg)]
+
+        # labels = labeledImg.ravel()[np.flatnonzero(labeledImg)]
 
         classes = []
         for i in range(0,len(labels)):

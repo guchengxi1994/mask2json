@@ -5,14 +5,16 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:24:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-06-10 09:22:51
+@LastEditTime: 2020-06-15 15:13:29
 '''
 import cv2
 from utils import getShape
 from utils import img2base64
 from utils import rmQ
+from utils import getMultiShapes
 import json
 import os
+import glob
 
 def test():
     img = "D:\\testALg\mask2json\mask2json\static\\1-2cvt.png"
@@ -60,13 +62,37 @@ def test():
     
     rmQ.rm('D:\\testALg\mask2json\mask2json\static\\1-2cvt.json')
 
+
+
+def getJsons(imgPath,maskPath,savePath,yamlPath = ''):
+    """
+    imgPath: origin image path \n
+    maskPath : mask image path \n
+    savePath : json file save path \n
+    
+    >>> getJsons(path-to-your-imgs,path-to-your-maskimgs,path-to-your-jsonfiles) 
+
+    """
+    oriImgs = glob.glob(imgPath+os.sep+'*.jpg')
+    maskImgs = glob.glob(maskPath+os.sep+'*.jpg')
+    
+    for i in oriImgs:
+        i_mask = i.replace(imgPath,maskPath)
+        print(i)
+
+        getMultiShapes.getMultiShapes(i,i_mask,savePath,yamlPath)
+
+
+
+
             
 
 
 
 
 if __name__ == "__main__":
-    test()
+    # test()
+    getJsons('D:\\getWeldPics\\test5_reshape','D:\\getWeldPics\\masks','D:\\getWeldPics\\jsons','D:\getWeldPics\info.yaml')
 
 
 

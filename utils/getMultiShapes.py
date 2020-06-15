@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-06-12 15:21:09
+@LastEditTime: 2020-06-15 15:16:35
 '''
 import cv2
 import numpy as np
@@ -26,13 +26,22 @@ def readYmal(filepath,labeledImg=None):
         tmp = y['label_names']
         objs = zip(tmp.keys(),tmp.values())
         return sorted(objs)
-    elif labeledImg!=None:
+    elif labeledImg  is not  None:
         """
         should make sure your label is correct!!!
 
         untested!!!
+
+        6.15 this section is bad
         """
         labeledImg = np.array(labeledImg,dtype=np.uint8)
+
+        # for one class
+        labeledImg[labeledImg>127] = 255
+        labeledImg[labeledImg!=255] = 0
+        labeledImg = labeledImg/255
+
+
         labels = labeledImg.ravel()[np.flatnonzero(labeledImg)]
 
         classes = []
@@ -137,6 +146,12 @@ def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
 
     """
     label_img = io.imread(labelPath)
+
+    if np.max(label_img)>127:
+        print('too many classes! \n maybe binary?')
+        label_img[label_img>127] = 255
+        label_img[label_img!=255] = 0
+        label_img = label_img/255
 
     labelShape = label_img.shape
     

@@ -1,11 +1,11 @@
-Metadata-Version: 1.1
+Metadata-Version: 2.1
 Name: convertmask
 Version: 0.1
 Summary: mask imgs to labelme jsons,and so on
 Home-page: https://github.com/guchengxi1994/mask2json
 Author: Chengxi GU
 Author-email: guchengxi1994@qq.com
-License: UNKNOWN
+License: Apache License
 Description: <!--
          * @lanhuage: markdown
          * @Descripttion: 
@@ -94,3 +94,4 @@ Platform: UNKNOWN
 Classifier: Programming Language :: Python
 Classifier: Programming Language :: Python :: 3.7
 Classifier: Programming Language :: Python :: 3.6
+Description-Content-Type: text/markdown

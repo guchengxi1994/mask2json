@@ -1,0 +1,3 @@
+[console_scripts]
+convertmask = mask2json.m2j:script
+

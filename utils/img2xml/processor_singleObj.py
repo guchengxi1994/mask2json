@@ -84,7 +84,7 @@ def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
 if __name__ == "__main__":
     # with open("D:\\getWeld\\insertXML\\test2.xml",'rb') as f:
     f = open("D:\\getWeld\\insertXML\\test2.xml",'w')
-    f.writelines(img2xml("HBXZ","aa","asas\\aa.xx",12,23,"aaa",123,444,4523,664))
+    f.writelines(img2xml("test","aa","asas\\aa.xx",12,23,"aaa",123,444,4523,664))
     f.close()
 
             

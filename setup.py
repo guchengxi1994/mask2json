@@ -5,18 +5,18 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:09:24
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-10 13:30:41
+@LastEditTime: 2020-07-10 14:17:16
 '''
 from utils import __version__
 import os
 from setuptools import setup,find_packages
-
+import pypandoc
 
 
 
 def open_file(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname))
-
+    return open(os.path.join(os.path.dirname(__file__), fname),encoding='utf-8')
+# long_description = pypandoc.convert_file(os.path.join(os.path.dirname(__file__), 'README.md'), 'rst')
 # requestments = open_file('requirements.txt')
 
 setup(
@@ -25,9 +25,10 @@ setup(
     author='Chengxi GU',
     author_email='guchengxi1994@qq.com',
     packages = find_packages(),
+    long_description_content_type='text/markdown',
     # extras_require={'speedup': ['python-levenshtein>=0.12']},
     url='https://github.com/guchengxi1994/mask2json',
-    # license="GPLv2",
+    license="Apache License",
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.7',

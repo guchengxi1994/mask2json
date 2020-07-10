@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-07-10 09:35:13
+ * @LastEditTime: 2020-07-10 14:23:33
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -78,6 +78,13 @@ auto_labeled image
 this may happen if you labelling multiple-object-images with only 2 labels .Or some objects are of the same type and are connected to each other(eg. a bunch of grapes,it is hard to split one to the other).
 
 you can try [json2mask.py](./json2mask.py) to generate mask-files.
+
+
+# LOGS
+
+## 2020.7.10
+
+a lot of things to do ,such as many warnings related to labelme.
 
 
 

@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:24:12
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-06-15 15:13:29
+@LastEditTime: 2020-07-10 10:33:02
 '''
 import cv2
 from utils import getShape

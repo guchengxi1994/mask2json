@@ -5,9 +5,9 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-07-10 14:23:33
+ * @LastEditTime: 2020-07-10 14:50:50
 --> 
-[![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
+[![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
 # mask2json
  mask imgs to labelme jsons,and so on

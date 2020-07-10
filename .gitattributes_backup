@@ -1,5 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-build/
-dist/
-convertmask.egg-info/
+/build
+/dist
+/convertmask.egg-info
+/.vscode

@@ -5,13 +5,14 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 09:35:58
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-13 14:43:51
+@LastEditTime: 2020-07-13 16:48:09
 '''
 import argparse
 import os
 import sys
 sys.path.append('..')
 from utils.getMultiShapes import getMultiShapes
+from utils.cpFile import cp
 from utils.convert import processor
 # from utils.img2xml import processor_singleObj,processor_multiObj
 # from mask2json import getJsons
@@ -22,10 +23,13 @@ cfp = configparser.ConfigParser()
 
 
 BASE_DIR = os.path.abspath(os.curdir)
-config_ROOT = BASE_DIR + os.sep + 'static' + os.sep + 'config.ini'
+# print(BASE_DIR)
+config_ROOT = BASE_DIR + os.sep  + 'config.ini'
 cfp.read(config_ROOT)
 
 default_yaml_path = cfp.get('default-yaml-path','path')
+
+cp()
 
 class MethodNotSupportException(Exception):
     pass

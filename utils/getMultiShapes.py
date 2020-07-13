@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-13 14:55:10
+@LastEditTime: 2020-07-13 15:02:22
 '''
 import cv2
 import numpy as np
@@ -22,7 +22,7 @@ from .img2xml.processor_multiObj  import img2xml_multiobj
 def readYmal(filepath,labeledImg=None):
     if os.path.exists(filepath):
         f = open(filepath)
-        y = yaml.load(f)
+        y = yaml.load(f,Loader=yaml.FullLoader)
         f.close()
         # print(y)
         tmp = y['label_names']

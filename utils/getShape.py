@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:31:45
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-06-12 14:59:38
+@LastEditTime: 2020-07-13 14:59:23
 '''
 import cv2
 import numpy as np
@@ -59,9 +59,7 @@ def getMultiRegion(img,img_bin):
     for multiple objs in same class
     """
 
-    img_bin, contours, hierarchy = cv2.findContours(img_bin,
-                                                    cv2.RETR_LIST,
-                                                    cv2.CHAIN_APPROX_SIMPLE)
+    img_bin, contours, hierarchy = cv2.findContours(img_bin,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 
     # print(len(contours))
     regions = []

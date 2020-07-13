@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-13 14:23:49
+@LastEditTime: 2020-07-13 14:55:10
 '''
 import cv2
 import numpy as np
@@ -127,18 +127,20 @@ def getMultiObjs_voc(oriImgPath,labelPath,savePath):
 
 
 def test():
+    BASE_DIR = os.path.abspath(os.curdir)
+    
     """
     do not use cv2.imread to load the label img. there is a bug
     """
     # oriImgPath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_sameclass.jpg'
     # label_img = io.imread('D:\\testALg\\mask2json\\mask2json\\multi_objs_sameclass_json\\label.png')
 
-    oriImgPath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs.jpg'
-    label_img = io.imread('D:\\testALg\\mask2json\\mask2json\\multi_objs_json\\label.png')
+    oriImgPath = BASE_DIR+'/static/multi_objs.jpg'
+    label_img = io.imread(BASE_DIR+'/multi_objs_json/label.png')
 
     labelShape = label_img.shape
     
-    labels = readYmal('D:\\testALg\\mask2json\\mask2json\\multi_objs_json\\info.yaml')
+    labels = readYmal(BASE_DIR+'/multi_objs_json/info.yaml')
     shapes = []
     obj = dict()
     obj['version'] = '4.2.9'
@@ -194,11 +196,11 @@ def test():
 
     j = json.dumps(obj,sort_keys=True, indent=4)
 
-    with open('D:\\testALg\\mask2json\\mask2json\\static\\multi_objs.json','w') as f:
+    with open(BASE_DIR+'/static/multi_objs.json','w') as f:
         f.write(j)
 
     
-    rmQ.rm('D:\\testALg\\mask2json\\mask2json\\static\\multi_objs.json')
+    rmQ.rm(BASE_DIR+'/static/multi_objs.json')
 
 
 def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):

@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-07-13 14:14:49
+ * @LastEditTime: 2020-07-13 16:46:22
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
@@ -14,7 +14,7 @@
 
  This script is used to convert mask-labels to json files for [labelme](https://github.com/wkentaro/labelme).
 
- Also ,json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./backup/draw.py) in labelme path ('../anaconda/Lib/site-packages/labelme/utils ' my path) and add some codes in \_\_init__.py:
+ Also ,json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./mask2json/draw.py) in labelme path ('../anaconda/Lib/site-packages/labelme/utils ' my path) and add some codes in \_\_init__.py:
 
     from .draw import label_colormap
     from .draw import _validate_colormap

@@ -9,6 +9,7 @@ install:
 script:
   - python test_img2xml.py
   - python test_mask2json.py
+  - python test_cpfile.py
 notifications:
   on_success: always
 cache: pip

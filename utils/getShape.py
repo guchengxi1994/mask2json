@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:31:45
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-13 16:17:30
+@LastEditTime: 2020-07-13 16:19:52
 '''
 import cv2
 import numpy as np
@@ -60,8 +60,8 @@ def getMultiRegion(img,img_bin):
     """
     for multiple objs in same class
     """
-    tmp = currentCV_version.split('.')
-    if float(tmp[0:3])<3.5:
+    # tmp = currentCV_version.split('.')
+    if float(currentCV_version[0:3])<3.5:
         img_bin, contours, hierarchy = cv2.findContours(img_bin,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     else:
         contours, hierarchy = cv2.findContours(img_bin,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)

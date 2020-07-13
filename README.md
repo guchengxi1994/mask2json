@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-07-10 14:50:50
+ * @LastEditTime: 2020-07-13 14:14:49
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
@@ -85,6 +85,10 @@ you can try [json2mask.py](./json2mask.py) to generate mask-files.
 ## 2020.7.10
 
 a lot of things to do ,such as many warnings related to labelme.
+
+## 2020.7.13
+
+convert multi objects to xml files supported (untested)
 
 
 

@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-06-15 16:22:40
+@LastEditTime: 2020-07-13 14:23:49
 '''
 import cv2
 import numpy as np
@@ -16,6 +16,8 @@ from .getShape import *
 from .img2base64 import imgEncode
 import os,json
 from . import rmQ
+import warnings
+from .img2xml.processor_multiObj  import img2xml_multiobj
 
 def readYmal(filepath,labeledImg=None):
     if os.path.exists(filepath):
@@ -31,8 +33,6 @@ def readYmal(filepath,labeledImg=None):
         should make sure your label is correct!!!
 
         untested!!!
-
-        6.15 this section is bad
         """
         labeledImg = np.array(labeledImg,dtype=np.uint8)
 
@@ -58,6 +58,66 @@ def readYmal(filepath,labeledImg=None):
         return zip(classes,labels)
     else:
         raise FileExistsError('file not found')
+
+
+
+def getMultiObjs_voc(oriImgPath,labelPath,savePath):
+    # pass
+    labelImg = io.imread(labelPath)
+    fileName = labelPath.split(os.sep)[-1]
+    imgShape = labelImg.shape
+    imgHeight = imgShape[0]
+    imgWidth = imgShape[1]
+    imgPath = oriImgPath
+    warnings.WarningMessage("auto detecting class numbers")
+    if len(imgShape) == 3:
+        labelImg = labelImg[:,:,0]
+    labelImg[labelImg>0] = 255
+    # if classFile!='' and os.path.exists(classFile):
+    #     with open(classFile,'r') as f:
+    #         objs = list(f.readlines())
+    # else:
+    #     warnings.WarningMessage("auto detected class numbers")
+    _,labels,stats,centroids = cv2.connectedComponentsWithStats(labelImg)
+
+    statsShape = stats.shape
+    objs = []
+    for i in range(1,statsShape[0]):
+        st = stats[i,:]
+
+        width = st[2]
+        height = st[3]
+
+        xmin = st[0]
+        ymin = st[1]
+        
+        xmax = xmin+width
+        ymax = ymin+height
+
+        ob = {}
+        ob['name'] = 'class{}'.format(i)
+        ob['difficult'] = 0
+        # ob['name'] = 'weld'
+
+        bndbox = {}
+
+        bndbox['xmin'] = xmin
+        bndbox['ymin'] = ymin
+        bndbox['xmax'] = xmax
+        bndbox['ymax'] = ymax
+
+        ob['bndbox'] = bndbox
+        objs.append(ob)
+    saveXmlPath = savePath+os.sep + fileName + '.xml' 
+    img2xml_multiobj(saveXmlPath,saveXmlPath,"TEST",fileName,imgPath,imgWidth,imgHeight,objs)
+
+
+
+        
+
+    
+
+    
 
 
 
@@ -143,13 +203,13 @@ def test():
 
 def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
     """
-    oriImgPath : for change img to base64
+    oriImgPath : for change img to base64  \n
     labelPath : after fcn/unet or other machine learning objects outlining , the generated label img
-                or labelme labeled imgs(after json files converted to mask files)
-    savePath : json file save path
+                or labelme labeled imgs(after json files converted to mask files)  \n
+    savePath : json file save path  \n
     labelYamlPath : after json files converted to mask files. if doesn't have this file,should have a labeled img.
-                    but the classes should change bu yourself(labelme 4.2.9 has a bug,when change the label there will be an error.
-                    ) 
+                    but the classes should change by yourself(labelme 4.2.9 has a bug,when change the label there will be an error.
+                    )   \n
 
     """
     label_img = io.imread(labelPath)

@@ -6,6 +6,7 @@
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2020-07-14 13:18:03
+
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
@@ -14,7 +15,7 @@
 
  This script is used to convert mask-labels to json files for [labelme](https://github.com/wkentaro/labelme).
 
- Also ,json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./backup/draw.py) in labelme path ('../anaconda/Lib/site-packages/labelme/utils ' my path) and add some codes in \_\_init__.py:
+ Also ,json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./mask2json/draw.py) in labelme path ('../anaconda/Lib/site-packages/labelme/utils ' my path) and add some codes in \_\_init__.py:
 
     from .draw import label_colormap
     from .draw import _validate_colormap
@@ -87,6 +88,18 @@ you can try [json2mask.py](./json2mask.py) to generate mask-files.
 ## 2020.7.10
 
 a lot of things to do ,such as many warnings related to labelme.
+
+## 2020.7.13
+
+convert multi objects to xml files supported (untested)
+
+## 2020.7.14
+
+bugfix , test multi objects to xml files, pretty xmls
+
+eg:
+
+![img1](./backup/auto_mask2xml.png)
 
 
 

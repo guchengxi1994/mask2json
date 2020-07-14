@@ -5,10 +5,12 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:31:45
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-06-12 14:59:38
+@LastEditTime: 2020-07-13 16:19:52
 '''
 import cv2
 import numpy as np
+
+currentCV_version = cv2.__version__   #str
 
 def get_approx(img, contour, length_p=0.1):
     """获取逼近多边形
@@ -58,10 +60,11 @@ def getMultiRegion(img,img_bin):
     """
     for multiple objs in same class
     """
-
-    img_bin, contours, hierarchy = cv2.findContours(img_bin,
-                                                    cv2.RETR_LIST,
-                                                    cv2.CHAIN_APPROX_SIMPLE)
+    # tmp = currentCV_version.split('.')
+    if float(currentCV_version[0:3])<3.5:
+        img_bin, contours, hierarchy = cv2.findContours(img_bin,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+    else:
+        contours, hierarchy = cv2.findContours(img_bin,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
 
     # print(len(contours))
     regions = []

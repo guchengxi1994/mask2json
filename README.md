@@ -5,7 +5,8 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-07-14 09:47:18
+ * @LastEditTime: 2020-07-14 13:18:03
+
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
@@ -69,6 +70,8 @@ manually_labeled image
 auto_labeled image
 
 ![img1](./backup/auto_labeled_labeled_multi_objs_samelabel.png)
+
+# RECENT CHANGE LOG SEE [HERE](https://github.com/guchengxi1994/mask2json/tree/test)
 
 
 ##  SHORTCOMING

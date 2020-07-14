@@ -8,6 +8,9 @@ install:
 
 script:
   - python test_img2xml.py
+  - python test_mask2json.py
+  - python test_cpfile.py
+  - python test_multiObjs2Xml.py
 notifications:
   on_success: always
 cache: pip

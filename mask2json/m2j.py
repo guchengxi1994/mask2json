@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 09:35:58
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-13 16:48:09
+@LastEditTime: 2020-07-14 08:56:47
 '''
 import argparse
 import os
@@ -71,7 +71,7 @@ def script():
             else:
                 getJsons(args.input,args.mask,args.output,default_yaml_path)
         elif args.mode == 2:
-            warnings.WarningMessage("<===== this method is not tested =====>")
+            warnings.warn("<===== this method is not tested =====>")
             getXmls(args.input,args.mask,args.output)
             # processor_singleObj.img2xml()
             # processor_multiObj.img2xml_multiobj()

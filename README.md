@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-07-13 16:46:22
+ * @LastEditTime: 2020-07-14 09:47:18
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
@@ -89,6 +89,14 @@ a lot of things to do ,such as many warnings related to labelme.
 ## 2020.7.13
 
 convert multi objects to xml files supported (untested)
+
+## 2020.7.14
+
+bugfix , test multi objects to xml files, pretty xmls
+
+eg:
+
+![img1](./backup/auto_mask2xml.png)
 
 
 

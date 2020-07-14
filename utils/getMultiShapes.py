@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-13 15:02:22
+@LastEditTime: 2020-07-14 08:58:20
 '''
 import cv2
 import numpy as np
@@ -69,7 +69,7 @@ def getMultiObjs_voc(oriImgPath,labelPath,savePath):
     imgHeight = imgShape[0]
     imgWidth = imgShape[1]
     imgPath = oriImgPath
-    warnings.WarningMessage("auto detecting class numbers")
+    warnings.warn("auto detecting class numbers")
     if len(imgShape) == 3:
         labelImg = labelImg[:,:,0]
     labelImg[labelImg>0] = 255
@@ -108,7 +108,7 @@ def getMultiObjs_voc(oriImgPath,labelPath,savePath):
 
         ob['bndbox'] = bndbox
         objs.append(ob)
-    saveXmlPath = savePath+os.sep + fileName + '.xml' 
+    saveXmlPath = savePath+os.sep + fileName[:-4] + '.xml' 
     img2xml_multiobj(saveXmlPath,saveXmlPath,"TEST",fileName,imgPath,imgWidth,imgHeight,objs)
 
 

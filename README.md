@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-07-14 13:56:09
+ * @LastEditTime: 2020-07-14 14:00:59
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
@@ -54,8 +54,11 @@ the test script can be found [here](./test_mask2json.py)
     getMultiShapes.getMultiShapes(param1,param2,param3,param4)
 
 param1:path which saves the origin imgs
+
 param2:path which saves the mask imgs (file names should match the origin imgs)
+
 param3:converted json files save path
+
 param4:can be blank (better don't), a yaml file path which saves the class information
 
 ### (2) for labelimg mask files
@@ -66,7 +69,9 @@ the test script can be found [here](./test_multiObjs2Xml.py)
     gvoc(param1,param2,param3)
 
 param1:path which saves the origin imgs
+
 param2:path which saves the mask imgs (file names should match the origin imgs)
+
 param3:converted xml files save path
 
 ### (3) for json files  to mask files
@@ -77,6 +82,7 @@ the test script can be found [here](./json2mask.py)
     processor(param1,param2)
 
 param1:json file or folder
+
 param2:can be blank,encoding type, default 'utf-8'
 
 ## AILERNATIVE

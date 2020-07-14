@@ -5,6 +5,6 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:09:56
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-10 10:10:21
+@LastEditTime: 2020-07-14 13:52:13
 '''
-__version__ = '0.1'
+__version__ = '0.2'

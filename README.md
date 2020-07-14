@@ -5,12 +5,15 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-07-14 09:47:18
+ * @LastEditTime: 2020-07-14 13:47:37
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
 # mask2json
+
  mask imgs to labelme jsons,and so on
+
+ ## HOW TO USE
 
  This script is used to convert mask-labels to json files for [labelme](https://github.com/wkentaro/labelme).
 
@@ -43,6 +46,59 @@ auto_labeled image
 
 Also ,for [labelimg](https://github.com/tzutalin/labelImg),a small tool to convert results(yolo) to [xml-files](./utils/img2xml). (I tested [single object](./utils/img2xml/processor_singleObj.py) but didn't test [multi objects](./utils/img2xml/processor_multiObj.py)
 
+### (1) for labelme mask files
+
+the test script can be found [here](./test_mask2json.py)
+
+    from utils import getMultiShapes
+    getMultiShapes.getMultiShapes(param1,param2,param3,param4)
+
+param1:path which saves the origin imgs
+param2:path which saves the mask imgs (file names should match the origin imgs)
+param3:converted json files save path
+param4:can be blank (better don't), a yaml file path which saves the class information
+
+### (2) for labelimg mask files
+
+the test script can be found [here](./test_multiObjs2Xml.py)
+
+    from utils.getMultiShapes import getMultiObjs_voc as gvoc
+    gvoc(param1,param2,param3)
+
+param1:path which saves the origin imgs
+param2:path which saves the mask imgs (file names should match the origin imgs)
+param3:converted xml files save path
+
+### (3) for json files  to mask files
+
+the test script can be found [here](./json2mask.py)
+
+    from utils.convert import processor
+    processor(param1,param2)
+
+param1:json file or folder
+param2:can be blank,encoding type, default 'utf-8'
+
+## AILERNATIVE
+
+you can try:
+
+    pip install convertmask
+
+it is a test release. : )
+
+
+
+
+
+##  SHORTCOMING
+
+1.~~objects connected to each other is not supported yet.~~
+
+this may happen if you labelling multiple-object-images with only 2 labels .Or some objects are of the same type and are connected to each other(eg. a bunch of grapes,it is hard to split one to the other).
+
+
+# LOGS
 
 ## 2020.6.12
 
@@ -69,18 +125,6 @@ manually_labeled image
 auto_labeled image
 
 ![img1](./backup/auto_labeled_labeled_multi_objs_samelabel.png)
-
-
-##  SHORTCOMING
-
-1.~~objects connected to each other is not supported yet.~~
-
-this may happen if you labelling multiple-object-images with only 2 labels .Or some objects are of the same type and are connected to each other(eg. a bunch of grapes,it is hard to split one to the other).
-
-you can try [json2mask.py](./json2mask.py) to generate mask-files.
-
-
-# LOGS
 
 ## 2020.7.10
 

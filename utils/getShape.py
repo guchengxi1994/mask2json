@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:31:45
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-13 16:19:52
+@LastEditTime: 2020-07-17 17:44:41
 '''
 import cv2
 import numpy as np
@@ -84,6 +84,7 @@ def getMultiRegion(img,img_bin):
 def process(oriImg):
     img,img_bin = getBinary(oriImg)
 
+    # print(img_bin.shape)
     return getMultiRegion(img,img_bin)
 
 

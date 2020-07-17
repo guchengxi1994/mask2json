@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-07-14 14:00:59
+ * @LastEditTime: 2020-07-17 15:08:44
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
@@ -147,6 +147,10 @@ bugfix , test multi objects to xml files, pretty xmls
 eg:
 
 ![img1](./backup/auto_mask2xml.png)
+
+## 2020.7.17
+
+is going to support image augmention !!
 
 
 

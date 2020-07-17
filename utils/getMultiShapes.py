@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 @LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-14 08:58:20
+@LastEditTime: 2020-07-17 17:43:08
 '''
 import cv2
 import numpy as np
@@ -43,17 +43,17 @@ def readYmal(filepath,labeledImg=None):
         # _, labels = cv2.connectedComponents(labeledImg)
         _, labels, stats, centroids = cv2.connectedComponentsWithStats(labeledImg)
 
-        labels = np.max(labels)
+        labels = np.max(labels) + 1
         labels = [x for x in range(1,labels)]
   
 
-
-
-        # labels = labeledImg.ravel()[np.flatnonzero(labeledImg)]
+        # print(labels)
 
         classes = []
         for i in range(0,len(labels)):
             classes.append("class{}".format(i))
+
+        # print(classes)
         
         return zip(classes,labels)
     else:
@@ -110,18 +110,6 @@ def getMultiObjs_voc(oriImgPath,labelPath,savePath):
         objs.append(ob)
     saveXmlPath = savePath+os.sep + fileName[:-4] + '.xml' 
     img2xml_multiobj(saveXmlPath,saveXmlPath,"TEST",fileName,imgPath,imgWidth,imgHeight,objs)
-
-
-
-        
-
-    
-
-    
-
-
-
-        
 
 
 
@@ -203,7 +191,7 @@ def test():
     rmQ.rm(BASE_DIR+'/static/multi_objs.json')
 
 
-def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
+def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False):
     """
     oriImgPath : for change img to base64  \n
     labelPath : after fcn/unet or other machine learning objects outlining , the generated label img
@@ -214,17 +202,25 @@ def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
                     )   \n
 
     """
-    label_img = io.imread(labelPath)
+    if isinstance(labelPath,str) :
+        if os.path.exists(oriImg):
+            label_img = io.imread(labelPath)
+        else:
+            raise FileNotFoundError('mask/labeled image not found')
+    else:
+        # img = oriImg
+        label_img = labelPath
 
     if np.max(label_img)>127:
-        print('too many classes! \n maybe binary?')
+        # print('too many classes! \n maybe binary?')
         label_img[label_img>127] = 255
         label_img[label_img!=255] = 0
-        label_img = label_img/255
+        # label_img = label_img/255
 
     labelShape = label_img.shape
     
     labels = readYmal(labelYamlPath,label_img)
+    # print(labels)
     shapes = []
     obj = dict()
     obj['version'] = '4.2.9'
@@ -235,9 +231,12 @@ def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
             img = copy.deepcopy(label_img)
             
             img[img == la[1]] = 255
+            # print(la[1])
             img[img!=255] = 0
 
             region = process(img.astype(np.uint8))
+
+            # print(region)
            
             if isinstance(region,np.ndarray):
                 points = []
@@ -274,12 +273,16 @@ def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
     obj['imageWidth'] = labelShape[1]
 
     j = json.dumps(obj,sort_keys=True, indent=4)
-    saveJsonPath = savePath+os.sep + obj['imagePath'][:-4] + '.json'
-    with open(saveJsonPath,'w') as f:
-        f.write(j)
 
+    if not flag:
+        saveJsonPath = savePath+os.sep + obj['imagePath'][:-4] + '.json'
+        with open(saveJsonPath,'w') as f:
+            f.write(j)
+   
+        rmQ.rm(saveJsonPath)
     
-    rmQ.rm(saveJsonPath)
+    else:
+        return j
 
     
 

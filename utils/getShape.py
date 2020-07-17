@@ -84,7 +84,6 @@ def getMultiRegion(img,img_bin):
 def process(oriImg):
     img,img_bin = getBinary(oriImg)
 
-    # print(img_bin.shape)
     return getMultiRegion(img,img_bin)
 
 

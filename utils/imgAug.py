@@ -59,9 +59,10 @@ def imgFlip(oriImg:str,oriLabel:str,flip_list=[1,0,-1]):
         v_mask = cv2.flip(mask,0)
         h_v_mask = cv2.flip(mask,-1)
 
-        h_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_mask,flag=True,labelYamlPath='D:\\testALg\\mask2json\\mask2json\\multi_objs_json\\info.yaml')
-        v_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_v.jpg',v_mask,flag=True,labelYamlPath='D:\\testALg\\mask2json\\mask2json\\multi_objs_json\\info.yaml')
-        h_v_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h_v.jpg',h_v_mask,flag=True,labelYamlPath='D:\\testALg\\mask2json\\mask2json\\multi_objs_json\\info.yaml')
+        h_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_mask,flag=True,labelYamlPath='')
+        # h_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_mask,flag=True,labelYamlPath='D:\\mask2json\\multi_objs_json\\info.yaml')
+        v_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_v.jpg',v_mask,flag=True,labelYamlPath='')
+        h_v_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h_v.jpg',h_v_mask,flag=True,labelYamlPath='')
 
         """
         maybe dict zip is better :)

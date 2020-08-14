@@ -6,8 +6,8 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-17 17:47:22
+LastEditors: xiaoshuyui
+LastEditTime: 2020-08-14 17:09:54
 '''
 
 import sys
@@ -19,15 +19,18 @@ import os
 from utils.convert import processor
 from utils.getMultiShapes import getMultiShapes
 from utils import rmQ
+import traceback
+from .entity import *
 
 
-
-def imgFlip(oriImg:str,oriLabel:str,flip_list=[1,0,-1]):
+def imgFlip(oriImg:str,oriLabel:str,flip_list=[1,0,-1],flag=True):
     """
-    flipList: flip type. see cv2.flip
+    flipList: flip type. see cv2.flip :
     1: 水平翻转 \n
     0: 垂直翻转 \n
-    -1: 同时翻转
+    -1: 同时翻转 \n
+    >>> import cv2
+    >>> help(cv2.flip)
     """
     if isinstance(oriImg,str) :
         if os.path.exists(oriImg):
@@ -38,61 +41,84 @@ def imgFlip(oriImg:str,oriLabel:str,flip_list=[1,0,-1]):
         img = oriImg
 
     try:
-        mask = processor(oriLabel,flag=True)
-        # print(type(mask))
-        h_ori = cv2.flip(img,1)
-        v_ori = cv2.flip(img,0)
-        h_v_ori = cv2.flip(img,-1)
+        if len(flip_list)>1 and (1 in flip_list or 0 in flip_list or -1 in flip_list):
+            mask = processor(oriLabel,flag=True)
+            # print(type(mask))
+            h_ori = cv2.flip(img,1)
+            v_ori = cv2.flip(img,0)
+            h_v_ori = cv2.flip(img,-1)
 
-        parent_path = os.path.dirname(oriLabel)
-        if os.path.exists(parent_path+os.sep+'jsons_'):
-            pass
-        else:
-            os.makedirs(parent_path+os.sep+'jsons_')
+            h_mask = cv2.flip(mask,1) if 1 in flip_list else None
+            v_mask = cv2.flip(mask,0) if 0 in flip_list else None
+            h_v_mask = cv2.flip(mask,-1) if -1 in flip_list else None
 
-        fileName = oriLabel.split(os.sep)[-1].replace('.json','')
-        io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_ori)
-        io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_v.jpg',v_ori)
-        io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h_v.jpg',h_v_ori)
+            """
+            maybe dict zip is better :)
+            """
 
-        h_mask = cv2.flip(mask,1)
-        v_mask = cv2.flip(mask,0)
-        h_v_mask = cv2.flip(mask,-1)
+            if flag:
+                parent_path = os.path.dirname(oriLabel)
+                if os.path.exists(parent_path+os.sep+'jsons_'):
+                    pass
+                else:
+                    os.makedirs(parent_path+os.sep+'jsons_')
+                fileName = oriLabel.split(os.sep)[-1].replace('.json','')
 
-        h_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_mask,flag=True,labelYamlPath='')
-        # h_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_mask,flag=True,labelYamlPath='D:\\mask2json\\multi_objs_json\\info.yaml')
-        v_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_v.jpg',v_mask,flag=True,labelYamlPath='')
-        h_v_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h_v.jpg',h_v_mask,flag=True,labelYamlPath='')
+                io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_ori) if 1 in flip_list else print()
+                io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_v.jpg',v_ori) if 0 in flip_list else print()
+                io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h_v.jpg',h_v_ori) if -1 in flip_list else print()
 
-        """
-        maybe dict zip is better :)
-        """
 
-        for saveJsonPath in [parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.json',
-                            parent_path+os.sep+'jsons_'+os.sep+fileName+'_v.json',
-                            parent_path+os.sep+'jsons_'+os.sep+fileName+'_H_V.json']:
-            
-            
-            if saveJsonPath.endswith('_h.json'):
-                with open(saveJsonPath,'w') as f:
-                    f.write(h_j)
-            elif saveJsonPath.endswith('_v.json'):
-                with open(saveJsonPath,'w') as f:
-                    f.write(v_j)
+                # h_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_mask,flag=True,labelYamlPath='') if h_mask is not None else None
+                h_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_mask,flag=True,labelYamlPath='D:\\testALg\\mask2json\\mask2json\\multi_objs_json\\info.yaml')
+                v_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_v.jpg',v_mask,flag=True,labelYamlPath='') if v_mask is not None else None
+                h_v_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h_v.jpg',h_v_mask,flag=True,labelYamlPath='') if h_v_mask is not None else None
+
+                for saveJsonPath in [parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.json',
+                                    parent_path+os.sep+'jsons_'+os.sep+fileName+'_v.json',
+                                    parent_path+os.sep+'jsons_'+os.sep+fileName+'_H_V.json']:
+                    
+                    # if saveJsonPath is not None:
+                        # print(saveJsonPath)
+                    if saveJsonPath.endswith('_h.json')  :   
+                        if h_j is not None:
+                            with open(saveJsonPath,'w') as f:
+                                f.write(h_j)
+                        else:
+                            pass
+                    elif saveJsonPath.endswith('_v.json')  :  
+                        if v_j is not None:
+                            with open(saveJsonPath,'w') as f:
+                                f.write(v_j)
+                        else:
+                            pass
+                    elif saveJsonPath.endswith('_H_V.json') :
+                        if h_v_j is not None:
+                            with open(saveJsonPath,'w') as f:
+                                f.write(h_v_j) 
+                        else:
+                            pass
+                
+                    rmQ.rm(saveJsonPath) if os.path.exists(saveJsonPath) else print()
+                
+                return ""
             else:
-                with open(saveJsonPath,'w') as f:
-                    f.write(h_v_j)
-    
-            rmQ.rm(saveJsonPath)
+
+                d = dict()
+                d['h'] = Ori_Pro(h_ori,h_mask)
+                d['v'] = Ori_Pro(v_ori,v_mask)
+                d['h_v'] = Ori_Pro(h_v_ori,h_v_mask)
+
+                return d
+                
+        else:
+            warnings.warn("<===== param:flip_list is not valid =====>")
 
 
 
-        
-
-
-        
-    except Exception as e:
-        print(e)
+    except Exception :
+        # print(e)
+        print(traceback.format_exc())
 
 
             

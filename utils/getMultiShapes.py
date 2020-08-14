@@ -4,8 +4,8 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-17 17:43:08
+LastEditors: xiaoshuyui
+LastEditTime: 2020-08-14 17:28:13
 '''
 from labelme import __version__
 import cv2
@@ -229,7 +229,7 @@ def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False)
     for la in list(labels):
 
         if la[1]>0:
-
+            # print(la[0])
             img = copy.deepcopy(label_img)
             img = img.astype(np.uint8)
             
@@ -253,6 +253,7 @@ def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False)
                 shapes.append(shape)
 
             elif isinstance(region,list):
+                # print(len(region))
                 for subregion in region:
                     points = []
                     for i in range(0,subregion.shape[0]):
@@ -264,8 +265,11 @@ def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False)
                     shape['shape_type']='polygon'
                     shape['flags']={}
                     shapes.append(shape)
-    print(len(shapes))
+                    # print(shape)
+                    # print('================')
+    # print(len(shapes))
     obj['shapes'] = shapes
+    # print(shapes)
     obj['imagePath'] = oriImgPath.split(os.sep)[-1]
     obj['imageData'] = str(imgEncode(oriImgPath))
 

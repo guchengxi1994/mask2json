@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-07-17 15:08:44
+ * @LastEditTime: 2020-08-14 16:50:44
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
@@ -151,6 +151,10 @@ eg:
 ## 2020.7.17
 
 is going to support image augmention !!
+
+## 2020.8.14
+
+add image augmention (image flip) test. see [test_imgAug.py](./test_imgAug.py) !
 
 
 

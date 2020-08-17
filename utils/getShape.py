@@ -4,11 +4,12 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:31:45
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-13 16:19:52
+LastEditors: xiaoshuyui
+LastEditTime: 2020-08-17 14:09:10
 '''
 import cv2
 import numpy as np
+from .getArea import getAreaOfPolyGonbyVector
 
 currentCV_version = cv2.__version__   #str
 
@@ -27,7 +28,7 @@ def get_approx(img, contour, length_p=0.1):
 
     return approx
 
-def getBinary(img_or_path):
+def getBinary(img_or_path,minConnectedArea=20):
     if isinstance(img_or_path,str):
         i = cv2.imread(img_or_path)
     elif isinstance(img_or_path,np.ndarray):
@@ -42,6 +43,24 @@ def getBinary(img_or_path):
         img_gray = i 
     
     ret, img_bin = cv2.threshold(img_gray, 127, 255, cv2.THRESH_BINARY)
+
+    # kernel = np.ones((5,5),np.uint8)
+    # img_bin = cv2.dilate(img_bin,kernel)
+    # img_bin = cv2.erode(img_bin,kernel)
+
+    # img_bin[img_bin!=0] = 255
+
+    # img_bin = morphology.remove_small_objects(img_bin,3)
+    _,labels,stats,centroids = cv2.connectedComponentsWithStats(img_bin)
+    # print(stats.shape)
+    for index in range(1,stats.shape[0]):
+        if stats[index][4]<minConnectedArea:
+            labels[labels==index] = 0
+    
+    labels[labels!=0] = 1
+
+    img_bin = np.array(img_bin*labels).astype(np.uint8)
+    # print(img_bin.shape)
 
     return i,img_bin
 
@@ -65,7 +84,7 @@ def getMultiRegion(img,img_bin):
         img_bin, contours, hierarchy = cv2.findContours(img_bin,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
     else:
         contours, hierarchy = cv2.findContours(img_bin,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
-
+    # print(contours)
     # print(len(contours))
     regions = []
     if len(contours)>=1:
@@ -74,8 +93,11 @@ def getMultiRegion(img,img_bin):
         # elif len(contours)>1:
         for i in range(0,len(contours)):
             if i != []:
+                # print(len(contours[i]))
                 region = get_approx(img, contours[i], 0.002)
-                regions.append(region)
+                # print(region)
+                if region.shape[0]>3:
+                    regions.append(region)
         
         return regions
     else:

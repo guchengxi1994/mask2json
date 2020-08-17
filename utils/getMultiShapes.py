@@ -5,9 +5,12 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-17 11:36:05
+LastEditTime: 2020-08-17 15:31:19
 '''
-from labelme import __version__
+try:
+    from labelme import __version__
+except:
+    __version__ = '4.0.0'
 import cv2
 import numpy as np
 import skimage.io as io

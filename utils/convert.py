@@ -4,8 +4,8 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-10 10:04:09
+LastEditors: xiaoshuyui
+LastEditTime: 2020-08-17 08:59:23
 '''
 import argparse
 import json
@@ -17,7 +17,9 @@ import warnings
 import PIL.Image
 import yaml
  
-from labelme import utils
+# from labelme import utils      
+
+import labelme.utils as lUtils   # solve conflict
  
 import cv2
 import numpy as np
@@ -42,13 +44,13 @@ def main():
         if os.path.isfile(path) and path.endswith('.json'):
  
             data = json.load(open(path,encoding='gbk'))
-            img = utils.img_b64_to_arr(data['imageData'])
+            img = lUtils.img_b64_to_arr(data['imageData'])
             try:
-                lbl, lbl_names = utils.labelme_shapes_to_label(img.shape, data['shapes'])
+                lbl, lbl_names = lUtils.labelme_shapes_to_label(img.shape, data['shapes'])
     
                 captions = ['%d: %s' % (l, name) for l, name in enumerate(lbl_names)]
     
-                lbl_viz = utils.draw_label(lbl, img, captions)
+                lbl_viz = lUtils.draw_label(lbl, img, captions)
 
                 # print(type(lbl))
                 # print(np.max(lbl))
@@ -94,7 +96,7 @@ def main():
                 pass
 
 
-def processor(json_file,encoding="utf-8"):
+def processor(json_file,encoding="utf-8",flag=False):
     """
     input a json folder,or single file path
     """
@@ -108,54 +110,51 @@ def processor(json_file,encoding="utf-8"):
                 parent_path = os.path.dirname(json_file) + os.sep
                 try:
                     data = json.load(open(json_file,encoding=encoding))
-                    img = utils.img_b64_to_arr(data['imageData'])
+                    img = lUtils.img_b64_to_arr(data['imageData'])
 
-                    lbl, lbl_names = utils.labelme_shapes_to_label(img.shape, data['shapes'])
+                    lbl, lbl_names = lUtils.labelme_shapes_to_label(img.shape, data['shapes'])
         
                     captions = ['%d: %s' % (l, name) for l, name in enumerate(lbl_names)]
         
-                    lbl_viz = utils.draw_label(lbl, img, captions)
+                    lbl_viz = lUtils.draw_label(lbl, img, captions)
 
-                    # print(type(lbl))
-                    # print(np.max(lbl))
-                    # print(lbl.shape)
-                    lbl[lbl>0] = 255
+                    ##
+                    if np.max(lbl) == 255 or np.max(lbl) == 1:
+                        lbl[lbl>0] = 255
+                    ##
+
                     lbl = np.array(lbl,dtype=np.uint8)
 
-                    # out_dir = osp.basename(path).replace('.', '_')
-                    out_dir = osp.basename(json_file).split('.json')[0]
-                    save_file_name = out_dir
-                    # out_dir = osp.join(osp.dirname(path), out_dir)
-        
-                    if not osp.exists(parent_path + 'mask'):
-                        os.mkdir(parent_path + 'mask')
-                    maskdir = parent_path + 'mask'
-        
-                    if not osp.exists(parent_path + 'mask_viz'):
-                        os.mkdir(parent_path + 'mask_viz')
-                    maskvizdir = parent_path + 'mask_viz'
-        
-                    out_dir1 = maskdir
-                    # if not osp.exists(out_dir1):
-                    #     os.mkdir(out_dir1)
-        
-                    # PIL.Image.fromarray(img).save(out_dir1 + '\\' + save_file_name + '_img.png')
-                    PIL.Image.fromarray(lbl).save(out_dir1 +'/'+ save_file_name + '.png')
-        
-                    PIL.Image.fromarray(lbl_viz).save(maskvizdir + '/' + save_file_name +
-                                                    '_label_viz.png')
-        
-        
-                    with open(osp.join(out_dir1, 'label_names.txt'), 'w') as f:
-                        for lbl_name in lbl_names:
-                            f.write(lbl_name + '\n')
-        
-                    # warnings.warn('info.yaml is being replaced by label_names.txt')
-                    info = dict(label_names=lbl_names)
-                    with open(osp.join(out_dir1, 'info.yaml'), 'w') as f:
-                        yaml.safe_dump(info, f, default_flow_style=False)
-        
-                    print('Saved to: %s' % out_dir1)
+                    if not flag:
+
+                        out_dir = osp.basename(json_file).split('.json')[0]
+                        save_file_name = out_dir
+
+                        if not osp.exists(parent_path + 'mask'):
+                            os.mkdir(parent_path + 'mask')
+                        maskdir = parent_path + 'mask'
+            
+                        if not osp.exists(parent_path + 'mask_viz'):
+                            os.mkdir(parent_path + 'mask_viz')
+                        maskvizdir = parent_path + 'mask_viz'
+            
+                        out_dir1 = maskdir        
+                        PIL.Image.fromarray(lbl).save(out_dir1 +'/'+ save_file_name + '.png')          
+                        PIL.Image.fromarray(lbl_viz).save(maskvizdir + '/' + save_file_name +
+                                                        '_label_viz.png')    
+                        with open(osp.join(out_dir1, 'label_names.txt'), 'w') as f:
+                            for lbl_name in lbl_names:
+                                f.write(lbl_name + '\n')
+            
+                        info = dict(label_names=lbl_names)
+                        with open(osp.join(out_dir1, 'info.yaml'), 'w') as f:
+                            yaml.safe_dump(info, f, default_flow_style=False)
+            
+                        print('Saved to: %s' % out_dir1)
+                    
+                    else:
+
+                        return lbl
                 except Exception as e:
                     print(e)
                     
@@ -168,12 +167,12 @@ def processor(json_file,encoding="utf-8"):
                 if os.path.isfile(path) and path.endswith('.json'):   
                     try:
                         data = json.load(open(path,encoding=encoding))
-                        img = utils.img_b64_to_arr(data['imageData'])
-                        lbl, lbl_names = utils.labelme_shapes_to_label(img.shape, data['shapes'])
+                        img = lUtils.img_b64_to_arr(data['imageData'])
+                        lbl, lbl_names = lUtils.labelme_shapes_to_label(img.shape, data['shapes'])
             
                         captions = ['%d: %s' % (l, name) for l, name in enumerate(lbl_names)]
             
-                        lbl_viz = utils.draw_label(lbl, img, captions)
+                        lbl_viz = lUtils.draw_label(lbl, img, captions)
 
                         # print(type(lbl))
                         # print(np.max(lbl))

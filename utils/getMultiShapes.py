@@ -4,9 +4,10 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-14 08:58:20
+LastEditors: xiaoshuyui
+LastEditTime: 2020-08-17 11:36:05
 '''
+from labelme import __version__
 import cv2
 import numpy as np
 import skimage.io as io
@@ -28,7 +29,7 @@ def readYmal(filepath,labeledImg=None):
         tmp = y['label_names']
         objs = zip(tmp.keys(),tmp.values())
         return sorted(objs)
-    elif labeledImg  is not  None:
+    elif labeledImg  is not  None and filepath == "" :
         """
         should make sure your label is correct!!!
 
@@ -36,25 +37,23 @@ def readYmal(filepath,labeledImg=None):
         """
         labeledImg = np.array(labeledImg,dtype=np.uint8)
 
-        labeledImg[labeledImg>127] = 255
+        labeledImg[labeledImg>0] = 255
         labeledImg[labeledImg!=255] = 0
         # labeledImg = labeledImg/255
 
         # _, labels = cv2.connectedComponents(labeledImg)
         _, labels, stats, centroids = cv2.connectedComponentsWithStats(labeledImg)
 
-        labels = np.max(labels)
+        labels = np.max(labels) + 1
         labels = [x for x in range(1,labels)]
   
 
-
-
-        # labels = labeledImg.ravel()[np.flatnonzero(labeledImg)]
+        # print(labels)
 
         classes = []
         for i in range(0,len(labels)):
             classes.append("class{}".format(i))
-        
+
         return zip(classes,labels)
     else:
         raise FileExistsError('file not found')
@@ -113,18 +112,6 @@ def getMultiObjs_voc(oriImgPath,labelPath,savePath):
 
 
 
-        
-
-    
-
-    
-
-
-
-        
-
-
-
 
 def test():
     BASE_DIR = os.path.abspath(os.curdir)
@@ -143,7 +130,7 @@ def test():
     labels = readYmal(BASE_DIR+'/multi_objs_json/info.yaml')
     shapes = []
     obj = dict()
-    obj['version'] = '4.2.9'
+    obj['version'] = __version__
     obj['flags'] = {}
     for la in labels:
         if la[1]>0:
@@ -203,7 +190,7 @@ def test():
     rmQ.rm(BASE_DIR+'/static/multi_objs.json')
 
 
-def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
+def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False):
     """
     oriImgPath : for change img to base64  \n
     labelPath : after fcn/unet or other machine learning objects outlining , the generated label img
@@ -214,27 +201,40 @@ def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
                     )   \n
 
     """
-    label_img = io.imread(labelPath)
+    if isinstance(labelPath,str) :
+        if os.path.exists(labelPath):
+            label_img = io.imread(labelPath)
+        else:
+            raise FileNotFoundError('mask/labeled image not found')
+    else:
+        # img = oriImg
+        label_img = labelPath
 
     if np.max(label_img)>127:
-        print('too many classes! \n maybe binary?')
+        # print('too many classes! \n maybe binary?')
         label_img[label_img>127] = 255
         label_img[label_img!=255] = 0
         label_img = label_img/255
 
     labelShape = label_img.shape
+
+    # print(np.max(label_img))
     
     labels = readYmal(labelYamlPath,label_img)
+    # print(list(labels))
     shapes = []
     obj = dict()
-    obj['version'] = '4.2.9'
+    obj['version'] = __version__
     obj['flags'] = {}
-    for la in labels:
+    for la in list(labels):
+
         if la[1]>0:
-            # img = label_img[label_img == i[1]]
+            # print(la[0])
             img = copy.deepcopy(label_img)
+            img = img.astype(np.uint8)
             
             img[img == la[1]] = 255
+
             img[img!=255] = 0
 
             region = process(img.astype(np.uint8))
@@ -253,10 +253,10 @@ def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
                 shapes.append(shape)
 
             elif isinstance(region,list):
+                # print(len(region))
                 for subregion in region:
                     points = []
                     for i in range(0,subregion.shape[0]):
-                        # print(region[i][0])
                         points.append(subregion[i][0].tolist())
                     shape = dict()
                     shape['label'] = la[0]
@@ -265,8 +265,10 @@ def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
                     shape['shape_type']='polygon'
                     shape['flags']={}
                     shapes.append(shape)
-    
+
+    # print(len(shapes))
     obj['shapes'] = shapes
+    # print(shapes)
     obj['imagePath'] = oriImgPath.split(os.sep)[-1]
     obj['imageData'] = str(imgEncode(oriImgPath))
 
@@ -274,12 +276,16 @@ def getMultiShapes(oriImgPath,labelPath,savePath,labelYamlPath=''):
     obj['imageWidth'] = labelShape[1]
 
     j = json.dumps(obj,sort_keys=True, indent=4)
-    saveJsonPath = savePath+os.sep + obj['imagePath'][:-4] + '.json'
-    with open(saveJsonPath,'w') as f:
-        f.write(j)
 
+    if not flag:
+        saveJsonPath = savePath+os.sep + obj['imagePath'][:-4] + '.json'
+        with open(saveJsonPath,'w') as f:
+            f.write(j)
+   
+        rmQ.rm(saveJsonPath)
     
-    rmQ.rm(saveJsonPath)
+    else:
+        return j
 
     
 

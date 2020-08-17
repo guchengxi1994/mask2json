@@ -4,8 +4,8 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-17 15:38:03
+LastEditors: xiaoshuyui
+LastEditTime: 2020-08-17 08:59:23
 '''
 import argparse
 import json
@@ -118,7 +118,11 @@ def processor(json_file,encoding="utf-8",flag=False):
         
                     lbl_viz = lUtils.draw_label(lbl, img, captions)
 
-                    lbl[lbl>0] = 255
+                    ##
+                    if np.max(lbl) == 255 or np.max(lbl) == 1:
+                        lbl[lbl>0] = 255
+                    ##
+
                     lbl = np.array(lbl,dtype=np.uint8)
 
                     if not flag:

@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-14 16:50:44
+ * @LastEditTime: 2020-08-17 14:18:02
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
 
@@ -150,11 +150,35 @@ eg:
 
 ## 2020.7.17
 
-is going to support image augmention !!
+is going to support image augmentation  !!
 
 ## 2020.8.14
 
-add image augmention (image flip) test. see [test_imgAug.py](./test_imgAug.py) !
+add image augmentation  (image flip) test. see [test_imgAug.py](./test_imgAug.py) !
+
+## 2020.8.17
+
+bug fix.
+
+support image augmentation methods: noise,flip,rotation. try [test_imgAug.py](./test_imgAug.py) !
+
+here are some examples:
+
+### flip
+
+![img1](./backup/flip_h.png)
+
+![img1](./backup/flip_v.png)
+
+![img1](./backup/flip_v_h.png)
+
+### noise
+
+![img1](./backup/noise.png)
+
+### rotation
+
+![img1](./backup/rotation.png)
 
 
 

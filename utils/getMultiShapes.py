@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-14 17:28:13
+LastEditTime: 2020-08-17 11:36:05
 '''
 from labelme import __version__
 import cv2
@@ -265,8 +265,7 @@ def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False)
                     shape['shape_type']='polygon'
                     shape['flags']={}
                     shapes.append(shape)
-                    # print(shape)
-                    # print('================')
+
     # print(len(shapes))
     obj['shapes'] = shapes
     # print(shapes)

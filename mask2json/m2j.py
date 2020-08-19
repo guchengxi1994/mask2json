@@ -4,8 +4,8 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-07-10 09:35:58
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-14 08:56:47
+LastEditors: xiaoshuyui
+LastEditTime: 2020-08-19 09:02:24
 '''
 import argparse
 import os
@@ -17,7 +17,8 @@ from utils.convert import processor
 # from utils.img2xml import processor_singleObj,processor_multiObj
 # from mask2json import getJsons
 from utils.mask2json_script import getJsons,getXmls
-import warnings
+# import warnings
+from utils.logger import logger
 import configparser
 cfp = configparser.ConfigParser()
 
@@ -60,7 +61,7 @@ def script():
         if args.mode == 1:
             s = ''
             if not os.path.exists(default_yaml_path):
-                warnings.WarningMessage("Input the default yaml-path \n if not, the script is not tested")
+                logger.warning("Input the default yaml-path \n if not, the script is not tested")
             if not args.usecache:
                 s = input()
             if s!= '' and s is not None and os.path.exists(s):
@@ -71,7 +72,7 @@ def script():
             else:
                 getJsons(args.input,args.mask,args.output,default_yaml_path)
         elif args.mode == 2:
-            warnings.warn("<===== this method is not tested =====>")
+            # logger.warning("<===== this method is not tested =====>")
             getXmls(args.input,args.mask,args.output)
             # processor_singleObj.img2xml()
             # processor_multiObj.img2xml_multiobj()

@@ -5,13 +5,13 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-17 14:18:02
+ * @LastEditTime: 2020-08-19 10:05:11
 --> 
-[![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)
+[![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
 # mask2json
 
- mask imgs to labelme jsons,and so on
+ a small tool for image augmentation, including mask files to json/xml files , image augmentation(flip,rotation,noise,...) and so on
 
  ## HOW TO USE
 
@@ -179,6 +179,16 @@ here are some examples:
 ### rotation
 
 ![img1](./backup/rotation.png)
+
+## 2020.8.19
+
+image translation supported.
+
+![img1](./backup/translation.png)
+
+combination of every augmentation method.
+
+![img1](./backup/combine.png)
 
 
 

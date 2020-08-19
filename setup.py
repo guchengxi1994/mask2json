@@ -4,8 +4,8 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:09:24
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-10 14:17:16
+LastEditors: xiaoshuyui
+LastEditTime: 2020-08-19 08:46:49
 '''
 from utils import __version__
 import os
@@ -45,7 +45,7 @@ setup(
         'PyYAML==5.3.1',
         'scipy==1.5.1'
     ],
-    description='mask imgs to labelme jsons,and so on',
+    description='a small tool for image augmentation, including mask files to json/xml files , image augmentation(flip,rotation,noise,...) and so on',
     long_description=open_file('README.md').read(),
     zip_safe=True,
     # packages = find_packages()

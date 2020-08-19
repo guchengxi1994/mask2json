@@ -5,11 +5,13 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-17 14:10:25
+LastEditTime: 2020-08-19 10:03:30
 '''
 
-from utils.imgAug import imgFlip,imgNoise,imgRotation
+from utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation
 import os
+from skimage import io
+from utils.getMultiShapes import getMultiShapes
 
 BASE_DIR = os.path.abspath(os.curdir) +os.sep + 'static'
 
@@ -18,8 +20,50 @@ labelPath = BASE_DIR + os.sep + 'multi_objs.json'
 
 if __name__ == "__main__":
 
-    imgFlip(imgPath, labelPath)
+    # imgFlip(imgPath, labelPath)
 
-    imgNoise(imgPath,labelPath)
+    # imgNoise(imgPath,labelPath)
 
-    imgRotation(imgPath,labelPath)
+    # imgRotation(imgPath,labelPath)
+
+    # imgTranslation(imgPath,labelPath)
+
+    n = imgNoise(imgPath,labelPath,flag=False)
+
+    tmp = n['noise']
+
+    img , processedImg = tmp.oriImg , tmp.processedImg
+
+    r = imgRotation(img,processedImg,flag=False,angle=15)
+
+    tmp = r['rotation']
+
+    img , processedImg = tmp.oriImg , tmp.processedImg
+
+    t = imgTranslation(img,processedImg,flag=False)
+
+    tmp = t['trans']
+
+    img , processedImg = tmp.oriImg , tmp.processedImg
+
+    f = imgFlip(img,processedImg,flag=False)
+
+    tmp = f['h_v']
+
+    img , processedImg = tmp.oriImg , tmp.processedImg
+
+    parent_path = os.path.dirname(imgPath)
+
+    if os.path.exists(parent_path+os.sep+'jsons_'):
+        pass
+    else:
+        os.makedirs(parent_path+os.sep+'jsons_')
+    fileName = 'test'
+    io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.jpg',img) 
+
+    assumbleJson = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.jpg',processedImg,flag=True,labelYamlPath='') 
+    
+    saveJsonPath = parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.json'
+
+    with open(saveJsonPath,'w') as f:
+        f.write(assumbleJson)

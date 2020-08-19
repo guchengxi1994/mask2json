@@ -7,12 +7,12 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-17 13:40:42
+LastEditTime: 2020-08-19 09:42:41
 '''
 
 import sys
 sys.path.append('..')
-import warnings
+# import warnings
 from skimage import io
 import skimage.util.noise as snoise
 # from skimage import morphology
@@ -27,6 +27,8 @@ from .entity import *
 import numpy as np
 import shutil
 import json
+from .logger import logger
+import random
 
 
 
@@ -49,7 +51,13 @@ def imgFlip(oriImg:str,oriLabel:str,flip_list=[1,0,-1],flag=True):
 
     try:
         if len(flip_list)>1 and (1 in flip_list or 0 in flip_list or -1 in flip_list):
-            mask = processor(oriLabel,flag=True)
+            # mask = processor(oriLabel,flag=True)
+            if isinstance(oriLabel,str):
+                mask = processor(oriLabel,flag=True)
+            elif isinstance(oriLabel,np.ndarray):
+                mask = oriLabel
+            else:
+                raise TypeError("input parameter 'oriLabel' type is not supported")
             # print(type(mask))
             h_ori = cv2.flip(img,1)
             v_ori = cv2.flip(img,0)
@@ -119,7 +127,7 @@ def imgFlip(oriImg:str,oriLabel:str,flip_list=[1,0,-1],flag=True):
                 return d
                 
         else:
-            warnings.warn("<===== param:flip_list is not valid =====>")
+            logger.warning("<===== param:flip_list is not valid =====>")
 
 
 
@@ -163,7 +171,7 @@ def imgNoise(oriImg:str,oriLabel:str,flag=True):
         io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_noise.jpg',img) 
         
         try:
-            if oriLabel.endswith('.json'):
+            if isinstance(oriLabel,str):
                 shutil.copyfile(oriLabel,parent_path+os.sep+'jsons_'+os.sep+fileName+'_noise.json')
 
                 base64code = imgEncode(parent_path+os.sep+'jsons_'+os.sep+fileName+'_noise.jpg')
@@ -177,18 +185,26 @@ def imgNoise(oriImg:str,oriLabel:str,flag=True):
                     # json.dump(load_dict,parent_path+os.sep+'jsons_'+os.sep+fileName+'_noise.json')
                     f.write(json.dumps(load_dict))
 
-            else:
+            elif isinstance(oriLabel,np.ndarray):
                 """
-                label file can be an Image
+                labeled file can be an Image
                 """
-                pass
+                noisedMask_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_noise.jpg',oriLabel,flag=True,labelYamlPath='')
+                with open(parent_path+os.sep+'jsons_'+os.sep+fileName+'_noise.json','w') as f:
+                    f.write(json.dumps(noisedMask_j))
         
         except Exception :
             print(traceback.format_exc())
     
     else:
         d = dict()
-        mask = processor(oriLabel,flag=True)
+        # mask = processor(oriLabel,flag=True)
+        if isinstance(oriLabel,str):
+            mask = processor(oriLabel,flag=True)
+        elif isinstance(oriLabel,np.ndarray):
+            mask = oriLabel
+        else:
+            raise TypeError("input parameter 'oriLabel' type is not supported")
         d['noise'] = Ori_Pro(img,mask)
 
         return d
@@ -198,6 +214,7 @@ def imgRotation(oriImg:str,oriLabel:str,angle=30,scale=1,flag=True):
     """
     旋转
     """
+    logger.warning('rotation may cause salt-and-pepper noise. in order to solve this issue, small objects may be missing!')
     if isinstance(oriImg,str) :
         if os.path.exists(oriImg):
             img = io.imread(oriImg)
@@ -208,35 +225,23 @@ def imgRotation(oriImg:str,oriLabel:str,angle=30,scale=1,flag=True):
 
     imgShape = img.shape
 
-    mask = processor(oriLabel,flag=True)
+    if isinstance(oriLabel,str):
+        mask = processor(oriLabel,flag=True)
+    elif isinstance(oriLabel,np.ndarray):
+        mask = oriLabel
+    else:
+        raise TypeError("input parameter 'oriLabel' type is not supported")
+
+
     center = (0.5*imgShape[1],0.5*imgShape[0])
     mat = cv2.getRotationMatrix2D(center,angle,scale)
 
     affedImg = cv2.warpAffine(img,mat,(imgShape[1],imgShape[0]))
     affedMask = cv2.warpAffine(mask,mat,(imgShape[1],imgShape[0]))
-
-    # print(np.max(affedMask))
- 
-    # kernel = np.ones((5,5),np.uint8)
-    # affedMask = cv2.dilate(affedMask,kernel)
-
-    
-
-    # gg = affedMask.copy()
-    # gg[gg>0] = 255
-
-    # ret, img_bin = cv2.threshold(gg, 127, 255, cv2.THRESH_BINARY)
-    # img_bin = morphology.remove_small_objects(img_bin,3)
-
-    # img_bin[img_bin!=0] = 1
-
-    # affedMask = affedMask*img_bin
      
 
     if flag:
         parent_path = os.path.dirname(oriLabel)
-
-        # io.imsave(parent_path+os.sep+'jsons_'+os.sep+'11111_test.jpg',gg)
 
         if os.path.exists(parent_path+os.sep+'jsons_'):
             pass
@@ -264,7 +269,64 @@ def imgRotation(oriImg:str,oriLabel:str,angle=30,scale=1,flag=True):
 
 
     
+def imgTranslation(oriImg:str,oriLabel:str,flag=True):
+    """
+    image translation
+    """
+    if isinstance(oriImg,str) :
+        if os.path.exists(oriImg):
+            img = io.imread(oriImg)
+        else:
+            raise FileNotFoundError('Original image not found')
+    else:
+        img = oriImg
 
+    imgShape = img.shape
+
+    if isinstance(oriLabel,str):
+        mask = processor(oriLabel,flag=True)
+    elif isinstance(oriLabel,np.ndarray):
+        mask = oriLabel
+    else:
+        raise TypeError("input parameter 'oriLabel' type is not supported")
+
+    
+    trans_h = random.randint(0,int(0.5*imgShape[1]))
+    trans_v = random.randint(0,int(0.5*imgShape[0]))
+
+    trans_mat = np.float32([[1,0,trans_h],[0,1,trans_v]])
+
+    transImg = cv2.warpAffine(img,trans_mat,(imgShape[1],imgShape[0]))
+    transMask = cv2.warpAffine(mask,trans_mat,(imgShape[1],imgShape[0]))
+
+    if flag:
+        parent_path = os.path.dirname(oriLabel)
+
+        if os.path.exists(parent_path+os.sep+'jsons_'):
+            pass
+        else:
+            os.makedirs(parent_path+os.sep+'jsons_')
+        fileName = oriLabel.split(os.sep)[-1].replace('.json','')
+
+        io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_translation.jpg',transImg)
+        transMask_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_translation.jpg',transMask,flag=True,labelYamlPath='')
+
+        saveJsonPath = parent_path+os.sep+'jsons_'+os.sep+fileName+'_translation.json'
+
+        if transMask_j is not None:
+            with open(saveJsonPath,'w') as f:
+                f.write(transMask_j)
+        else:
+            pass
+    
+    else:
+        d = dict()
+        d['trans'] = Ori_Pro(transImg,transMask)
+
+        return d
+
+
+    
 
 
 
@@ -280,7 +342,7 @@ def aug_labelme(filepath,jsonpath,augs:list):
     tmp = tmp.difference(default_augs)
 
     if len(list(tmp))>0:
-        warnings.WarningMessage("some methods not supported right now")
+        logger.warning("some methods not supported right now")
         methods = list(default_augs & set(augs))
     else:
         methods = augs

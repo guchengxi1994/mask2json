@@ -5,16 +5,17 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 10:03:30
+LastEditTime: 2020-08-19 14:13:24
 '''
-
+import sys
+sys.path.append("..")
 from utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation
 import os
 from skimage import io
 from utils.getMultiShapes import getMultiShapes
 
-BASE_DIR = os.path.abspath(os.curdir) +os.sep + 'static'
-
+BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'static'
+# print(BASE_DIR)
 imgPath = BASE_DIR + os.sep + 'multi_objs.jpg'
 labelPath = BASE_DIR + os.sep + 'multi_objs.json'
 

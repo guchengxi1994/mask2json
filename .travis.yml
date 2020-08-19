@@ -7,10 +7,12 @@ install:
   - pip install -r ./requirements_noQT.txt
 
 script:
+  - cd test_scripts
   - python test_img2xml.py
   - python test_mask2json.py
   - python test_cpfile.py
   - python test_multiObjs2Xml.py
+  - python test_json2xml.py
   # - python test_imgAug.py
 notifications:
   on_success: always

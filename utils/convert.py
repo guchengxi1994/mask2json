@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 09:00:57
+LastEditTime: 2020-08-19 10:54:12
 '''
 import argparse
 import json
@@ -26,7 +26,8 @@ import numpy as np
 from skimage import img_as_ubyte
 import numpy as np 
 
-from .logger import logger
+
+from .methods.logger import logger
 
  
  

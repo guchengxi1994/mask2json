@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-19 10:05:11
+ * @LastEditTime: 2020-08-19 13:29:39
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -189,6 +189,10 @@ image translation supported.
 combination of every augmentation method.
 
 ![img1](./backup/combine.png)
+
+besides, a simple way convert json file(labelme) to xml file(labelImg) is provided. see [here](./test_json2xml.py)
+
+![img1](./backup/json2xml.png)
 
 
 

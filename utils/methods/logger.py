@@ -5,13 +5,13 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-19 08:59:04
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 09:45:38
+LastEditTime: 2020-08-19 10:47:04
 '''
 import logging
 
 import termcolor
 
-from . import __appname__
+from utils import __appname__
 
 COLORS = {
     'WARNING': 'yellow',

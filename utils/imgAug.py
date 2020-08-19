@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 10:58:50
+LastEditTime: 2020-08-19 17:31:43
 '''
 
 import sys
@@ -335,27 +335,102 @@ def imgTranslation(oriImg:str,oriLabel:str,flag=True):
 
 
 
-def aug_labelme(filepath,jsonpath,augs:list):
+def aug_labelme(filepath,jsonpath):
     """
     augs: ['flip','noise','affine','rotate','...']
     """
 
-    default_augs =set(['flip','noise','affine','rotate'])
-    tmp = set(augs)
-    tmp = tmp.difference(default_augs)
+    augs = ['noise','rotation','trans','flip']
+    # l = np.random.randint(2,size=len(augs)).tolist()
 
-    if len(list(tmp))>0:
-        logger.warning("some methods not supported right now")
-        methods = list(default_augs & set(augs))
-    else:
-        methods = augs
+    l = np.random.randint(2,size=len(augs))
 
-    if not len(methods)>0:
+    if np.sum(l) == 0:
+        l[0] = 1
+    
+    l = l.tolist()
+
+    # print(l)
+
+    p = list(zip(augs,l))
+
+    img = filepath
+    processedImg = jsonpath
+
+    for i in p:
+        # if i[0]!='flip':
+        if i[1] == 1 :
+            if i[0] == 'noise':
+                n = imgNoise(img,processedImg,flag=False)
+                tmp = n['noise']
+                img , processedImg = tmp.oriImg , tmp.processedImg
+
+                del n,tmp
+
+            elif i[0] == 'rotation':
+                angle = random.randint(0,45)
+                r = imgRotation(img,processedImg,flag=False,angle=angle)
+                tmp = r['rotation']
+                img , processedImg = tmp.oriImg , tmp.processedImg
+
+                del r,tmp
+            
+            elif i[0] == 'trans':
+                t = imgTranslation(img,processedImg,flag=False)
+                tmp = t['trans']
+                img , processedImg = tmp.oriImg , tmp.processedImg
+
+                del t,tmp
+            
+            elif i[0] == 'flip':
+                imgList = []
+                processedImgList = []
+                
+                f = imgFlip(img,processedImg,flag=False)
+                
+                tmp = f['h_v']
+                imgList.append(tmp.oriImg)
+                processedImgList.append(tmp.processedImg)
+
+                tmp = f['h']
+                imgList.append(tmp.oriImg)
+                processedImgList.append(tmp.processedImg)
+
+                tmp = f['v']
+                imgList.append(tmp.oriImg)
+                processedImgList.append(tmp.processedImg)
+
+                img,processedImg = imgList,processedImgList
+
+                del tmp,f,imgList,processedImgList
+    
+    parent_path = os.path.dirname(filepath)
+
+    if os.path.exists(parent_path+os.sep+'jsons_'):
         pass
     else:
-        pass
+        os.makedirs(parent_path+os.sep+'jsons_')
 
+    fileName = jsonpath.split(os.sep)[-1].replace(".json",'')
 
+    if isinstance(img,np.ndarray):
+        io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.jpg',img) 
+        assumbleJson = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.jpg',processedImg,flag=True,labelYamlPath='')    
+        saveJsonPath = parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.json'
+        with open(saveJsonPath,'w') as f:
+            f.write(assumbleJson)
+        
+        print("Done!")
+        print("see here{}".format(parent_path+os.sep+'jsons_'))
+    
+    elif isinstance(img,list):
+        for i in range(0,len(img)):
+            io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble{}.jpg'.format(i),img[i])
+            assumbleJson = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble{}.jpg'.format(i),processedImg[i],flag=True,labelYamlPath='')    
+            saveJsonPath = parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble{}.json'.format(i)
+            with open(saveJsonPath,'w') as f:
+                f.write(assumbleJson)
 
-
+        print("Done!")
+        print("see here{}".format(parent_path+os.sep+'jsons_'))
 

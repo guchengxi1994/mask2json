@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 10:54:12
+LastEditTime: 2020-08-19 17:31:06
 '''
 import argparse
 import json
@@ -28,6 +28,7 @@ import numpy as np
 
 
 from .methods.logger import logger
+from tqdm import tqdm
 
  
  
@@ -166,7 +167,7 @@ def processor(json_file,encoding="utf-8",flag=False):
         else:
             list_path = os.listdir(json_file)
             # print('freedom =', json_file)
-            for i in range(0, len(list_path)):
+            for i in tqdm(range(0, len(list_path))):
                 path = os.path.join(json_file, list_path[i])
                 if os.path.isfile(path) and path.endswith('.json'):   
                     try:
@@ -178,10 +179,9 @@ def processor(json_file,encoding="utf-8",flag=False):
             
                         lbl_viz = lUtils.draw_label(lbl, img, captions)
 
-                        # print(type(lbl))
-                        # print(np.max(lbl))
-                        # print(lbl.shape)
-                        lbl[lbl>0] = 255
+                        # lbl[lbl>0] = 255
+                        if np.max(lbl) == 255 or np.max(lbl) == 1:
+                            lbl[lbl>0] = 255
                         lbl = np.array(lbl,dtype=np.uint8)
 
                         # out_dir = osp.basename(path).replace('.', '_')

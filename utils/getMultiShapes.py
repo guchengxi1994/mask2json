@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 11:00:34
+LastEditTime: 2020-08-19 14:16:16
 '''
 try:
     from labelme import __version__
@@ -122,7 +122,8 @@ def getMultiObjs_voc(oriImgPath,labelPath,savePath):
 
 
 def test():
-    BASE_DIR = os.path.abspath(os.curdir)
+    # BASE_DIR = os.path.abspath(os.curdir)
+    BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) 
     
     """
     do not use cv2.imread to load the label img. there is a bug

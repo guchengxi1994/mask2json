@@ -7,12 +7,12 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-17 13:40:42
+LastEditTime: 2020-08-19 09:04:54
 '''
 
 import sys
 sys.path.append('..')
-import warnings
+# import warnings
 from skimage import io
 import skimage.util.noise as snoise
 # from skimage import morphology
@@ -27,6 +27,7 @@ from .entity import *
 import numpy as np
 import shutil
 import json
+from .logger import logger
 
 
 
@@ -119,7 +120,7 @@ def imgFlip(oriImg:str,oriLabel:str,flip_list=[1,0,-1],flag=True):
                 return d
                 
         else:
-            warnings.warn("<===== param:flip_list is not valid =====>")
+            logger.warning("<===== param:flip_list is not valid =====>")
 
 
 
@@ -198,6 +199,7 @@ def imgRotation(oriImg:str,oriLabel:str,angle=30,scale=1,flag=True):
     """
     旋转
     """
+
     if isinstance(oriImg,str) :
         if os.path.exists(oriImg):
             img = io.imread(oriImg)
@@ -214,23 +216,6 @@ def imgRotation(oriImg:str,oriLabel:str,angle=30,scale=1,flag=True):
 
     affedImg = cv2.warpAffine(img,mat,(imgShape[1],imgShape[0]))
     affedMask = cv2.warpAffine(mask,mat,(imgShape[1],imgShape[0]))
-
-    # print(np.max(affedMask))
- 
-    # kernel = np.ones((5,5),np.uint8)
-    # affedMask = cv2.dilate(affedMask,kernel)
-
-    
-
-    # gg = affedMask.copy()
-    # gg[gg>0] = 255
-
-    # ret, img_bin = cv2.threshold(gg, 127, 255, cv2.THRESH_BINARY)
-    # img_bin = morphology.remove_small_objects(img_bin,3)
-
-    # img_bin[img_bin!=0] = 1
-
-    # affedMask = affedMask*img_bin
      
 
     if flag:
@@ -280,7 +265,7 @@ def aug_labelme(filepath,jsonpath,augs:list):
     tmp = tmp.difference(default_augs)
 
     if len(list(tmp))>0:
-        warnings.WarningMessage("some methods not supported right now")
+        logger.warning("some methods not supported right now")
         methods = list(default_augs & set(augs))
     else:
         methods = augs

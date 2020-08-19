@@ -5,13 +5,13 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-17 15:34:43
+ * @LastEditTime: 2020-08-19 08:47:40
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
 # mask2json
 
- mask imgs to labelme jsons,and so on
+ a small tool for image augmentation, including mask files to json/xml files , image augmentation(flip,rotation,noise,...) and so on
 
  ## HOW TO USE
 

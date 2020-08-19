@@ -4,9 +4,11 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-06-12 10:21:59
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-14 13:35:07
+LastEditors: xiaoshuyui
+LastEditTime: 2020-08-19 14:14:01
 '''
+import sys
+sys.path.append("..")
 from utils import getMultiShapes
 
 if __name__ == "__main__":

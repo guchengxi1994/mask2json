@@ -4,9 +4,11 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-07-10 09:11:39
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-10 09:20:15
+LastEditors: xiaoshuyui
+LastEditTime: 2020-08-19 14:11:38
 '''
+import sys
+sys.path.append("..")
 from utils.img2xml import processor_singleObj
 
 if __name__ == "__main__":

@@ -5,23 +5,27 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 09:03:26
+LastEditTime: 2020-08-19 14:16:16
 '''
 try:
     from labelme import __version__
 except:
-    __version__ = '4.0.0'
+    __version__ = '4.2.9'
+
+import sys
+sys.path.append("..")
+
 import cv2
 import numpy as np
 import skimage.io as io
 import yaml
 import copy
-from .getShape import *
-from .img2base64 import imgEncode
+from .methods.getShape import *
+from .methods.img2base64 import imgEncode
 import os,json
-from . import rmQ
+from .methods import rmQ
 # import warnings
-from .logger import logger
+from .methods.logger import logger
 from .img2xml.processor_multiObj  import img2xml_multiobj
 
 def readYmal(filepath,labeledImg=None):
@@ -118,7 +122,8 @@ def getMultiObjs_voc(oriImgPath,labelPath,savePath):
 
 
 def test():
-    BASE_DIR = os.path.abspath(os.curdir)
+    # BASE_DIR = os.path.abspath(os.curdir)
+    BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) 
     
     """
     do not use cv2.imread to load the label img. there is a bug

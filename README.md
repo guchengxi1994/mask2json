@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-19 10:05:11
+ * @LastEditTime: 2020-08-19 14:19:34
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -48,7 +48,7 @@ Also ,for [labelimg](https://github.com/tzutalin/labelImg),a small tool to conve
 
 ### (1) for labelme mask files
 
-the test script can be found [here](./test_mask2json.py)
+the test script can be found [here](./test_scripts/test_mask2json.py)
 
     from utils import getMultiShapes
     getMultiShapes.getMultiShapes(param1,param2,param3,param4)
@@ -63,7 +63,7 @@ param4:can be blank (better don't), a yaml file path which saves the class infor
 
 ### (2) for labelimg mask files
 
-the test script can be found [here](./test_multiObjs2Xml.py)
+the test script can be found [here](./test_scripts/test_multiObjs2Xml.py)
 
     from utils.getMultiShapes import getMultiObjs_voc as gvoc
     gvoc(param1,param2,param3)
@@ -154,13 +154,13 @@ is going to support image augmentation  !!
 
 ## 2020.8.14
 
-add image augmentation  (image flip) test. see [test_imgAug.py](./test_imgAug.py) !
+add image augmentation  (image flip) test. see [test_imgAug.py](./test_scripts/test_imgAug.py) !
 
 ## 2020.8.17
 
 bug fix.
 
-support image augmentation methods: noise,flip,rotation. try [test_imgAug.py](./test_imgAug.py) !
+support image augmentation methods: noise,flip,rotation. try [test_imgAug.py](./test_scripts/test_imgAug.py) !
 
 here are some examples:
 
@@ -189,6 +189,10 @@ image translation supported.
 combination of every augmentation method.
 
 ![img1](./backup/combine.png)
+
+besides, a simple way convert json file(labelme) to xml file(labelImg) is provided. see [here](./test_scripts/test_json2xml.py)
+
+![img1](./backup/json2xml.png)
 
 
 

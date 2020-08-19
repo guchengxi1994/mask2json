@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:09:24
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 08:46:49
+LastEditTime: 2020-08-19 17:32:47
 '''
 from utils import __version__
 import os
@@ -43,7 +43,11 @@ setup(
         'scikit_image==0.15.0',
         'Pillow==7.1.2',
         'PyYAML==5.3.1',
-        'scipy==1.5.1'
+        'scipy==1.5.1',
+        'docopt==0.6.2',
+        'termcolor==1.1.0',
+        'lxml==4.3.4',
+        'tqdm==4.32.1'
     ],
     description='a small tool for image augmentation, including mask files to json/xml files , image augmentation(flip,rotation,noise,...) and so on',
     long_description=open_file('README.md').read(),
@@ -51,7 +55,7 @@ setup(
     # packages = find_packages()
     entry_points={
     'console_scripts':[
-    'convertmask = mask2json.m2j:script'
+    'convertmask = mask2json.m2j_m:script'
     ]
     },
 )

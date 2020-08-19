@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 09:35:58
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 09:02:24
+LastEditTime: 2020-08-19 11:13:22
 '''
 import argparse
 import os
@@ -18,7 +18,7 @@ from utils.convert import processor
 # from mask2json import getJsons
 from utils.mask2json_script import getJsons,getXmls
 # import warnings
-from utils.logger import logger
+from utils.methods.logger import logger
 import configparser
 cfp = configparser.ConfigParser()
 

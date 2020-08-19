@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 09:42:41
+LastEditTime: 2020-08-19 10:58:50
 '''
 
 import sys
@@ -18,16 +18,19 @@ import skimage.util.noise as snoise
 # from skimage import morphology
 import cv2
 import os
-from utils.convert import processor
-from utils.getMultiShapes import getMultiShapes
-from utils.img2base64 import imgEncode
-from utils import rmQ
+from .convert import processor
+from .getMultiShapes import getMultiShapes
+# from utils.img2base64 import imgEncode
+from .methods.img2base64 import imgEncode
+from .methods import rmQ
 import traceback
-from .entity import *
+# from .entity import *
+from .methods.entity import *
 import numpy as np
 import shutil
 import json
-from .logger import logger
+# from .logger import logger
+from .methods.logger import logger
 import random
 
 

@@ -6,3 +6,4 @@ scikit_image==0.15.0
 Pillow==7.1.2
 PyYAML==5.3.1
 lxml==4.3.4
+termcolor==1.1.0

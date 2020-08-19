@@ -5,14 +5,14 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-17 08:59:23
+LastEditTime: 2020-08-19 09:00:57
 '''
 import argparse
 import json
 import os
 import os.path as osp
 import base64
-import warnings
+# import warnings
  
 import PIL.Image
 import yaml
@@ -25,12 +25,15 @@ import cv2
 import numpy as np
 from skimage import img_as_ubyte
 import numpy as np 
+
+from .logger import logger
+
  
  
 # from sys import argv
  
 def main():
-    warnings.warn("This script is aimed to demonstrate how to convert the\n"
+    logger.warning("This script is aimed to demonstrate how to convert the\n"
                   "JSON file to a single image dataset, and not to handle\n"
                   "multiple JSON files to generate a real-use dataset.")
  
@@ -86,7 +89,7 @@ def main():
                     for lbl_name in lbl_names:
                         f.write(lbl_name + '\n')
     
-                warnings.warn('info.yaml is being replaced by label_names.txt')
+                logger.warning('info.yaml is being replaced by label_names.txt')
                 info = dict(label_names=lbl_names)
                 with open(osp.join(out_dir1, 'info.yaml'), 'w') as f:
                     yaml.safe_dump(info, f, default_flow_style=False)

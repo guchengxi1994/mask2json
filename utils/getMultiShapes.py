@@ -5,9 +5,12 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-17 11:36:05
+LastEditTime: 2020-08-19 09:03:26
 '''
-from labelme import __version__
+try:
+    from labelme import __version__
+except:
+    __version__ = '4.0.0'
 import cv2
 import numpy as np
 import skimage.io as io
@@ -17,7 +20,8 @@ from .getShape import *
 from .img2base64 import imgEncode
 import os,json
 from . import rmQ
-import warnings
+# import warnings
+from .logger import logger
 from .img2xml.processor_multiObj  import img2xml_multiobj
 
 def readYmal(filepath,labeledImg=None):
@@ -68,7 +72,7 @@ def getMultiObjs_voc(oriImgPath,labelPath,savePath):
     imgHeight = imgShape[0]
     imgWidth = imgShape[1]
     imgPath = oriImgPath
-    warnings.warn("auto detecting class numbers")
+    logger.warning("auto detecting class numbers")
     if len(imgShape) == 3:
         labelImg = labelImg[:,:,0]
     labelImg[labelImg>0] = 255

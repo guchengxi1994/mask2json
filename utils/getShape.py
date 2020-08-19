@@ -5,11 +5,11 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:31:45
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-17 14:09:10
+LastEditTime: 2020-08-19 08:55:20
 '''
 import cv2
 import numpy as np
-from .getArea import getAreaOfPolyGonbyVector
+# from .getArea import getAreaOfPolyGonbyVector
 
 currentCV_version = cv2.__version__   #str
 

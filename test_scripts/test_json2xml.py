@@ -10,7 +10,7 @@ LastEditTime: 2020-08-19 14:15:25
 import os
 import sys
 sys.path.append("..")
-from utils.json2xml import j2xConvert
+from mask2json_utils.json2xml import j2xConvert
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'static'
 

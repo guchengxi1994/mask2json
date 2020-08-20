@@ -1,11 +1,11 @@
 <!--
  * @lanhuage: markdown
  * @Descripttion: 
- * @version: beta
+ * @version: 
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-19 14:19:34
+ * @LastEditTime: 2020-08-20 08:25:50
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -89,9 +89,23 @@ param2:can be blank,encoding type, default 'utf-8'
 
 you can try:
 
-    pip install convertmask
+    pip install -U convertmask
+
+and 
+
+    pip uninstall convertmask
+
+to delete convertmask.
 
 it is a test release. : )
+
+### version 0.3.1 (2020.8.20 , pre-release)
+
+#### 1.try :
+
+    convertmask 
+
+
 
 
 

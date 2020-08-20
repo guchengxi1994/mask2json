@@ -24,20 +24,21 @@ import os
 import sys
 sys.path.append('..')
 
-from utils.methods.logger import logger
-from utils.cpFile import cp
-from utils import __version__
-from utils import imgAug
-from utils.json2xml import j2xConvert
-from utils.mask2json_script import getJsons,getXmls
-from utils.convert import processor
+from mask2json_utils.methods.logger import logger
+from mask2json_utils.cpFile import fileExist
+from mask2json_utils import __version__
+from mask2json_utils import imgAug
+from mask2json_utils.json2xml import j2xConvert
+from mask2json_utils.mask2json_script import getJsons,getXmls
+from mask2json_utils.convert import processor
 
 from docopt import docopt
 
-try:
-    cp()
-except:
-    logger.warning("connot copy draw.py to labelme folder,which may cause some errors")
+# try:
+#     cp()
+# except:
+if not fileExist():
+    logger.warning("connot find draw.py in labelme folder,which may cause some errors on labelme 4.2.9 (and maybe later). You can add it follow this step:https://github.com/guchengxi1994/mask2json#how-to-use")
 
 class MethodNotSupportException(Exception):
     pass

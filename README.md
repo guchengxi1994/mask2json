@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-20 09:17:56
+ * @LastEditTime: 2020-08-20 09:44:26
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -264,6 +264,20 @@ combination of every augmentation method.
 ### 2. besides, a simple way convert json file(labelme) to xml file(labelImg) is provided. see [here](./test_scripts/test_json2xml.py)
 
 ![img1](./backup/json2xml.png)
+
+
+
+# what to do next
+
+## 1. support multiple files image augmentation
+
+## 2. support image augmentation without a label/json file
+
+## 3. support image augmentation with a labeled file (just support json file right now)
+
+## 4. image augmentation supports custom parameters (auto augmented right now)
+
+## 5. do something more interesting
 
 
 

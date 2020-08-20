@@ -13,6 +13,8 @@ options:
     -h --help   This script is used to convert mask files to xml/json files .
                 Also, image augmentation and create corresponding xml/json files . 
 
+    -v --version  show current version
+
                 m2j     short for masks to jsons. 
                 m2x     short for masks to xmls. 
                 j2m     short for jsons to masks. 

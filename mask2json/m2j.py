@@ -5,20 +5,20 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 09:35:58
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 11:13:22
+LastEditTime: 2020-08-20 08:53:10
 '''
 import argparse
 import os
 import sys
 sys.path.append('..')
-from utils.getMultiShapes import getMultiShapes
-from utils.cpFile import cp
-from utils.convert import processor
+from mask2json_utils.getMultiShapes import getMultiShapes
+from mask2json_utils.cpFile import cp
+from mask2json_utils.convert import processor
 # from utils.img2xml import processor_singleObj,processor_multiObj
 # from mask2json import getJsons
-from utils.mask2json_script import getJsons,getXmls
+from mask2json_utils.mask2json_script import getJsons,getXmls
 # import warnings
-from utils.methods.logger import logger
+from mask2json_utils.methods.logger import logger
 import configparser
 cfp = configparser.ConfigParser()
 

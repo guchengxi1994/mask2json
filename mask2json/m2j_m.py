@@ -7,7 +7,7 @@ Usage:
     m2j_m.py    m2x
     m2j_m.py    j2m
     m2j_m.py    j2x
-    m2j_m.py    aug
+    m2j_m.py    aug  [--nolabel]
 
 options:
     -h --help   This script is used to convert mask files to xml/json files .
@@ -19,7 +19,7 @@ options:
                 m2x     short for masks to xmls. 
                 j2m     short for jsons to masks. 
                 j2x     short for json to xml.
-                aug     image augmentation.
+                aug     image augmentation. if [--nolabel] is provided,then json file path is not necessary
 
 '''
 import os
@@ -29,7 +29,7 @@ sys.path.append('..')
 from mask2json_utils.methods.logger import logger
 from mask2json_utils.cpFile import fileExist
 from mask2json_utils import __version__
-from mask2json_utils import imgAug_script
+from mask2json_utils.imgAug_script import imgAug_withLabels,imgAug_withoutLabels
 from mask2json_utils.json2xml import j2xConvert
 from mask2json_utils.mask2json_script import getJsons,getXmls
 from mask2json_utils.convert import processor
@@ -97,12 +97,18 @@ def script():
         print('Done!')
     
     elif arguments.get('aug'):
-        logger.info("Image augmentation (single file supported if version<=0.3)")
-        print("<====  please input image file path  ====>")
-        inputFilePath = input()
-        print("<====  please input json file path  ====>")
-        inputJsonPath = input()
-        imgAug.aug_labelme(inputFilePath,inputJsonPath)
+        # logger.info("Image augmentation (single file supported if version<=0.3)")
+        if not arguments.get('--nolabel'):
+            print("<====  please input image file path  ====>")
+            inputFilePath = input()
+            print("<====  please input json file path  ====>")
+            inputJsonPath = input()
+            imgAug_withLabels(inputFilePath,inputJsonPath)
+        else:
+            print("<====  please input image file path  ====>")
+            inputFilePath = input()
+            imgAug_withoutLabels(inputFilePath)
+
 
 
 

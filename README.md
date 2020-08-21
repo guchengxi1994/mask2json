@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-20 09:44:26
+ * @LastEditTime: 2020-08-21 08:23:03
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -17,7 +17,14 @@
 
  This script is used to convert mask-labels to json files for [labelme](https://github.com/wkentaro/labelme).
 
- Also ,json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./mask2json/draw.py) in labelme path ('../anaconda/Lib/site-packages/labelme/utils ' my path) and add some codes in \_\_init__.py:
+ FIRST:
+
+    pip install -r requestments.txt [-i https://pypi.tuna.tsinghua.edu.cn/simple/] 
+
+
+AND THEN:
+
+ Json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./mask2json/draw.py) in labelme path ('../anaconda/Lib/site-packages/labelme/utils ' my path) and add some codes in \_\_init__.py:
 
     from .draw import label_colormap
     from .draw import _validate_colormap
@@ -145,19 +152,19 @@ to test mask to json function(should type in some file path)
 
 to test mask to xml function(should type in some file path)
 
-#### 3.try:
+#### 5.try:
 
     convert j2m 
 
 to test json to mask function(should type in some file path)
 
-#### 3.try:
+#### 6.try:
 
     convert j2x 
 
 to test json to xml function(should type in some file path)
 
-#### 3.try:
+#### 7.try:
 
     convert aug 
 

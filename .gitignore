@@ -4,3 +4,4 @@
 /dist
 /convertmask.egg-info
 /.vscode
+*/__pycache__

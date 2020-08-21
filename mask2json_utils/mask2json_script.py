@@ -5,13 +5,14 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:33:39
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 17:16:39
+LastEditTime: 2020-08-21 10:43:05
 '''
 
 from . import getMultiShapes
 import glob
 import os
 from tqdm import tqdm
+from .methods.logger import logger
 
 def getJsons(imgPath,maskPath,savePath,yamlPath = ''):
     """
@@ -22,21 +23,21 @@ def getJsons(imgPath,maskPath,savePath,yamlPath = ''):
     >>> getJsons(path-to-your-imgs,path-to-your-maskimgs,path-to-your-jsonfiles) 
 
     """
+    logger.info("currently, only *.jpg supported")
     oriImgs = glob.glob(imgPath+os.sep+'*.jpg')
     maskImgs = glob.glob(maskPath+os.sep+'*.jpg')
     
     for i in tqdm(oriImgs):
         i_mask = i.replace(imgPath,maskPath)
-        print(i)
-
+        # print(i)
         getMultiShapes.getMultiShapes(i,i_mask,savePath,yamlPath)
 
 def getXmls(imgPath,maskPath,savePath):
+    logger.info("currently, only *.jpg supported")
     oriImgs = glob.glob(imgPath+os.sep+'*.jpg')
     maskImgs = glob.glob(maskPath+os.sep+'*.jpg')
     
     for i in tqdm(oriImgs):
         i_mask = i.replace(imgPath,maskPath)
-        print(i)
-
+        # print(i)
         getMultiShapes.getMultiObjs_voc(i,i_mask,savePath)

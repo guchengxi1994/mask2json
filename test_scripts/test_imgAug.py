@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 10:05:59
+LastEditTime: 2020-08-21 13:15:41
 '''
 import sys
 sys.path.append("..")
@@ -25,9 +25,9 @@ if __name__ == "__main__":
 
     # imgFlip(imgPath, labelPath)
 
-    imgNoise(imgPath,labelPath)
+    # imgNoise(imgPath,labelPath)
 
-    # imgRotation(imgPath,labelPath)
+    imgRotation(imgPath,labelPath)
 
     # imgTranslation(imgPath,labelPath)
 

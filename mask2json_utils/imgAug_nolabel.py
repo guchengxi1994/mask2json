@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 09:03:30
+LastEditTime: 2020-08-21 09:14:45
 '''
 import sys
 sys.path.append('..')
@@ -98,5 +98,21 @@ def imgNoise(oriImg:str,flag=True):
 
         return d
 
-        
+def imgRotation(oriImg:str,angle=30,scale=1,flag=True):
 
+    if isinstance(oriImg,str) :
+        if os.path.exists(oriImg):
+            img = io.imread(oriImg)
+        else:
+            raise FileNotFoundError('Original image not found')
+    else:
+        img = oriImg
+    
+    imgShape = img.shape
+        
+    center = (0.5*imgShape[1],0.5*imgShape[0])
+    mat = cv2.getRotationMatrix2D(center,angle,scale)
+
+    affedImg = cv2.warpAffine(img,mat,(imgShape[1],imgShape[0]))
+
+    

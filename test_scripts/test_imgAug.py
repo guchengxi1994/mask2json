@@ -5,14 +5,14 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 13:15:41
+LastEditTime: 2020-08-21 15:41:33
 '''
 import sys
 sys.path.append("..")
-from mask2json_utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
+from convertmask.utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
 import os
 from skimage import io
-from mask2json_utils.getMultiShapes import getMultiShapes
+from convertmask.utils.getMultiShapes import getMultiShapes
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'static'
 # print(BASE_DIR)

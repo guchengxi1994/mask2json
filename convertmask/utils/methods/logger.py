@@ -11,7 +11,7 @@ import logging
 
 import termcolor
 
-from mask2json_utils import __appname__
+from . import __appname__
 
 COLORS = {
     'WARNING': 'yellow',

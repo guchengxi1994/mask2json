@@ -26,19 +26,18 @@ import os
 # import sys
 # sys.path.append('..')
 
-from .mask2json_utils.methods.logger import logger
-from .mask2json_utils.cpFile import fileExist
-from .mask2json_utils import __version__
-from .mask2json_utils.imgAug_script import imgAug_withLabels,imgAug_withoutLabels
-from .mask2json_utils.json2xml import j2xConvert
-from .mask2json_utils.mask2json_script import getJsons,getXmls
-from .mask2json_utils.convert import processor
+
+from convertmask.mask2json_utils.methods.logger import logger
+from convertmask.mask2json_utils.cpFile import fileExist
+from convertmask.mask2json_utils import __version__
+from convertmask.mask2json_utils.imgAug_script import imgAug_withLabels,imgAug_withoutLabels
+from convertmask.mask2json_utils.json2xml import j2xConvert
+from convertmask.mask2json_utils.mask2json_script import getJsons,getXmls
+from convertmask.mask2json_utils.convert import processor
 
 from docopt import docopt
 
-# try:
-#     cp()
-# except:
+
 if not fileExist():
     logger.warning("connot find draw.py in labelme folder,which may cause some errors on labelme 4.2.9 (and maybe later). You can add it follow this step:https://github.com/guchengxi1994/mask2json#how-to-use")
 
@@ -108,7 +107,6 @@ def script():
             print("<====  please input image file path  ====>")
             inputFilePath = input()
             imgAug_withoutLabels(inputFilePath)
-
 
 
 

@@ -5,13 +5,13 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-19 08:59:04
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-20 08:52:28
+LastEditTime: 2020-08-21 11:19:03
 '''
 import logging
 
 import termcolor
 
-from mask2json_utils import __appname__
+from convertmask.mask2json_utils import __appname__
 
 COLORS = {
     'WARNING': 'yellow',

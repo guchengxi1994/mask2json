@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-21 10:54:48
+ * @LastEditTime: 2020-08-21 15:52:19
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -24,7 +24,7 @@
 
 AND THEN:
 
- Json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./mask2json/draw.py) in labelme path ('../anaconda/Lib/site-packages/labelme/utils ' my path) and add some codes in \_\_init__.py:
+ Json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./convertmask/draw.py) in labelme path ('../anaconda/Lib/site-packages/labelme/utils ' my path) and add some codes in \_\_init__.py:
 
     from .draw import label_colormap
     from .draw import _validate_colormap
@@ -51,7 +51,7 @@ auto_labeled image
 ![img1](./backup/auto_labeled.png)
 ![img1](./backup/auto_labeled_ori.png)
 
-Also ,for [labelimg](https://github.com/tzutalin/labelImg),a small tool to convert results(yolo) to [xml-files](./mask2json_utils/img2xml).
+Also ,for [labelimg](https://github.com/tzutalin/labelImg),a small tool to convert results(yolo) to [xml-files](./convertmask/utils/img2xml).
 
 ### (1) for labelme mask files
 
@@ -188,7 +188,7 @@ this may happen if you labelling multiple-object-images with only 2 labels .Or s
 
 ### 1.support multiple objects mask to json
 
-try [test.py](./test.py) !
+try [test.py](./test_scripts/test.py) !
 
 #### 1.1 multiple objects in different classes
 

@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-21 11:15:10
+ * @LastEditTime: 2020-08-21 10:54:48
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -51,7 +51,7 @@ auto_labeled image
 ![img1](./backup/auto_labeled.png)
 ![img1](./backup/auto_labeled_ori.png)
 
-Also ,for [labelimg](https://github.com/tzutalin/labelImg),a small tool to convert results(yolo) to [xml-files](./convertmask/mask2json_utils/img2xml).
+Also ,for [labelimg](https://github.com/tzutalin/labelImg),a small tool to convert results(yolo) to [xml-files](./mask2json_utils/img2xml).
 
 ### (1) for labelme mask files
 
@@ -188,7 +188,7 @@ this may happen if you labelling multiple-object-images with only 2 labels .Or s
 
 ### 1.support multiple objects mask to json
 
-try [test.py](./test_scripts/test.py) !
+try [test.py](./test.py) !
 
 #### 1.1 multiple objects in different classes
 
@@ -285,8 +285,6 @@ combination of every augmentation method.
 ## 4. image augmentation supports custom parameters (auto augmented right now)
 
 ## 5. do something more interesting
-
-## 6. support convert xml to yolo txts
 
 
 

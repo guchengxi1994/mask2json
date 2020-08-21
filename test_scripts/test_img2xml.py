@@ -5,11 +5,11 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 09:11:39
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-20 08:51:27
+LastEditTime: 2020-08-21 11:07:17
 '''
 import sys
 sys.path.append("..")
-from mask2json_utils.img2xml import processor_singleObj
+from convertmask.mask2json_utils.img2xml import processor_singleObj
 
 if __name__ == "__main__":
     """

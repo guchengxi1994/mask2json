@@ -5,11 +5,11 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 10:21:59
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-20 08:51:44
+LastEditTime: 2020-08-21 11:10:46
 '''
 import sys
 sys.path.append("..")
-from mask2json_utils import getMultiShapes
+from convertmask.mask2json_utils import getMultiShapes
 
 if __name__ == "__main__":
     getMultiShapes.test()

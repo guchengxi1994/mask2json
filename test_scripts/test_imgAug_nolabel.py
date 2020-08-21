@@ -5,13 +5,13 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:52:18
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 10:13:57
+LastEditTime: 2020-08-21 11:10:36
 '''
 import sys
 sys.path.append("..")
 import os
 
-from mask2json_utils.imgAug_nolabel import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
+from convertmask.mask2json_utils.imgAug_nolabel import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'static'
 # print(BASE_DIR)
 imgPath = BASE_DIR + os.sep + 'multi_objs.jpg'

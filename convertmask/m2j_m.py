@@ -23,16 +23,16 @@ options:
 
 '''
 import os
-import sys
-sys.path.append('..')
+# import sys
+# sys.path.append('..')
 
-from mask2json_utils.methods.logger import logger
-from mask2json_utils.cpFile import fileExist
-from mask2json_utils import __version__
-from mask2json_utils.imgAug_script import imgAug_withLabels,imgAug_withoutLabels
-from mask2json_utils.json2xml import j2xConvert
-from mask2json_utils.mask2json_script import getJsons,getXmls
-from mask2json_utils.convert import processor
+from .mask2json_utils.methods.logger import logger
+from .mask2json_utils.cpFile import fileExist
+from .mask2json_utils import __version__
+from .mask2json_utils.imgAug_script import imgAug_withLabels,imgAug_withoutLabels
+from .mask2json_utils.json2xml import j2xConvert
+from .mask2json_utils.mask2json_script import getJsons,getXmls
+from .mask2json_utils.convert import processor
 
 from docopt import docopt
 

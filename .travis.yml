@@ -13,6 +13,7 @@ script:
   - python test_cpfile.py
   - python test_multiObjs2Xml.py
   - python test_json2xml.py
+  - python test_imgAug_nolabel.py
   # - python test_imgAug.py
 notifications:
   on_success: always

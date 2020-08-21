@@ -5,9 +5,9 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:09:24
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-20 09:28:55
+LastEditTime: 2020-08-21 11:15:50
 '''
-from mask2json_utils import __version__
+from convertmask.mask2json_utils import __version__
 import os
 from setuptools import setup,find_packages
 import pypandoc
@@ -55,7 +55,7 @@ setup(
     # packages = find_packages()
     entry_points={
     'console_scripts':[
-    'convertmask = mask2json.m2j_m:script'
+    'convertmask = convertmask.m2j_m:script'
     ]
     },
 )

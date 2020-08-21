@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 09:14:45
+LastEditTime: 2020-08-21 10:03:11
 '''
 import sys
 sys.path.append('..')
@@ -28,8 +28,6 @@ from .methods.logger import logger
 import random
 import os
 
-def do_nothing():
-    pass
 
 def imgFlip(oriImg:str,flag=True,flip_list=[1,0,-1]):
     if isinstance(oriImg,str) :
@@ -81,6 +79,15 @@ def imgNoise(oriImg:str,flag=True):
     else:
         img = oriImg
     
+    for i in p:
+        if i[1]!=0:
+            img = snoise.random_noise(img,mode=i[0])
+    
+    # print(np.max(img))
+    # print(np.min(img))
+
+    img = np.array(img*255).astype(np.uint8)
+    
     if flag:
         parent_path = os.path.dirname(oriImg)
         if os.path.exists(parent_path+os.sep+'augimgs_'):
@@ -115,4 +122,132 @@ def imgRotation(oriImg:str,angle=30,scale=1,flag=True):
 
     affedImg = cv2.warpAffine(img,mat,(imgShape[1],imgShape[0]))
 
+    if flag:
+        parent_path = os.path.dirname(oriImg)
+
+        if os.path.exists(parent_path+os.sep+'augimgs_'):
+            pass
+        else:
+            os.makedirs(parent_path+os.sep+'augimgs_')
+
+        tmp = os.path.splitext(oriImg)[0]
+        fileName = tmp.split(os.sep)[-1]
+        io.imsave(parent_path+os.sep+'augimgs_'+os.sep+fileName+'_noise.jpg',img) 
     
+    else:
+        d = dict()
+        d['rotation'] = Ori_Pro(affedImg,None)
+        return d
+    
+
+def imgTranslation(oriImg:str,flag=True):
+    if isinstance(oriImg,str) :
+        if os.path.exists(oriImg):
+            img = io.imread(oriImg)
+        else:
+            raise FileNotFoundError('Original image not found')
+    else:
+        img = oriImg
+
+    imgShape = img.shape
+
+    trans_h = random.randint(0,int(0.5*imgShape[1]))
+    trans_v = random.randint(0,int(0.5*imgShape[0]))
+
+    trans_mat = np.float32([[1,0,trans_h],[0,1,trans_v]])
+    transImg = cv2.warpAffine(img,trans_mat,(imgShape[1],imgShape[0]))
+
+    if flag:
+        parent_path = os.path.dirname(oriImg)
+
+        if os.path.exists(parent_path+os.sep+'augimgs_'):
+            pass
+        else:
+            os.makedirs(parent_path+os.sep+'augimgs_')
+
+        tmp = os.path.splitext(oriImg)[0]
+        fileName = tmp.split(os.sep)[-1]
+        io.imsave(parent_path+os.sep+'augimgs_'+os.sep+fileName+'_translation.jpg',img)
+    
+    else:
+        d = dict()
+        d['trans'] = Ori_Pro(transImg,None)
+
+        return d
+    
+
+def aug_labelme(filepath,augs=['noise','rotation','trans','flip']):
+    # augs = ['noise','rotation','trans','flip']
+
+    l = np.random.randint(2,size=len(augs))
+
+    if np.sum(l) == 0:
+        l[0] = 1
+    
+    l = l.tolist()
+    p = list(zip(augs,l))
+    img = filepath
+
+    for i in p:
+        if i[1] == 1 :
+            if i[0] == 'noise':
+                n = imgNoise(img,flag=False)
+                tmp = n['noise']
+                img = tmp.oriImg 
+                del n,tmp
+
+            elif i[0] == 'rotation':
+                angle = random.randint(0,45)
+                r = imgRotation(img,flag=False,angle=angle)
+                tmp = r['rotation']
+                img  = tmp.oriImg 
+
+                del r,tmp
+            
+            elif i[0] == 'trans':
+                t = imgTranslation(img,flag=False)
+                tmp = t['trans']
+                img = tmp.oriImg 
+
+                del t,tmp
+            
+            elif i[0] == 'flip':
+                imgList = []
+
+                f = imgFlip(img,flag=False)            
+                tmp = f['h_v']
+                imgList.append(tmp.oriImg)
+
+                tmp = f['h']
+                imgList.append(tmp.oriImg)
+
+                tmp = f['v']
+                imgList.append(tmp.oriImg)
+
+                img = imgList
+
+                del tmp,f,imgList
+
+    parent_path = os.path.dirname(filepath)
+
+    if os.path.exists(parent_path+os.sep+'augimgs_'):
+        pass
+    else:
+        os.makedirs(parent_path+os.sep+'augimgs_')
+    
+    tmp = os.path.splitext(filepath)[0]
+    fileName = tmp.split(os.sep)[-1]
+
+
+    if isinstance(img,np.ndarray):
+        io.imsave(parent_path+os.sep+'augimgs_'+os.sep+fileName+'_assumble.jpg',img) 
+      
+        print("Done!")
+        print("see here {}".format(parent_path+os.sep+'augimgs_'))
+    
+    elif isinstance(img,list):
+        for i in range(0,len(img)):
+            io.imsave(parent_path+os.sep+'augimgs_'+os.sep+fileName+'_assumble{}.jpg'.format(i),img[i])
+
+        print("Done!")
+        print("see here {}".format(parent_path+os.sep+'augimgs_'))

@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 17:31:43
+LastEditTime: 2020-08-21 10:02:58
 '''
 
 import sys
@@ -82,9 +82,9 @@ def imgFlip(oriImg:str,oriLabel:str,flip_list=[1,0,-1],flag=True):
                     os.makedirs(parent_path+os.sep+'jsons_')
                 fileName = oriLabel.split(os.sep)[-1].replace('.json','')
 
-                io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_ori) if 1 in flip_list else print()
-                io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_v.jpg',v_ori) if 0 in flip_list else print()
-                io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h_v.jpg',h_v_ori) if -1 in flip_list else print()
+                io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_ori) if 1 in flip_list else do_nothing()
+                io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_v.jpg',v_ori) if 0 in flip_list else do_nothing()
+                io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h_v.jpg',h_v_ori) if -1 in flip_list else do_nothing()
 
 
                 h_j = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_h.jpg',h_mask,flag=True,labelYamlPath='') if h_mask is not None else None
@@ -117,7 +117,7 @@ def imgFlip(oriImg:str,oriLabel:str,flip_list=[1,0,-1],flag=True):
                         else:
                             pass
                 
-                    rmQ.rm(saveJsonPath) if os.path.exists(saveJsonPath) else print()
+                    rmQ.rm(saveJsonPath) if os.path.exists(saveJsonPath) else do_nothing()
                 
                 return ""
             else:
@@ -162,6 +162,8 @@ def imgNoise(oriImg:str,oriLabel:str,flag=True):
     for i in p:
         if i[1]!=0:
             img = snoise.random_noise(img,mode=i[0])
+    
+    img = np.array(img*255).astype(np.uint8)
     
     if flag:
         parent_path = os.path.dirname(oriLabel)
@@ -335,7 +337,7 @@ def imgTranslation(oriImg:str,oriLabel:str,flag=True):
 
 
 
-def aug_labelme(filepath,jsonpath):
+def aug_labelme(filepath,jsonpath,augs=['noise','rotation','trans','flip']):
     """
     augs: ['flip','noise','affine','rotate','...']
     """
@@ -421,7 +423,7 @@ def aug_labelme(filepath,jsonpath):
             f.write(assumbleJson)
         
         print("Done!")
-        print("see here{}".format(parent_path+os.sep+'jsons_'))
+        print("see here {}".format(parent_path+os.sep+'jsons_'))
     
     elif isinstance(img,list):
         for i in range(0,len(img)):
@@ -432,5 +434,5 @@ def aug_labelme(filepath,jsonpath):
                 f.write(assumbleJson)
 
         print("Done!")
-        print("see here{}".format(parent_path+os.sep+'jsons_'))
+        print("see here {}".format(parent_path+os.sep+'jsons_'))
 

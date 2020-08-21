@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-21 08:23:03
+ * @LastEditTime: 2020-08-21 10:04:20
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -278,7 +278,7 @@ combination of every augmentation method.
 
 ## 1. support multiple files image augmentation
 
-## 2. support image augmentation without a label/json file
+## 2. ~~support image augmentation without a label/json file~~  
 
 ## 3. support image augmentation with a labeled file (just support json file right now)
 

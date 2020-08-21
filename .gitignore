@@ -4,3 +4,9 @@
 /dist
 /convertmask.egg-info
 /.vscode
+/mask2json_utils/__pycache__
+/mask2json_utils/__pycache__
+/mask2json_utils/img2xml/__pycache__
+/mask2json_utils/methods/__pycache__
+/static/testAug
+/static/augimgs_

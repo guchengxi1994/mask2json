@@ -23,6 +23,7 @@ options:
 
 '''
 import os
+<<<<<<< HEAD:convertmask/m2j_m.py
 # import sys
 # sys.path.append('..')
 
@@ -34,6 +35,18 @@ from convertmask.mask2json_utils.imgAug_script import imgAug_withLabels,imgAug_w
 from convertmask.mask2json_utils.json2xml import j2xConvert
 from convertmask.mask2json_utils.mask2json_script import getJsons,getXmls
 from convertmask.mask2json_utils.convert import processor
+=======
+import sys
+sys.path.append('..')
+
+from mask2json_utils.methods.logger import logger
+from mask2json_utils.cpFile import fileExist
+from mask2json_utils import __version__
+from mask2json_utils.imgAug_script import imgAug_withLabels,imgAug_withoutLabels
+from mask2json_utils.json2xml import j2xConvert
+from mask2json_utils.mask2json_script import getJsons,getXmls
+from mask2json_utils.convert import processor
+>>>>>>> parent of 8cd7266... project structure change:mask2json/m2j_m.py
 
 from docopt import docopt
 

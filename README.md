@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-24 10:07:11
+ * @LastEditTime: 2020-08-24 10:31:16
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -57,7 +57,7 @@ Also ,for [labelimg](https://github.com/tzutalin/labelImg),a small tool to conve
 
 the test script can be found [here](./test_scripts/test_mask2json.py)
 
-    from mask2json_utils import getMultiShapes
+    from convertmask.utils import getMultiShapes
     getMultiShapes.getMultiShapes(param1,param2,param3,param4)
 
 param1:path which saves the origin imgs
@@ -72,7 +72,7 @@ param4:can be blank (better don't), a yaml file path which saves the class infor
 
 the test script can be found [here](./test_scripts/test_multiObjs2Xml.py)
 
-    from mask2json_utils.getMultiShapes import getMultiObjs_voc as gvoc
+    from convertmask.utils.getMultiShapes import getMultiObjs_voc as gvoc
     gvoc(param1,param2,param3)
 
 param1:path which saves the origin imgs
@@ -85,7 +85,7 @@ param3:converted xml files save path
 
 the test script can be found [here](./test_scripts/json2mask.py)
 
-    from mask2json_utils.convert import processor
+    from convertmask.utils.convert import processor
     processor(param1,param2)
 
 param1:json file or folder
@@ -96,14 +96,14 @@ param2:can be blank,encoding type, default 'utf-8'
 
 the test script can be found [here](./test_scripts/test_json2xml.py)
 
-    from mask2json_utils.json2xml import j2xConvert
+    from convertmask.utils.json2xml import j2xConvert
     j2xConvert(path-of-your-jsonfile)
 
 ### (5) image augmentation
 
 the test script can be found [here](./test_scripts/test_imgAug.py)
 
-    from mask2json_utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
+    from convertmask.utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
     
     imgFlip(imgPath, labelPath)
     imgNoise(imgPath,labelPath)
@@ -142,44 +142,35 @@ to show the current version
 
 #### 3.try:
 
-    convert m2j 
+    convertmask m2j 
 
 to test mask to json function(should type in some file path)
 
 #### 4.try:
 
-    convert m2x 
+    convertmask m2x 
 
 to test mask to xml function(should type in some file path)
 
 #### 5.try:
 
-    convert j2m 
+    convertmask j2m 
 
 to test json to mask function(should type in some file path)
 
 #### 6.try:
 
-    convert j2x 
+    convertmask j2x 
 
 to test json to xml function(should type in some file path)
 
 #### 7.try:
 
-    convert aug 
+    convertmask aug 
 
 to test image augmentation function(should type in some file path)
 
 
-
-
-
-
-##  SHORTCOMING
-
-1.~~objects connected to each other is not supported yet.~~
-
-this may happen if you labelling multiple-object-images with only 2 labels .Or some objects are of the same type and are connected to each other(eg. a bunch of grapes,it is hard to split one to the other).
 
 
 # CHANGE LOGS
@@ -275,7 +266,7 @@ combination of every augmentation method.
 
 ## 2020.8.24
 
-support convert xml files to yolo files. see [here](./test_scripts/test_xml2yolo.py)
+### support convert xml files to yolo files. see [here](./test_scripts/test_xml2yolo.py)
 
 examples:
 
@@ -297,3 +288,10 @@ examples:
 
 
 
+
+
+##  SHORTCOMING
+
+1.~~objects connected to each other is not supported yet.~~
+
+this may happen if you labelling multiple-object-images with only 2 labels .Or some objects are of the same type and are connected to each other(eg. a bunch of grapes,it is hard to split one to the other).

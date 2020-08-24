@@ -26,13 +26,13 @@ import os
 import sys
 sys.path.append('..')
 
-from mask2json_utils.methods.logger import logger
-from mask2json_utils.cpFile import fileExist
-from mask2json_utils import __version__
-from mask2json_utils.imgAug_script import imgAug_withLabels,imgAug_withoutLabels
-from mask2json_utils.json2xml import j2xConvert
-from mask2json_utils.mask2json_script import getJsons,getXmls
-from mask2json_utils.convert import processor
+from convertmask.utils.methods.logger import logger
+from convertmask.utils.cpFile import fileExist
+from convertmask.utils import __version__
+from convertmask.utils.imgAug_script import imgAug_withLabels,imgAug_withoutLabels
+from convertmask.utils.json2xml import j2xConvert
+from convertmask.utils.mask2json_script import getJsons,getXmls
+from convertmask.utils.convert import processor
 
 from docopt import docopt
 

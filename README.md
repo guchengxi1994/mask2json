@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-21 15:52:19
+ * @LastEditTime: 2020-08-24 10:07:11
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -273,12 +273,21 @@ combination of every augmentation method.
 ![img1](./backup/json2xml.png)
 
 
+## 2020.8.24
+
+support convert xml files to yolo files. see [here](./test_scripts/test_xml2yolo.py)
+
+examples:
+
+
+![gif1](./static/xml2yolo.gif)
+
 
 # what to do next
 
-## 1. ~~support multiple files image augmentation~~
+## 1. ~~support multiple files image augmentation~~ (2020.8.21)
 
-## 2. ~~support image augmentation without a label/json file~~  
+## 2. ~~support image augmentation without a label/json file~~  (2020.8.21)
 
 ## 3. support image augmentation with a labeled file (just support json file right now)
 

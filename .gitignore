@@ -10,7 +10,11 @@
 /convertmask/utils/methods/__pycache__
 /convertmask/utils/xml2yolo/__pycache__
 /convertmask/utils/xml2mask/__pycache__
+/convertmask/utils/longImgSplit/__pycache__
 /static/testAug
 /static/augimgs_
 /static/test_xmls/labels_.txt
 /static/test_xmls/txts_
+/static/testXmlSplit
+/ori
+/xml

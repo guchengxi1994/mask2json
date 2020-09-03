@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:31:45
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 08:55:20
+LastEditTime: 2020-09-03 15:45:24
 '''
 import cv2
 import numpy as np
@@ -54,7 +54,7 @@ def getBinary(img_or_path,minConnectedArea=20):
     _,labels,stats,centroids = cv2.connectedComponentsWithStats(img_bin)
     # print(stats.shape)
     for index in range(1,stats.shape[0]):
-        if stats[index][4]<minConnectedArea:
+        if stats[index][4]<minConnectedArea or stats[index][4]<0.1*(stats[index][2]*stats[index][3]):
             labels[labels==index] = 0
     
     labels[labels!=0] = 1

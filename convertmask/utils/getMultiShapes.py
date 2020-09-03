@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 14:16:16
+LastEditTime: 2020-09-03 15:24:30
 '''
 try:
     from labelme import __version__
@@ -40,23 +40,16 @@ def readYmal(filepath,labeledImg=None):
     elif labeledImg  is not  None and filepath == "" :
         """
         should make sure your label is correct!!!
-
-        untested!!!
         """
         labeledImg = np.array(labeledImg,dtype=np.uint8)
 
         labeledImg[labeledImg>0] = 255
         labeledImg[labeledImg!=255] = 0
-        # labeledImg = labeledImg/255
 
-        # _, labels = cv2.connectedComponents(labeledImg)
         _, labels, stats, centroids = cv2.connectedComponentsWithStats(labeledImg)
 
         labels = np.max(labels) + 1
         labels = [x for x in range(1,labels)]
-  
-
-        # print(labels)
 
         classes = []
         for i in range(0,len(labels)):
@@ -199,7 +192,7 @@ def test():
     rmQ.rm(BASE_DIR+'/static/multi_objs.json')
 
 
-def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False):
+def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False,areaThresh=500):
     """
     oriImgPath : for change img to base64  \n
     labelPath : after fcn/unet or other machine learning objects outlining , the generated label img

@@ -9,6 +9,7 @@
 /convertmask/utils/img2xml/__pycache__
 /convertmask/utils/methods/__pycache__
 /convertmask/utils/xml2yolo/__pycache__
+/convertmask/utils/xml2mask/__pycache__
 /static/testAug
 /static/augimgs_
 /static/test_xmls/labels_.txt

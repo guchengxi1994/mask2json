@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-03 15:24:30
+LastEditTime: 2020-09-03 17:09:34
 '''
 try:
     from labelme import __version__
@@ -291,6 +291,77 @@ def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False,
 
     
 
+def getMultiObjs_voc_withYaml(oriImgPath,labelPath,yamlPath=''):
+    if os.path.exists(yamlPath):
+        f = open(yamlPath,encoding='utf-8')
+        y = yaml.load(f,Loader=yaml.FullLoader)
+        f.close()
+
+        label_masks = y['label_names']
+    else:
+        raise FileNotFoundError('yaml file not found!')
+
+    savePath = os.path.abspath(os.path.dirname(oriImgPath)) + os.sep + 'xml'
+
+    if not os.path.exists(savePath):
+        os.mkdir(savePath)
+        
+    fileName = oriImgPath.split(os.sep)[-1]
+    saveXmlPath = savePath+os.sep + fileName[:-4] + '.xml' 
+    
+    labelImg = io.imread(labelPath) if isinstance(labelPath,str) else labelPath
+    fileName = oriImgPath.split(os.sep)[-1]
+    imgShape = labelImg.shape
+    imgHeight = imgShape[0]
+    imgWidth = imgShape[1]
+    imgPath = oriImgPath
+
+    # vals = label_masks.values()
+    for k,v in label_masks.items():
+        ma = labelImg.copy()
+        ma[ma != int(v)] = 0
+        objs = []
+        if np.sum(ma)>0:
+            ma = labelImg.copy()
+
+            ma[ma!=int(v)] = 0
+            ma[ma!=0] = 255
+
+            _,labels,stats,centroids = cv2.connectedComponentsWithStats(ma)
+
+            statsShape = stats.shape
+            
+
+            for i in range(1,statsShape[0]):
+                st = stats[i,:]
+                width = st[2]
+                height = st[3]
+                xmin = st[0]
+                ymin = st[1]
+                
+                xmax = xmin+width
+                ymax = ymin+height
+
+                ob = {}
+                ob['name'] = 'class{}'.format(i)
+                ob['difficult'] = 0
+                # ob['name'] = 'weld'
+
+                bndbox = {}
+
+                bndbox['xmin'] = xmin
+                bndbox['ymin'] = ymin
+                bndbox['xmax'] = xmax
+                bndbox['ymax'] = ymax
+
+                ob['bndbox'] = bndbox
+                objs.append(ob)
+
+    img2xml_multiobj(saveXmlPath,saveXmlPath,"TEST",fileName,imgPath,imgWidth,imgHeight,objs)
+    
+    
+
+    
 
 
             

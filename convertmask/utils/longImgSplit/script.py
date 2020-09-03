@@ -5,12 +5,12 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 11:41:14
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-03 15:37:48
+LastEditTime: 2020-09-03 17:12:27
 '''
 from .splitImg import splitImg_dengbili,reshape_dengbili 
 from convertmask.utils.xml2mask import x2m
 from skimage import io
-from convertmask.utils.getMultiShapes import getMultiShapes
+from convertmask.utils.getMultiShapes import getMultiObjs_voc_withYaml
 from convertmask.utils.methods.logger import logger
 import os
 import json
@@ -48,24 +48,26 @@ def convertImgSplit(oriImg:str,mask_or_xml:str,labelpath='',yamlPath:str=''):
     for i in range(0,len(splitMaskImgList)):
         tmpPath = save_ori_dir+os.sep+imgName+'_{}.jpg'.format(i)
         io.imsave(tmpPath,splitMaskOriList[i])
-        tmp = getMultiShapes(tmpPath,splitMaskImgList[i],flag=True,labelYamlPath=yamlPath)
-        # print(tmp)
-        tmpJsonPath = save_xml_dir+os.sep+imgName+'_{}.json'.format(i)
 
-        with open(tmpJsonPath,'w',encoding='utf-8') as f:
-            json.dump(json.loads(tmp),f,indent=4)
+        getMultiObjs_voc_withYaml(tmpPath,splitMaskImgList[i],yamlPath=yamlPath)
+    #     tmp = getMultiShapes(tmpPath,splitMaskImgList[i],flag=True,labelYamlPath=yamlPath)
+    #     # print(tmp)
+    #     tmpJsonPath = save_xml_dir+os.sep+imgName+'_{}.json'.format(i)
+
+    #     with open(tmpJsonPath,'w',encoding='utf-8') as f:
+    #         json.dump(json.loads(tmp),f,indent=4)
         
 
-        j2xConvert(tmpJsonPath)
+    #     j2xConvert(tmpJsonPath)
 
     
-    try:
-        jsons = glob.glob(save_xml_dir+os.sep+'*.json')
+    # try:
+    #     jsons = glob.glob(save_xml_dir+os.sep+'*.json')
 
-        # for i in jsons:
-        #     os.remove(i)
-    except:
-        logger.error('delete cache json file failed')
+    #     # for i in jsons:
+    #     #     os.remove(i)
+    # except:
+    #     logger.error('delete cache json file failed')
 
 
         

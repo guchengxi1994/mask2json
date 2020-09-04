@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-03 17:09:34
+LastEditTime: 2020-09-04 10:17:06
 '''
 try:
     from labelme import __version__
@@ -299,8 +299,8 @@ def getMultiObjs_voc_withYaml(oriImgPath,labelPath,yamlPath=''):
 
         label_masks = y['label_names']
     else:
-        raise FileNotFoundError('yaml file not found!')
-
+        raise FileNotFoundError('yaml file not found!')  
+    # print(label_masks)
     savePath = os.path.abspath(os.path.dirname(oriImgPath)) + os.sep + 'xml'
 
     if not os.path.exists(savePath):
@@ -315,37 +315,42 @@ def getMultiObjs_voc_withYaml(oriImgPath,labelPath,yamlPath=''):
     imgHeight = imgShape[0]
     imgWidth = imgShape[1]
     imgPath = oriImgPath
-
-    # vals = label_masks.values()
+    objs = []
     for k,v in label_masks.items():
-        ma = labelImg.copy()
+        # print(k)
+        # print(v)
+        ma = copy.deepcopy(labelImg)
         ma[ma != int(v)] = 0
-        objs = []
+        
         if np.sum(ma)>0:
-            ma = labelImg.copy()
+            # print(v)
+            ma1 = copy.deepcopy(labelImg)
 
-            ma[ma!=int(v)] = 0
-            ma[ma!=0] = 255
+            ma1[ma1!=int(v)] = 0
+            ma1[ma1!=0] = 255
 
-            _,labels,stats,centroids = cv2.connectedComponentsWithStats(ma)
+            _,labels,stats,centroids = cv2.connectedComponentsWithStats(ma1)
+
+            del ma1
 
             statsShape = stats.shape
             
-
             for i in range(1,statsShape[0]):
                 st = stats[i,:]
                 width = st[2]
                 height = st[3]
                 xmin = st[0]
                 ymin = st[1]
+
+                # print('area = {}'.format(st[4]))
+                # print('width = {},height = {}'.format(width,height))
                 
                 xmax = xmin+width
                 ymax = ymin+height
 
                 ob = {}
-                ob['name'] = 'class{}'.format(i)
+                ob['name']  = k
                 ob['difficult'] = 0
-                # ob['name'] = 'weld'
 
                 bndbox = {}
 
@@ -355,9 +360,17 @@ def getMultiObjs_voc_withYaml(oriImgPath,labelPath,yamlPath=''):
                 bndbox['ymax'] = ymax
 
                 ob['bndbox'] = bndbox
-                objs.append(ob)
+                if width>10 and height>10 and st[4]>=0.75*(width*height):
+                    objs.append(ob)
+                    # print(ob)
+        
+        del ma
+    
+        # print(objs)
+    # print("............................")
 
     img2xml_multiobj(saveXmlPath,saveXmlPath,"TEST",fileName,imgPath,imgWidth,imgHeight,objs)
+    objs.clear()
     
     
 

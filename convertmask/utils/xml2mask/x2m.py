@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 07:58:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-03 14:34:13
+LastEditTime: 2020-09-04 10:24:46
 '''
 import yaml
 
@@ -87,6 +87,8 @@ def generateMask(xmlPath,parent_path='',label_masks=None):
 
                 if classId is not None:
                     mask_img[b[2]:b[3],b[0]:b[1]] = int(classId)
+
+                    # mask_img[b[2]+15:b[3]-15,b[0]+15:b[1]-15] = int(classId)
                 else:
                     vals = generateClass.values()
                     classId = max(vals) + 1
@@ -111,6 +113,8 @@ def generateMask(xmlPath,parent_path='',label_masks=None):
         os.makedirs(parent_path+os.sep+'mask_')
     
     io.imsave(parent_path+os.sep+'mask_'+os.sep+fileName+'.jpg',mask_img)
+
+    # io.imsave(parent_path+os.sep+'mask_'+os.sep+fileName+'.jpg',np.array(mask_img/np.max(mask_img)*255,dtype=np.uint8))
 
     print('process finished. see {}'.format(parent_path+os.sep+'mask_'+os.sep+fileName+'.jpg'))
             

@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 11:41:14
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-03 17:12:27
+LastEditTime: 2020-09-04 10:24:15
 '''
 from .splitImg import splitImg_dengbili,reshape_dengbili 
 from convertmask.utils.xml2mask import x2m
@@ -32,8 +32,8 @@ if not os.path.exists(save_xml_dir):
 
 def convertImgSplit(oriImg:str,mask_or_xml:str,labelpath='',yamlPath:str=''):
     imgName = oriImg.split(os.sep)[-1][:-4]
-    logger.warning("multi-process/thread not support!! \n maybe a small error")
-    logger.warning("this version is not convenient.it convert mask to json first because i \n have no idea how to modify getMultiShapes.py(getMultiObjs_voc)")
+    logger.warning("there is a issue related to  Image Binarization")
+    # logger.warning("this version is not convenient.it convert mask to json first because i \n have no idea how to modify getMultiShapes.py(getMultiObjs_voc)")
     if mask_or_xml.endswith('xml'):
         _,maskPath = x2m.x2mConvert(mask_or_xml,labelpath,yamlPath)
         maskImg = io.imread(maskPath)
@@ -64,8 +64,8 @@ def convertImgSplit(oriImg:str,mask_or_xml:str,labelpath='',yamlPath:str=''):
     # try:
     #     jsons = glob.glob(save_xml_dir+os.sep+'*.json')
 
-    #     # for i in jsons:
-    #     #     os.remove(i)
+        # for i in jsons:
+        #     os.remove(i)
     # except:
     #     logger.error('delete cache json file failed')
 

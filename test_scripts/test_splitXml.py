@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 14:17:43
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-04 14:07:24
+LastEditTime: 2020-09-07 09:16:21
 '''
 import sys
 sys.path.append("..")
@@ -18,8 +18,8 @@ save_dir = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'static'+os.s
 if __name__ == "__main__":
     # sc.convertImgSplit(save_dir+'1.jpg',save_dir+'1.xml',yamlPath=save_dir+'info2.yaml')
 
-    imgPath = 'D:\\1\\test\\'
-    xmlPath = 'D:\\1\\testXml\\'
+    imgPath = 'D:\\907\\imgs\\rename\\'
+    xmlPath = 'D:\\907\\f\\'
 
     xmls = glob.glob(xmlPath+os.sep+'*.xml')
     imgs = glob.glob(imgPath+os.sep+'*.jpg')
@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
         img = imgPath+os.sep+imgName+".jpg"
 
-        sc.convertImgSplit(img,i,yamlPath=save_dir+'info2.yaml')
+        sc.convertImgSplit(img,i,yamlPath=save_dir+'info2.yaml',bias=2000)
 
         
     

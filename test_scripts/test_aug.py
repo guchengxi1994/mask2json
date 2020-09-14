@@ -5,13 +5,13 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:36:01
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 10:39:17
+LastEditTime: 2020-08-21 15:40:33
 '''
 import sys
 sys.path.append("..")
 
 
-from mask2json_utils.imgAug_script import *
+from convertmask.utils.imgAug_script import *
 
 if __name__ == "__main__":
     imgAug_withoutLabels('D:\\testALg\\mask2json\\mask2json\\static\\testAug')

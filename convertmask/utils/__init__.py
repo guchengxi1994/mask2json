@@ -5,9 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:09:56
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-20 09:40:36
+LastEditTime: 2020-08-21 15:49:22
 '''
-__version__ = '0.3.2'
-
-__appname__ = 'convertmask'
+__version__ = '0.3.3'
 

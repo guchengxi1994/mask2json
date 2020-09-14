@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-19 11:27:38
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 12:36:22
+LastEditTime: 2020-09-03 15:09:59
 '''
 import json
 from .img2xml.processor_multiObj import img2xml_multiobj
@@ -13,8 +13,10 @@ import os
 import numpy as np
 
 def j2xConvert(jsonFilePath:str):
-    with open(jsonFilePath,'r') as f:
+    with open(jsonFilePath,'r',encoding='utf-8') as f:
         jsonObj = json.load(f)
+        if isinstance(jsonObj,str):
+            jsonObj = json.loads(jsonObj)
     
     tmpPath = jsonFilePath.replace('.json','.xml')
     aimPath = tmpPath
@@ -48,7 +50,10 @@ def j2xConvert(jsonFilePath:str):
 
         obj['bndbox'] = bndbox
 
-        objs.append(obj)
+        if bndbox['ymax']-bndbox['ymin']<10 or bndbox['xmax']-bndbox['xmin']<10:
+            pass
+        else:
+            objs.append(obj)
     
     img2xml_multiobj(tmpPath,aimPath,folder,filename,path,width,height,objs)
 

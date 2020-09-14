@@ -4,8 +4,8 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-04-22 17:07:28
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-14 09:18:07
+LastEditors: xiaoshuyui
+LastEditTime: 2020-09-03 14:57:40
 '''
 import json
 import xmltodict
@@ -190,40 +190,41 @@ def img2xml_multiobj(tmpPath:str,aimPath:str,folder:str,filename:str,path:str,wi
 
     annotation['segmented'] = 0
 
-    obj = objs[0]
-    # print(obj)
-    bnBox = obj['bndbox']
+    if len(objs)>0:
+        obj = objs[0]
+        # print(obj)
+        bnBox = obj['bndbox']
 
-    f = open(tmpPath,'w')
-    f.writelines(img2xml(folder,filename,path,width,height, \
-        obj['name'],bnBox['xmin'],bnBox['ymin'],bnBox['xmax'],bnBox['ymax']))
-    f.close()
-    
-    
-
-    if len(objs)>1:
-        # for i in objs:
-        for i in range(1,len(objs)):
-            o = objs[i]
-            bn = o['bndbox']
-            bndbox = {}
-
-
-            bndbox['xmin'] = bn['xmin']
-            bndbox['ymin'] = bn['ymin']
-            bndbox['xmax'] = bn['xmax']
-            bndbox['ymax'] = bn['ymax']
-            
-            writeXML(tmpPath,aimPath,o['name'],bndbox)
+        f = open(tmpPath,'w')
+        f.writelines(img2xml(folder,filename,path,width,height, \
+            obj['name'],bnBox['xmin'],bnBox['ymin'],bnBox['xmax'],bnBox['ymax']))
+        f.close()
         
-    domTree = ET.parse(tmpPath)
-    root = domTree.getroot()
-    root = prettyXml(root,'\t','\n')
-    # ET.dump(root)
-    tree = ET.ElementTree(root)
-    tree.write(tmpPath)
-    # with open(tmpPath, 'w') as f:
-    #     domTree.writexml(f, addindent='  ', encoding='utf-8')
+        
+
+        if len(objs)>1:
+            # for i in objs:
+            for i in range(1,len(objs)):
+                o = objs[i]
+                bn = o['bndbox']
+                bndbox = {}
+
+
+                bndbox['xmin'] = bn['xmin']
+                bndbox['ymin'] = bn['ymin']
+                bndbox['xmax'] = bn['xmax']
+                bndbox['ymax'] = bn['ymax']
+                
+                writeXML(tmpPath,aimPath,o['name'],bndbox)
+            
+        domTree = ET.parse(tmpPath)
+        root = domTree.getroot()
+        root = prettyXml(root,'\t','\n')
+        # ET.dump(root)
+        tree = ET.ElementTree(root)
+        tree.write(tmpPath)
+        # with open(tmpPath, 'w') as f:
+        #     domTree.writexml(f, addindent='  ', encoding='utf-8')
 
             
 

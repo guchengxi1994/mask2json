@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-24 10:31:16
+ * @LastEditTime: 2020-09-23 10:04:32
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -271,7 +271,7 @@ combination of every augmentation method.
 examples:
 
 
-![gif1](./static/xml2yolo.gif)
+![gif1](./backup/xml2yolo.gif)
 
 
 # what to do next
@@ -288,10 +288,25 @@ examples:
 
 
 
+# OTHERS
+
+1. [issue:json2mask has no output](https://github.com/guchengxi1994/mask2json/issues/3)
 
 
-##  SHORTCOMING
+![gif2](./backup/json2mask.gif)
+
+if you test the [json2mask.py](./test_scripts/json2mask.py) script, you should change the path first and make sure the file is valid(maybe i have deleted :) )
+
+Also, this script is just a reverse of mask2json, for a more COOOOOL method, see [here](./convertmask/utils/convert.py) , try convert.processor
+
+
+
+
+#  SHORTCOMING
 
 1.~~objects connected to each other is not supported yet.~~
 
 this may happen if you labelling multiple-object-images with only 2 labels .Or some objects are of the same type and are connected to each other(eg. a bunch of grapes,it is hard to split one to the other).
+
+
+2.Image Binarization [issue](https://github.com/guchengxi1994/mask2json/issues/14)

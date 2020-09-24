@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-09-23 10:04:32
+ * @LastEditTime: 2020-09-24 13:37:57
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -272,6 +272,17 @@ examples:
 
 
 ![gif1](./backup/xml2yolo.gif)
+
+
+## 2020.9.24
+
+### inspired by [LabelImgTool](https://github.com/lzx1413/LabelImgTool), convert xmls to jsons is necessary. Also ,i forked this repo and add some pyqt5/py3 support,see [here](https://github.com/guchengxi1994/LabelImgTool).
+
+examples:
+
+script [here](./test_scripts/test_xml2json.py)
+
+![gif1](./backup/xml2json.gif)
 
 
 # what to do next

@@ -10,6 +10,9 @@
 /convertmask/utils/methods/__pycache__
 /convertmask/utils/xml2yolo/__pycache__
 /convertmask/utils/xml2mask/__pycache__
+/convertmask/utils/xml2json/__pycache__
+/convertmask/utils/json2xml/__pycache__
+/convertmask/utils/json2mask/__pycache__
 /convertmask/utils/longImgSplit/__pycache__
 /static/testAug
 /static/augimgs_

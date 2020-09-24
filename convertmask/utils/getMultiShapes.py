@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-04 10:17:06
+LastEditTime: 2020-09-24 10:38:07
 '''
 try:
     from labelme import __version__

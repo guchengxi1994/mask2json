@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 14:16:16
+LastEditTime: 2020-09-04 10:17:06
 '''
 try:
     from labelme import __version__
@@ -40,23 +40,16 @@ def readYmal(filepath,labeledImg=None):
     elif labeledImg  is not  None and filepath == "" :
         """
         should make sure your label is correct!!!
-
-        untested!!!
         """
         labeledImg = np.array(labeledImg,dtype=np.uint8)
 
         labeledImg[labeledImg>0] = 255
         labeledImg[labeledImg!=255] = 0
-        # labeledImg = labeledImg/255
 
-        # _, labels = cv2.connectedComponents(labeledImg)
         _, labels, stats, centroids = cv2.connectedComponentsWithStats(labeledImg)
 
         labels = np.max(labels) + 1
         labels = [x for x in range(1,labels)]
-  
-
-        # print(labels)
 
         classes = []
         for i in range(0,len(labels)):
@@ -199,7 +192,7 @@ def test():
     rmQ.rm(BASE_DIR+'/static/multi_objs.json')
 
 
-def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False):
+def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False,areaThresh=500):
     """
     oriImgPath : for change img to base64  \n
     labelPath : after fcn/unet or other machine learning objects outlining , the generated label img
@@ -298,6 +291,90 @@ def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False)
 
     
 
+def getMultiObjs_voc_withYaml(oriImgPath,labelPath,yamlPath=''):
+    if os.path.exists(yamlPath):
+        f = open(yamlPath,encoding='utf-8')
+        y = yaml.load(f,Loader=yaml.FullLoader)
+        f.close()
+
+        label_masks = y['label_names']
+    else:
+        raise FileNotFoundError('yaml file not found!')  
+    # print(label_masks)
+    savePath = os.path.abspath(os.path.dirname(oriImgPath)) + os.sep + 'xml'
+
+    if not os.path.exists(savePath):
+        os.mkdir(savePath)
+        
+    fileName = oriImgPath.split(os.sep)[-1]
+    saveXmlPath = savePath+os.sep + fileName[:-4] + '.xml' 
+    
+    labelImg = io.imread(labelPath) if isinstance(labelPath,str) else labelPath
+    fileName = oriImgPath.split(os.sep)[-1]
+    imgShape = labelImg.shape
+    imgHeight = imgShape[0]
+    imgWidth = imgShape[1]
+    imgPath = oriImgPath
+    objs = []
+    for k,v in label_masks.items():
+        # print(k)
+        # print(v)
+        ma = copy.deepcopy(labelImg)
+        ma[ma != int(v)] = 0
+        
+        if np.sum(ma)>0:
+            # print(v)
+            ma1 = copy.deepcopy(labelImg)
+
+            ma1[ma1!=int(v)] = 0
+            ma1[ma1!=0] = 255
+
+            _,labels,stats,centroids = cv2.connectedComponentsWithStats(ma1)
+
+            del ma1
+
+            statsShape = stats.shape
+            
+            for i in range(1,statsShape[0]):
+                st = stats[i,:]
+                width = st[2]
+                height = st[3]
+                xmin = st[0]
+                ymin = st[1]
+
+                # print('area = {}'.format(st[4]))
+                # print('width = {},height = {}'.format(width,height))
+                
+                xmax = xmin+width
+                ymax = ymin+height
+
+                ob = {}
+                ob['name']  = k
+                ob['difficult'] = 0
+
+                bndbox = {}
+
+                bndbox['xmin'] = xmin
+                bndbox['ymin'] = ymin
+                bndbox['xmax'] = xmax
+                bndbox['ymax'] = ymax
+
+                ob['bndbox'] = bndbox
+                if width>10 and height>10 and st[4]>=0.75*(width*height):
+                    objs.append(ob)
+                    # print(ob)
+        
+        del ma
+    
+        # print(objs)
+    # print("............................")
+
+    img2xml_multiobj(saveXmlPath,saveXmlPath,"TEST",fileName,imgPath,imgWidth,imgHeight,objs)
+    objs.clear()
+    
+    
+
+    
 
 
             

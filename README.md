@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-08-21 15:52:19
+ * @LastEditTime: 2020-09-23 10:04:32
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -57,7 +57,7 @@ Also ,for [labelimg](https://github.com/tzutalin/labelImg),a small tool to conve
 
 the test script can be found [here](./test_scripts/test_mask2json.py)
 
-    from mask2json_utils import getMultiShapes
+    from convertmask.utils import getMultiShapes
     getMultiShapes.getMultiShapes(param1,param2,param3,param4)
 
 param1:path which saves the origin imgs
@@ -72,7 +72,7 @@ param4:can be blank (better don't), a yaml file path which saves the class infor
 
 the test script can be found [here](./test_scripts/test_multiObjs2Xml.py)
 
-    from mask2json_utils.getMultiShapes import getMultiObjs_voc as gvoc
+    from convertmask.utils.getMultiShapes import getMultiObjs_voc as gvoc
     gvoc(param1,param2,param3)
 
 param1:path which saves the origin imgs
@@ -85,7 +85,7 @@ param3:converted xml files save path
 
 the test script can be found [here](./test_scripts/json2mask.py)
 
-    from mask2json_utils.convert import processor
+    from convertmask.utils.convert import processor
     processor(param1,param2)
 
 param1:json file or folder
@@ -96,14 +96,14 @@ param2:can be blank,encoding type, default 'utf-8'
 
 the test script can be found [here](./test_scripts/test_json2xml.py)
 
-    from mask2json_utils.json2xml import j2xConvert
+    from convertmask.utils.json2xml import j2xConvert
     j2xConvert(path-of-your-jsonfile)
 
 ### (5) image augmentation
 
 the test script can be found [here](./test_scripts/test_imgAug.py)
 
-    from mask2json_utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
+    from convertmask.utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
     
     imgFlip(imgPath, labelPath)
     imgNoise(imgPath,labelPath)
@@ -142,44 +142,35 @@ to show the current version
 
 #### 3.try:
 
-    convert m2j 
+    convertmask m2j 
 
 to test mask to json function(should type in some file path)
 
 #### 4.try:
 
-    convert m2x 
+    convertmask m2x 
 
 to test mask to xml function(should type in some file path)
 
 #### 5.try:
 
-    convert j2m 
+    convertmask j2m 
 
 to test json to mask function(should type in some file path)
 
 #### 6.try:
 
-    convert j2x 
+    convertmask j2x 
 
 to test json to xml function(should type in some file path)
 
 #### 7.try:
 
-    convert aug 
+    convertmask aug 
 
 to test image augmentation function(should type in some file path)
 
 
-
-
-
-
-##  SHORTCOMING
-
-1.~~objects connected to each other is not supported yet.~~
-
-this may happen if you labelling multiple-object-images with only 2 labels .Or some objects are of the same type and are connected to each other(eg. a bunch of grapes,it is hard to split one to the other).
 
 
 # CHANGE LOGS
@@ -273,12 +264,21 @@ combination of every augmentation method.
 ![img1](./backup/json2xml.png)
 
 
+## 2020.8.24
+
+### support convert xml files to yolo files. see [here](./test_scripts/test_xml2yolo.py)
+
+examples:
+
+
+![gif1](./backup/xml2yolo.gif)
+
 
 # what to do next
 
-## 1. ~~support multiple files image augmentation~~
+## 1. ~~support multiple files image augmentation~~ (2020.8.21)
 
-## 2. ~~support image augmentation without a label/json file~~  
+## 2. ~~support image augmentation without a label/json file~~  (2020.8.21)
 
 ## 3. support image augmentation with a labeled file (just support json file right now)
 
@@ -288,3 +288,25 @@ combination of every augmentation method.
 
 
 
+# OTHERS
+
+1. [issue:json2mask has no output](https://github.com/guchengxi1994/mask2json/issues/3)
+
+
+![gif2](./backup/json2mask.gif)
+
+if you test the [json2mask.py](./test_scripts/json2mask.py) script, you should change the path first and make sure the file is valid(maybe i have deleted :) )
+
+Also, this script is just a reverse of mask2json, for a more COOOOOL method, see [here](./convertmask/utils/convert.py) , try convert.processor
+
+
+
+
+#  SHORTCOMING
+
+1.~~objects connected to each other is not supported yet.~~
+
+this may happen if you labelling multiple-object-images with only 2 labels .Or some objects are of the same type and are connected to each other(eg. a bunch of grapes,it is hard to split one to the other).
+
+
+2.Image Binarization [issue](https://github.com/guchengxi1994/mask2json/issues/14)

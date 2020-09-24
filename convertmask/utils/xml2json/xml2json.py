@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-24 09:03:04
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-24 10:38:18
+LastEditTime: 2020-09-24 13:21:42
 '''
 import xml.etree.ElementTree as ET 
 from convertmask.utils.methods.img2base64 import imgEncode
@@ -33,7 +33,7 @@ def x2jConvert(xmlpath,originImgPath):
     
     ob = dict()
     ob['imageData'] = base64Code
-    ob['flags'] = '{}'
+    ob['flags'] = {}
     ob['version'] = __version__
     ob['imagePath'] = filename_ext
 
@@ -61,7 +61,7 @@ def getPolygon(xmlPath):
     shapes = []
     try:
         for obj in root.iter('object'):
-            flags = '{}'
+            flags = {}
             group_id = 'null'
             shape_type = 'polygon'
             # pass

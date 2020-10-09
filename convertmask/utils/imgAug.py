@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 10:02:58
+LastEditTime: 2020-10-09 15:40:35
 '''
 
 import sys
@@ -18,7 +18,7 @@ import skimage.util.noise as snoise
 # from skimage import morphology
 import cv2
 import os
-from .convert import processor
+from .json2mask.convert import processor
 from .getMultiShapes import getMultiShapes
 # from utils.img2base64 import imgEncode
 from .methods.img2base64 import imgEncode
@@ -32,6 +32,8 @@ import json
 # from .logger import logger
 from .methods.logger import logger
 import random
+from convertmask.utils.xml2json.xml2json import x2jConvert_pascal
+from convertmask.utils.json2xml.json2xml import j2xConvert
 
 
 
@@ -337,12 +339,30 @@ def imgTranslation(oriImg:str,oriLabel:str,flag=True):
 
 
 
-def aug_labelme(filepath,jsonpath,augs=['noise','rotation','trans','flip']):
+def aug_labelme(filepath,jsonpath,augs=None):
     """
     augs: ['flip','noise','affine','rotate','...']
     """
+    default_augs = ['noise','rotation','trans','flip']
+    if augs is None:
+        augs = ['noise','rotation','trans','flip']
 
-    augs = ['noise','rotation','trans','flip']
+    # elif not isinstance(augs,list):
+    else:
+        if not isinstance(augs,list):
+            try:
+                augs = list(str(augs))
+            except:
+                raise ValueError("parameter:aug's type is wrong. expect a string or list,got {}".format(str(type(augs))))
+        # else:
+        augs = list(set(augs).intersection(set(default_augs)))
+
+        if len(augs)>0 and augs is not None:
+            pass
+        else:
+            logger.warning('augumentation method is not supported.using default augumentation method.')
+            augs = ['noise','rotation','trans','flip']
+
     # l = np.random.randint(2,size=len(augs)).tolist()
 
     l = np.random.randint(2,size=len(augs))
@@ -370,7 +390,7 @@ def aug_labelme(filepath,jsonpath,augs=['noise','rotation','trans','flip']):
                 del n,tmp
 
             elif i[0] == 'rotation':
-                angle = random.randint(0,45)
+                angle = random.randint(-45,45)
                 r = imgRotation(img,processedImg,flag=False,angle=angle)
                 tmp = r['rotation']
                 img , processedImg = tmp.oriImg , tmp.processedImg
@@ -435,4 +455,134 @@ def aug_labelme(filepath,jsonpath,augs=['noise','rotation','trans','flip']):
 
         print("Done!")
         print("see here {}".format(parent_path+os.sep+'jsons_'))
+
+
+
+def aug_labelimg(filepath,xmlpath,augs=None):
+    default_augs = ['noise','rotation','trans','flip']
+    if augs is None:
+        augs = ['noise','rotation','trans','flip']
+
+    # elif not isinstance(augs,list):
+    else:
+        if not isinstance(augs,list):
+            try:
+                augs = list(str(augs))
+            except:
+                raise ValueError("parameter:aug's type is wrong. expect a string or list,got {}".format(str(type(augs))))
+        # else:
+        augs = list(set(augs).intersection(set(default_augs)))
+
+        if len(augs)>0 and augs is not None:
+            pass
+        else:
+            logger.warning('augumentation method is not supported.using default augumentation method.')
+            augs = ['noise','rotation','trans','flip']
+
+    # l = np.random.randint(2,size=len(augs)).tolist()
+
+    l = np.random.randint(2,size=len(augs))
+
+    if np.sum(l) == 0:
+        l[0] = 1
+    
+    l = l.tolist()
+
+    # print(l)
+
+    p = list(zip(augs,l))
+
+    img = filepath
+    # processedImg = xmlpath
+
+    jsonpath = x2jConvert_pascal(xmlpath,filepath)
+    processedImg = jsonpath
+
+    for i in p:
+        # if i[0]!='flip':
+        if i[1] == 1 :
+            if i[0] == 'noise':
+                n = imgNoise(img,processedImg,flag=False)
+                tmp = n['noise']
+                img , processedImg = tmp.oriImg , tmp.processedImg
+
+                del n,tmp
+
+            elif i[0] == 'rotation':
+                angle = random.randint(-45,45)
+                r = imgRotation(img,processedImg,flag=False,angle=angle)
+                tmp = r['rotation']
+                img , processedImg = tmp.oriImg , tmp.processedImg
+
+                del r,tmp
+            
+            elif i[0] == 'trans':
+                t = imgTranslation(img,processedImg,flag=False)
+                tmp = t['trans']
+                img , processedImg = tmp.oriImg , tmp.processedImg
+
+                del t,tmp
+            
+            elif i[0] == 'flip':
+                imgList = []
+                processedImgList = []
+                
+                f = imgFlip(img,processedImg,flag=False)
+                
+                tmp = f['h_v']
+                imgList.append(tmp.oriImg)
+                processedImgList.append(tmp.processedImg)
+
+                tmp = f['h']
+                imgList.append(tmp.oriImg)
+                processedImgList.append(tmp.processedImg)
+
+                tmp = f['v']
+                imgList.append(tmp.oriImg)
+                processedImgList.append(tmp.processedImg)
+
+                img,processedImg = imgList,processedImgList
+
+                del tmp,f,imgList,processedImgList
+    
+    parent_path = os.path.dirname(filepath)
+
+    if os.path.exists(parent_path+os.sep+'xmls_'):
+        pass
+    else:
+        os.makedirs(parent_path+os.sep+'xmls_')
+    
+    fileName = jsonpath.split(os.sep)[-1].replace(".json",'')
+
+
+    if isinstance(img,np.ndarray):
+        io.imsave(parent_path+os.sep+'xmls_'+os.sep+fileName+'_assumble.jpg',img) 
+        assumbleJson = getMultiShapes(parent_path+os.sep+'xmls_'+os.sep+fileName+'_assumble.jpg',processedImg,flag=True,labelYamlPath='')    
+        saveJsonPath = parent_path+os.sep+'xmls_'+os.sep+fileName+'_assumble.json'
+        with open(saveJsonPath,'w') as f:
+            f.write(assumbleJson)
+        
+        j2xConvert(saveJsonPath)
+        os.remove(saveJsonPath)
+        print("Done!")
+        print("see here {}".format(parent_path+os.sep+'xmls_'))
+    
+    elif isinstance(img,list):
+        for i in range(0,len(img)):
+            io.imsave(parent_path+os.sep+'xmls_'+os.sep+fileName+'_assumble{}.jpg'.format(i),img[i])
+            assumbleJson = getMultiShapes(parent_path+os.sep+'xmls_'+os.sep+fileName+'_assumble{}.jpg'.format(i),processedImg[i],flag=True,labelYamlPath='')    
+            saveJsonPath = parent_path+os.sep+'xmls_'+os.sep+fileName+'_assumble{}.json'.format(i)
+            with open(saveJsonPath,'w') as f:
+                f.write(assumbleJson)
+            
+            j2xConvert(saveJsonPath)
+            os.remove(saveJsonPath)
+
+        print("Done!")
+        print("see here {}".format(parent_path+os.sep+'xmls_'))
+    
+
+    
+
+    
 

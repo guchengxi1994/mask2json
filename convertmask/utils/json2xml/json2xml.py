@@ -5,10 +5,10 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-19 11:27:38
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-03 15:09:59
+LastEditTime: 2020-09-24 09:46:58
 '''
 import json
-from .img2xml.processor_multiObj import img2xml_multiobj
+from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
 import os
 import numpy as np
 

@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-19 17:31:06
+LastEditTime: 2020-10-09 15:16:33
 '''
 import argparse
 import json
@@ -27,7 +27,7 @@ from skimage import img_as_ubyte
 import numpy as np 
 
 
-from .methods.logger import logger
+from convertmask.utils.methods.logger import logger
 from tqdm import tqdm
 
  

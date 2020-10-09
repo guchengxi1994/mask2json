@@ -30,9 +30,9 @@ from convertmask.utils.methods.logger import logger
 from convertmask.utils.cpFile import fileExist
 from convertmask.utils import __version__
 from convertmask.utils.imgAug_script import imgAug_withLabels,imgAug_withoutLabels
-from convertmask.utils.json2xml import j2xConvert
+from convertmask.utils.json2xml.json2xml import j2xConvert
 from convertmask.utils.mask2json_script import getJsons,getXmls
-from convertmask.utils.convert import processor
+from convertmask.utils.json2mask.convert import processor
 
 from docopt import docopt
 

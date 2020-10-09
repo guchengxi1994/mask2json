@@ -5,11 +5,11 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 15:41:33
+LastEditTime: 2020-10-09 15:24:18
 '''
 import sys
 sys.path.append("..")
-from convertmask.utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
+from convertmask.utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme,aug_labelimg
 import os
 from skimage import io
 from convertmask.utils.getMultiShapes import getMultiShapes
@@ -19,6 +19,10 @@ BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'static'
 imgPath = BASE_DIR + os.sep + 'multi_objs.jpg'
 labelPath = BASE_DIR + os.sep + 'multi_objs.json'
 
+
+imgPath2 = BASE_DIR + os.sep + 'label_255.png'
+labelPath2 = BASE_DIR + os.sep + 'label_255.xml'
+
 if __name__ == "__main__":
 
     #### test1
@@ -27,7 +31,7 @@ if __name__ == "__main__":
 
     # imgNoise(imgPath,labelPath)
 
-    imgRotation(imgPath,labelPath)
+    # imgRotation(imgPath,labelPath)
 
     # imgTranslation(imgPath,labelPath)
 
@@ -75,4 +79,9 @@ if __name__ == "__main__":
 
     #### test3
 
-    aug_labelme(imgPath,labelPath)
+    # aug_labelme(imgPath,labelPath)
+
+
+    #### test4
+
+    aug_labelimg(imgPath2,labelPath2)

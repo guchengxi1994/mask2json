@@ -5,16 +5,16 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 17:07:28
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-03 14:57:40
+LastEditTime: 2020-10-10 14:17:41
 '''
-import json
+# import json
 import xmltodict
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parse,parseString
 import os
 
-from lxml.etree import Element, SubElement, tostring
-from xml.etree.ElementTree import fromstring, ElementTree
+# from lxml.etree import Element, SubElement, tostring
+# from xml.etree.ElementTree import fromstring, ElementTree
 
 
 def json_to_xml(json_str):
@@ -79,11 +79,6 @@ def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
     # dic = {}
     dicts = {'annotation':annotation}
 
-    # j = json.dumps(dic,indent=4)
-
-    # print(j)
-
-    # print(json_to_xml(dicts))
     return json_to_xml(dicts)
 
 
@@ -230,26 +225,21 @@ def img2xml_multiobj(tmpPath:str,aimPath:str,folder:str,filename:str,path:str,wi
 
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 
-    bndbox = {}
-    # bndbox['xmin'] = 387
-    # bndbox['ymin'] = 34
-    # bndbox['xmax'] = 578
-    # bndbox['ymax'] = 1622
+#     bndbox = {}
+#     # bndbox['xmin'] = 387
+#     # bndbox['ymin'] = 34
+#     # bndbox['xmax'] = 578
+#     # bndbox['ymax'] = 1622
 
-    bndbox['xmin'] = 1
-    bndbox['ymin'] = 2
-    bndbox['xmax'] = 150
-    bndbox['ymax'] = 150
+#     bndbox['xmin'] = 1
+#     bndbox['ymin'] = 2
+#     bndbox['xmax'] = 150
+#     bndbox['ymax'] = 150
 
-    writeXML("D:\DefectDemo\DEMO2\defect\\224-F-76-6-0000.xml",'sadasd',bndbox)
-    
+#     writeXML("D:\DefectDemo\DEMO2\defect\\224-F-76-6-0000.xml",'sadasd',bndbox)
 
-
-
-
-    
     # with open("D:\\getWeld\\insertXML\\test2.xml",'rb') as f:
     # f = open("D:\\getWeld\\insertXML\\test2.xml",'w')
     # f.writelines(img2xml("HBXZ","aa","asas\\aa.xx",12,23,"aaa",123,444,4523,664))

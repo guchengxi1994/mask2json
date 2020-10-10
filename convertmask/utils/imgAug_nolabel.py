@@ -5,24 +5,24 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 09:28:53
+LastEditTime: 2020-10-10 14:14:54
 '''
 import sys
 sys.path.append('..')
 from skimage import io
 import skimage.util.noise as snoise
 import cv2
-from convertmask.utils.json2mask.convert import processor
-from .getMultiShapes import getMultiShapes
+# from convertmask.utils.json2mask.convert import processor
+# from .getMultiShapes import getMultiShapes
 # from utils.img2base64 import imgEncode
-from .methods.img2base64 import imgEncode
-from .methods import rmQ
-import traceback
+# from .methods.img2base64 import imgEncode
+# from .methods import rmQ
+# import traceback
 # from .entity import *
 from .methods.entity import *
 import numpy as np
-import shutil
-import json
+# import shutil
+# import json
 # from .logger import logger
 from .methods.logger import logger
 import random
@@ -242,12 +242,12 @@ def aug_labelme(filepath,augs=['noise','rotation','trans','flip']):
     if isinstance(img,np.ndarray):
         io.imsave(parent_path+os.sep+'augimgs_'+os.sep+fileName+'_assumble.jpg',img) 
       
-        print("Done!")
-        print("see here {}".format(parent_path+os.sep+'augimgs_'))
+        logger.info("Done!")
+        logger.info("see here {}".format(parent_path+os.sep+'augimgs_'))
     
     elif isinstance(img,list):
         for i in range(0,len(img)):
             io.imsave(parent_path+os.sep+'augimgs_'+os.sep+fileName+'_assumble{}.jpg'.format(i),img[i])
 
-        print("Done!")
-        print("see here {}".format(parent_path+os.sep+'augimgs_'))
+        logger.info("Done!")
+        logger.info("see here {}".format(parent_path+os.sep+'augimgs_'))

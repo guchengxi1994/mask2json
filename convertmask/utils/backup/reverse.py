@@ -5,13 +5,13 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:55:17
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-24 08:55:32
+LastEditTime: 2020-10-10 14:23:43
 '''
 import xml.etree.ElementTree as ET
 # import pickle
 import os
-from os import listdir, getcwd
-from os.path import join
+# from os import listdir, getcwd
+# from os.path import join
 
 xml_label_Dir = "xml"  # 需转换的xml路径
 txt_label_Dir ='txt/' # 转换得的txt文件保存路径

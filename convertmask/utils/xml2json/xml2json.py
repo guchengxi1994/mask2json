@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-24 09:03:04
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-09 15:40:10
+LastEditTime: 2020-10-10 14:21:28
 '''
 import xml.etree.ElementTree as ET 
 from convertmask.utils.methods.img2base64 import imgEncode
@@ -14,8 +14,8 @@ import traceback
 import json
 import os
 from skimage import io
-import numpy as np
-import cv2
+# import numpy as np
+# import cv2
 try:
     from labelme import __version__
 except:

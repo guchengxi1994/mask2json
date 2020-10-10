@@ -4,10 +4,10 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-04-22 17:07:28
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-05-06 10:04:39
+LastEditors: xiaoshuyui
+LastEditTime: 2020-10-10 14:19:05
 '''
-import json
+# import json
 import xmltodict
 
 
@@ -74,18 +74,13 @@ def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
     # dic = {}
     dicts = {'annotation':annotation}
 
-    # j = json.dumps(dic,indent=4)
-
-    # print(j)
-
-    # print(json_to_xml(dicts))
     return json_to_xml(dicts)
 
-if __name__ == "__main__":
-    # with open("D:\\getWeld\\insertXML\\test2.xml",'rb') as f:
-    f = open("D:\\getWeld\\insertXML\\test2.xml",'w')
-    f.writelines(img2xml("test","aa","asas\\aa.xx",12,23,"aaa",123,444,4523,664))
-    f.close()
+# if __name__ == "__main__":
+#     # with open("D:\\getWeld\\insertXML\\test2.xml",'rb') as f:
+#     f = open("D:\\getWeld\\insertXML\\test2.xml",'w')
+#     f.writelines(img2xml("test","aa","asas\\aa.xx",12,23,"aaa",123,444,4523,664))
+#     f.close()
 
             
 

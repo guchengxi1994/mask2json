@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:33:39
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-24 10:15:58
+LastEditTime: 2020-10-10 15:49:39
 '''
 
 from . import getMultiShapes
@@ -14,7 +14,8 @@ import os
 from tqdm import tqdm
 from .methods.logger import logger
 
-def getJsons(imgPath,maskPath,savePath,yamlPath = ''):
+
+def getJsons(imgPath, maskPath, savePath, yamlPath=''):
     """
     imgPath: origin image path \n
     maskPath : mask image path \n
@@ -24,20 +25,21 @@ def getJsons(imgPath,maskPath,savePath,yamlPath = ''):
 
     """
     logger.info("currently, only *.jpg supported")
-    oriImgs = glob.glob(imgPath+os.sep+'*.jpg')
-    maskImgs = glob.glob(maskPath+os.sep+'*.jpg')
-    
-    for i in tqdm(oriImgs):
-        i_mask = i.replace(imgPath,maskPath)
-        # print(i)
-        getMultiShapes.getMultiShapes(i,i_mask,savePath,yamlPath)
+    oriImgs = glob.glob(imgPath + os.sep + '*.jpg')
+    maskImgs = glob.glob(maskPath + os.sep + '*.jpg')
 
-def getXmls(imgPath,maskPath,savePath):
-    logger.info("currently, only *.jpg supported")
-    oriImgs = glob.glob(imgPath+os.sep+'*.jpg')
-    maskImgs = glob.glob(maskPath+os.sep+'*.jpg')
-    
     for i in tqdm(oriImgs):
-        i_mask = i.replace(imgPath,maskPath)
+        i_mask = i.replace(imgPath, maskPath)
         # print(i)
-        getMultiShapes.getMultiObjs_voc(i,i_mask,savePath)
+        getMultiShapes.getMultiShapes(i, i_mask, savePath, yamlPath)
+
+
+def getXmls(imgPath, maskPath, savePath):
+    logger.info("currently, only *.jpg supported")
+    oriImgs = glob.glob(imgPath + os.sep + '*.jpg')
+    maskImgs = glob.glob(maskPath + os.sep + '*.jpg')
+
+    for i in tqdm(oriImgs):
+        i_mask = i.replace(imgPath, maskPath)
+        # print(i)
+        getMultiShapes.getMultiObjs_voc(i, i_mask, savePath)

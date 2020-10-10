@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 10:42:52
+LastEditTime: 2020-10-10 15:49:14
 '''
 from .methods.logger import logger
 from . import imgAug
@@ -14,26 +14,24 @@ import glob
 import os
 from tqdm import tqdm
 
-def imgAug_withLabels(imgPath,labelPath):
+
+def imgAug_withLabels(imgPath, labelPath):
     logger.info("currently, only *.jpg supported")
 
-    oriImgs = glob.glob(imgPath+os.sep+'*.jpg')
-    jsonFiles = glob.glob(labelPath+os.sep+'*.json')
+    oriImgs = glob.glob(imgPath + os.sep + '*.jpg')
+    jsonFiles = glob.glob(labelPath + os.sep + '*.json')
 
     for i in tqdm(oriImgs):
-        i_json = i.replace(imgPath,labelPath)
+        i_json = i.replace(imgPath, labelPath)
 
-        imgAug.aug_labelme(i,i_json)
+        imgAug.aug_labelme(i, i_json)
 
 
 def imgAug_withoutLabels(imgPath):
     logger.info("currently, only *.jpg supported")
 
-    oriImgs = glob.glob(imgPath+os.sep+'*.jpg')
+    oriImgs = glob.glob(imgPath + os.sep + '*.jpg')
 
     for i in tqdm(oriImgs):
 
         imgAug_nolabel.aug_labelme(i)
-
-
-

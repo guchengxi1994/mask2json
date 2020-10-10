@@ -48,7 +48,7 @@ def script():
 
     if arguments.get('--version') or arguments.get('-v'):
         print(__version__)
-    
+
     elif arguments.get('m2j'):
         logger.info("Masks to jsons")
         print("<====  please input origin image path  ====>")
@@ -58,14 +58,14 @@ def script():
 
         if not os.path.exists(inputMaskPath):
             raise FileNotFoundError('mask folder is not exist')
-        
+
         savePath = inputMaskPath
         print("<====  please input yaml path (can be blank,better dont) ====>")
         inputYamlPath = input()
         getJsons(inputOriimgPath,inputMaskPath,savePath,inputYamlPath)
         print("Done!")
 
-    
+
     elif arguments.get('m2x'):
         logger.info("Masks to xmls")
         print("<====  please input origin image path  ====>")
@@ -75,25 +75,25 @@ def script():
 
         if not os.path.exists(inputMaskPath):
             raise FileNotFoundError('mask folder is not exist')
-        
+
         savePath = inputMaskPath
         getXmls(inputOriimgPath,inputMaskPath,savePath)
         print("Done!")
-    
+
     elif arguments.get('j2m'):
         logger.info("Jsons to masks")
         print("<====  please input json files path  ====>")
         inputJsonPath = input()
         processor(inputJsonPath)
         print('Done!')
-    
+
     elif arguments.get('j2x'):
         logger.info("Json to xml (single file supported if version<=0.3)")
         print("<====  please input json file path  ====>")
         inputJsonPath = input()
         j2xConvert(inputJsonPath)
         print('Done!')
-    
+
     elif arguments.get('aug'):
         # logger.info("Image augmentation (single file supported if version<=0.3)")
         if not arguments.get('--nolabel'):
@@ -115,4 +115,3 @@ def script():
 
 if __name__ == "__main__":
     script()
-

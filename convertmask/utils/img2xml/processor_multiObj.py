@@ -5,12 +5,12 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 17:07:28
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 14:17:41
+LastEditTime: 2020-10-10 15:45:56
 '''
 # import json
 import xmltodict
 import xml.etree.ElementTree as ET
-from xml.dom.minidom import parse,parseString
+from xml.dom.minidom import parse, parseString
 import os
 
 # from lxml.etree import Element, SubElement, tostring
@@ -23,13 +23,13 @@ def json_to_xml(json_str):
     xml_str = xmltodict.unparse(json_str, pretty=1)
     return xml_str
 
+
 def root2annotion(xml_str):
     pass
-    
+
 
 def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
     xmin:int,ymin:int,xmax:int,ymax:int):
-
 
     annotation = {}
     # annotation['folder'] = "HBXZ"
@@ -44,7 +44,7 @@ def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
 
     annotation['source'] = source
 
-    size={}
+    size = {}
     size['width'] = width
     # size['width'] = 903
     # size['height'] = 1722
@@ -61,7 +61,6 @@ def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
     ob['difficult'] = 0
     # ob['name'] = 'weld'
 
-
     bndbox = {}
     # bndbox['xmin'] = 387
     # bndbox['ymin'] = 34
@@ -77,12 +76,12 @@ def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
 
     annotation['object'] = ob
     # dic = {}
-    dicts = {'annotation':annotation}
+    dicts = {'annotation': annotation}
 
     return json_to_xml(dicts)
 
 
-def writeXML(domTree_path,aimPath,name:str,bndbox:dict): 
+def writeXML(domTree_path, aimPath, name: str, bndbox: dict):
     if os.path.exists(domTree_path):
         domTree = parse(domTree_path)
         # print(domTree)
@@ -92,18 +91,15 @@ def writeXML(domTree_path,aimPath,name:str,bndbox:dict):
         # print(rootNode)
         customer_node = domTree.createElement("object")
 
-
         name_node = domTree.createElement("name")
         name_text_value = domTree.createTextNode(name)
         name_node.appendChild(name_text_value)  # 把文本节点挂到name_node节点
         customer_node.appendChild(name_node)
 
-
         phone_node = domTree.createElement("difficult")
         phone_text_value = domTree.createTextNode(str(0))
         phone_node.appendChild(phone_text_value)  # 把文本节点挂到name_node节点
         customer_node.appendChild(phone_node)
-
 
         comments_node = domTree.createElement("bndbox")
         xmin = domTree.createElement('xmin')
@@ -137,25 +133,32 @@ def writeXML(domTree_path,aimPath,name:str,bndbox:dict):
             domTree.writexml(f, addindent='  ', encoding='utf-8')
 
 
-def prettyXml(element, indent, newline, level = 0): # elemnt为传进来的Elment类，参数indent用于缩进，newline用于换行  
-    if element:  # 判断element是否有子元素  
-        if element.text == None or element.text.isspace(): # 如果element的text没有内容  
-            element.text = newline + indent * (level + 1)    
-        else:  
-            element.text = newline + indent * (level + 1) + element.text.strip() + newline + indent * (level + 1)  
-    #else:  # 此处两行如果把注释去掉，Element的text也会另起一行  
-    #element.text = newline + indent * (level + 1) + element.text.strip() + newline + indent * level  
-    temp = list(element) # 将elemnt转成list  
-    for subelement in temp:  
-        if temp.index(subelement) < (len(temp) - 1): # 如果不是list的最后一个元素，说明下一个行是同级别元素的起始，缩进应一致  
-            subelement.tail = newline + indent * (level + 1)  
-        else:  # 如果是list的最后一个元素， 说明下一行是母元素的结束，缩进应该少一个  
-            subelement.tail = newline + indent * level  
-        prettyXml(subelement, indent, newline, level = level + 1) # 对子元素进行递归操作  
+def prettyXml(element,
+              indent,
+              newline,
+              level=0):  # elemnt为传进来的Elment类，参数indent用于缩进，newline用于换行
+    if element:  # 判断element是否有子元素
+        if element.text == None or element.text.isspace(
+        ):  # 如果element的text没有内容
+            element.text = newline + indent * (level + 1)
+        else:
+            element.text = newline + indent * (level + 1) + element.text.strip(
+            ) + newline + indent * (level + 1)
+    #else:  # 此处两行如果把注释去掉，Element的text也会另起一行
+    #element.text = newline + indent * (level + 1) + element.text.strip() + newline + indent * level
+    temp = list(element)  # 将elemnt转成list
+    for subelement in temp:
+        if temp.index(subelement) < (
+                len(temp) - 1):  # 如果不是list的最后一个元素，说明下一个行是同级别元素的起始，缩进应一致
+            subelement.tail = newline + indent * (level + 1)
+        else:  # 如果是list的最后一个元素， 说明下一行是母元素的结束，缩进应该少一个
+            subelement.tail = newline + indent * level
+        prettyXml(subelement, indent, newline, level=level + 1)  # 对子元素进行递归操作
     return element
 
 
-def img2xml_multiobj(tmpPath:str,aimPath:str,folder:str,filename:str,path:str,width:int,height:int, objs:list):
+def img2xml_multiobj(tmpPath: str, aimPath: str, folder: str, filename: str,
+                     path: str, width: int, height: int, objs: list):
     """
     objs:list --> dict
     [{'name':'xxx','difficult':0,'bndbox':{'xmin':??,...,'ymax':???}}]
@@ -174,7 +177,7 @@ def img2xml_multiobj(tmpPath:str,aimPath:str,folder:str,filename:str,path:str,wi
 
     annotation['source'] = source
 
-    size={}
+    size = {}
     size['width'] = width
     # size['width'] = 903
     # size['height'] = 1722
@@ -185,44 +188,38 @@ def img2xml_multiobj(tmpPath:str,aimPath:str,folder:str,filename:str,path:str,wi
 
     annotation['segmented'] = 0
 
-    if len(objs)>0:
+    if len(objs) > 0:
         obj = objs[0]
         # print(obj)
         bnBox = obj['bndbox']
 
-        f = open(tmpPath,'w')
+        f = open(tmpPath, 'w')
         f.writelines(img2xml(folder,filename,path,width,height, \
             obj['name'],bnBox['xmin'],bnBox['ymin'],bnBox['xmax'],bnBox['ymax']))
         f.close()
-        
-        
 
-        if len(objs)>1:
+        if len(objs) > 1:
             # for i in objs:
-            for i in range(1,len(objs)):
+            for i in range(1, len(objs)):
                 o = objs[i]
                 bn = o['bndbox']
                 bndbox = {}
-
 
                 bndbox['xmin'] = bn['xmin']
                 bndbox['ymin'] = bn['ymin']
                 bndbox['xmax'] = bn['xmax']
                 bndbox['ymax'] = bn['ymax']
-                
-                writeXML(tmpPath,aimPath,o['name'],bndbox)
-            
+
+                writeXML(tmpPath, aimPath, o['name'], bndbox)
+
         domTree = ET.parse(tmpPath)
         root = domTree.getroot()
-        root = prettyXml(root,'\t','\n')
+        root = prettyXml(root, '\t', '\n')
         # ET.dump(root)
         tree = ET.ElementTree(root)
         tree.write(tmpPath)
         # with open(tmpPath, 'w') as f:
         #     domTree.writexml(f, addindent='  ', encoding='utf-8')
-
-            
-
 
 
 # if __name__ == "__main__":
@@ -240,10 +237,7 @@ def img2xml_multiobj(tmpPath:str,aimPath:str,folder:str,filename:str,path:str,wi
 
 #     writeXML("D:\DefectDemo\DEMO2\defect\\224-F-76-6-0000.xml",'sadasd',bndbox)
 
-    # with open("D:\\getWeld\\insertXML\\test2.xml",'rb') as f:
-    # f = open("D:\\getWeld\\insertXML\\test2.xml",'w')
-    # f.writelines(img2xml("HBXZ","aa","asas\\aa.xx",12,23,"aaa",123,444,4523,664))
-    # f.close()
-
-            
-
+# with open("D:\\getWeld\\insertXML\\test2.xml",'rb') as f:
+# f = open("D:\\getWeld\\insertXML\\test2.xml",'w')
+# f.writelines(img2xml("HBXZ","aa","asas\\aa.xx",12,23,"aaa",123,444,4523,664))
+# f.close()

@@ -5,14 +5,14 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 10:03:11
+LastEditTime: 2020-10-10 09:28:53
 '''
 import sys
 sys.path.append('..')
 from skimage import io
 import skimage.util.noise as snoise
 import cv2
-from .convert import processor
+from convertmask.utils.json2mask.convert import processor
 from .getMultiShapes import getMultiShapes
 # from utils.img2base64 import imgEncode
 from .methods.img2base64 import imgEncode

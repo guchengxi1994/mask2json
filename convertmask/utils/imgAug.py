@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-09 15:40:35
+LastEditTime: 2020-10-10 09:58:14
 '''
 
 import sys
@@ -373,6 +373,8 @@ def aug_labelme(filepath,jsonpath,augs=None):
     l = l.tolist()
 
     # print(l)
+    if len(augs)<4:
+        l[l!=1] = 1
 
     p = list(zip(augs,l))
 
@@ -488,6 +490,9 @@ def aug_labelimg(filepath,xmlpath,augs=None):
     
     l = l.tolist()
 
+    if len(augs)<4:
+        l[l!=1] = 1
+
     # print(l)
 
     p = list(zip(augs,l))
@@ -580,9 +585,3 @@ def aug_labelimg(filepath,xmlpath,augs=None):
 
         print("Done!")
         print("see here {}".format(parent_path+os.sep+'xmls_'))
-    
-
-    
-
-    
-

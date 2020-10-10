@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 11:41:14
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-07 08:55:59
+LastEditTime: 2020-10-10 14:20:43
 '''
 from .splitImg import splitImg_dengbili,reshape_dengbili 
 from convertmask.utils.xml2mask import x2m
@@ -13,8 +13,8 @@ from skimage import io
 from convertmask.utils.getMultiShapes import getMultiObjs_voc_withYaml
 from convertmask.utils.methods.logger import logger
 import os
-import json
-from convertmask.utils.json2xml import j2xConvert
+# import json
+# from convertmask.utils.json2xml.json2xml import j2xConvert
 # import glob
 
 # save_cache_dir = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'cache'

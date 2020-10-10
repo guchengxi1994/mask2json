@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-09-24 13:37:57
+ * @LastEditTime: 2020-10-10 11:27:16
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -20,6 +20,10 @@
  FIRST:
 
     pip install -r requestments.txt [-i https://pypi.tuna.tsinghua.edu.cn/simple/] 
+
+ IF ERROR, try:
+
+    pip install -r requirements.txt [-i https://pypi.tuna.tsinghua.edu.cn/simple/] --ignore-installed
 
 
 AND THEN:

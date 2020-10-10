@@ -5,35 +5,35 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-09 15:16:33
+LastEditTime: 2020-10-10 14:12:06
 '''
-import argparse
+# import argparse
 import json
 import os
 import os.path as osp
-import base64
+# import base64
 # import warnings
  
 import PIL.Image
 import yaml
- 
-# from labelme import utils      
 
 import labelme.utils as lUtils   # solve conflict
  
-import cv2
+# import cv2
 import numpy as np
-from skimage import img_as_ubyte
-import numpy as np 
+# from skimage import img_as_ubyte
 
-
-from convertmask.utils.methods.logger import logger
 from tqdm import tqdm
+from convertmask.utils.methods.logger import logger
+
 
  
  
 # from sys import argv
  
+"""
+# redundant
+
 def main():
     logger.warning("This script is aimed to demonstrate how to convert the\n"
                   "JSON file to a single image dataset, and not to handle\n"
@@ -99,7 +99,7 @@ def main():
                 print('Saved to: %s' % out_dir1)
             except:
                 pass
-
+"""
 
 def processor(json_file,encoding="utf-8",flag=False):
     """
@@ -223,6 +223,6 @@ def processor(json_file,encoding="utf-8",flag=False):
 
  
  
-if __name__ == '__main__':
-    # base64path = argv[1]
-    main()
+# if __name__ == '__main__':
+#     # base64path = argv[1]
+#     main()

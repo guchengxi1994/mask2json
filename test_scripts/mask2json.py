@@ -4,14 +4,16 @@
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:24:12
-@LastEditors: xiaoshuyui
-@LastEditTime: 2020-07-10 10:33:02
+LastEditors: xiaoshuyui
+LastEditTime: 2020-10-10 13:58:53
 '''
 import cv2
-from utils import getShape
-from utils import img2base64
-from utils import rmQ
-from utils import getMultiShapes
+import sys
+sys.path.append('..')
+from convertmask.utils.methods import getShape
+from convertmask.utils.methods import img2base64
+from convertmask.utils.methods import rmQ
+from convertmask.utils import getMultiShapes
 import json
 import os
 import glob

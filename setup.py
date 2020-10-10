@@ -5,19 +5,27 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:09:24
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-24 10:14:14
+LastEditTime: 2020-10-10 10:15:56
 '''
 from convertmask.utils import __version__
 import os
 from setuptools import setup,find_packages
 # import pypandoc
+import github2pypi
 
 
 
-def open_file(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname),encoding='utf-8')
+# def open_file(fname):
+#     return open(os.path.join(os.path.dirname(__file__), fname),encoding='utf-8')
 # long_description = pypandoc.convert_file(os.path.join(os.path.dirname(__file__), 'README.md'), 'rst')
 # requestments = open_file('requirements.txt')
+
+with open('README.md') as f:
+    # e.g., ![](examples/image.jpg) ->
+    #       ![](https://github.com/wkentaro/imgviz/blob/master/examples/image.jpg)
+    long_description = github2pypi.replace_url(
+        slug='guchengxi1994/mask2json', content=f.read()
+    )
 
 setup(
     name='convertmask',
@@ -50,7 +58,7 @@ setup(
         'tqdm==4.32.1'
     ],
     description='a small tool for image augmentation, including mask files to json/xml files , image augmentation(flip,rotation,noise,...) and so on',
-    long_description=open_file('README.md').read(),
+    long_description=long_description,
     zip_safe=True,
     entry_points={
     'console_scripts':[

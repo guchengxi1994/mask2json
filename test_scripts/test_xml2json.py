@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-24 09:41:23
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-09 15:39:51
+LastEditTime: 2020-10-10 10:05:24
 '''
 import sys
 sys.path.append('..')
@@ -19,4 +19,4 @@ if __name__ == "__main__":
     # getPolygon(BASE_DIR+os.sep+'bbox_label.xml')
     x2jConvert(BASE_DIR+os.sep+'bbox_label.xml',BASE_DIR+os.sep+'bbox_label.jpg')
 
-    x2jConvert_pascal(BASE_DIR+os.sep+'bbox_label.xml')
+    x2jConvert_pascal(BASE_DIR+os.sep+'bbox_label.xml',BASE_DIR+os.sep+'bbox_label.jpg')

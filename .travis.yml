@@ -16,6 +16,8 @@ script:
   - python test_xml2yolo.py
   - python test_generateMask.py
   - python test_list2yaml.py
+  - python test_xml2json.py
+  - python test_img2b64.py
   # - python test_imgAug.py
 notifications:
   on_success: always

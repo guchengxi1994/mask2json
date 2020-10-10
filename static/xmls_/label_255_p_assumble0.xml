@@ -1,0 +1,34 @@
+<annotation>
+	<folder>D:\testALg\mask2json\mask2json\static\xmls_\label_255_p_assumble0.json</folder>
+	<filename>label_255_p_assumble0.jpg</filename>
+	<path>D:\testALg\mask2json\mask2json\static\xmls_\label_255_p_assumble0.xml</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>500</width>
+		<height>482</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>class0</name>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>123</xmin>
+			<ymin>121</ymin>
+			<xmax>255</xmax>
+			<ymax>292</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>class1</name>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>0</xmin>
+			<ymin>149</ymin>
+			<xmax>111</xmax>
+			<ymax>272</ymax>
+		</bndbox>
+	</object>
+</annotation>

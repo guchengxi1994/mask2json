@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:54:29
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-24 09:54:02
+LastEditTime: 2020-10-10 15:48:17
 '''
 import xml.etree.ElementTree as ET
 import os
@@ -13,7 +13,8 @@ from convertmask.utils.methods.logger import logger
 import glob
 from tqdm import tqdm
 
-def x2yConvert(xmlpath,labelPath=''):
+
+def x2yConvert(xmlpath, labelPath=''):
     labels = readLabels(labelPath)
     parent_path = os.path.dirname(xmlpath)
     if not os.path.exists(xmlpath):
@@ -23,33 +24,36 @@ def x2yConvert(xmlpath,labelPath=''):
             # pass
             logger.info('single file found')
 
-            labels = readXmlSaveTxt(xmlpath,parent_path,labels)
-            if len(labels)>0:
+            labels = readXmlSaveTxt(xmlpath, parent_path, labels)
+            if len(labels) > 0:
                 logger.warning('generate label file automaticly')
-                with open(parent_path+os.sep+'labels_.txt','w') as f:
+                with open(parent_path + os.sep + 'labels_.txt', 'w') as f:
                     for i in labels:
-                        f.write(i+'\n')
-            
+                        f.write(i + '\n')
+
             print('Done!')
             print("see here {}".format(parent_path))
-        
+
         else:
-            xmls = glob.glob(xmlpath+os.sep+"*.xml")
-            if not os.path.exists(parent_path+os.sep+'txts_'):
-                os.mkdir(parent_path+os.sep+'txts_')
+            xmls = glob.glob(xmlpath + os.sep + "*.xml")
+            if not os.path.exists(parent_path + os.sep + 'txts_'):
+                os.mkdir(parent_path + os.sep + 'txts_')
             logger.info('exists {} xml files'.format(len(xmls)))
 
             for xml in tqdm(xmls):
-                labels = readXmlSaveTxt(xml,parent_path+os.sep+'txts_',labels)
-            
-            if len(labels)>0:
+                labels = readXmlSaveTxt(xml, parent_path + os.sep + 'txts_',
+                                        labels)
+
+            if len(labels) > 0:
                 logger.warning('generate label file automaticly')
-                with open(parent_path+os.sep+'txts_'+os.sep+'labels_.txt','w') as f:
+                with open(
+                        parent_path + os.sep + 'txts_' + os.sep +
+                        'labels_.txt', 'w') as f:
                     for i in labels:
-                        f.write(i+'\n')
-            
+                        f.write(i + '\n')
+
             print('Done!')
-            print("see here {}".format(parent_path+os.sep+'txts_'))
+            print("see here {}".format(parent_path + os.sep + 'txts_'))
 
 
 def readLabels(labelPath):
@@ -60,7 +64,7 @@ def readLabels(labelPath):
             labels = []
     else:
         labels = []
-    
+
     return labels
 
 
@@ -77,10 +81,11 @@ def convert(size, box):  # 归一化操作
     h = h * dh
     return (x, y, w, h)
 
-def readXmlSaveTxt(xmlPath,parent_path,labels=[]):
+
+def readXmlSaveTxt(xmlPath, parent_path, labels=[]):
     classSet = set(labels)
-    fileName = xmlPath.split(os.sep)[-1].replace('.xml','')
-    out_file = open(parent_path+os.sep+fileName+'.txt','w')
+    fileName = xmlPath.split(os.sep)[-1].replace('.xml', '')
+    out_file = open(parent_path + os.sep + fileName + '.txt', 'w')
 
     in_file = open(xmlPath)
     tree = ET.parse(in_file)
@@ -102,10 +107,12 @@ def readXmlSaveTxt(xmlPath,parent_path,labels=[]):
 
         cls_id = labels.index(clas)
         xmlbox = obj.find('bndbox')
-        b = (float(xmlbox.find('xmin').text), float(xmlbox.find('xmax').text), float(xmlbox.find('ymin').text), float(xmlbox.find('ymax').text))
-        bb = convert((w,h), b)
-        out_file.write(str(cls_id) + " " + " ".join([str(a) for a in bb]) + '\n')
-    
+        b = (float(xmlbox.find('xmin').text), float(xmlbox.find('xmax').text),
+             float(xmlbox.find('ymin').text), float(xmlbox.find('ymax').text))
+        bb = convert((w, h), b)
+        out_file.write(
+            str(cls_id) + " " + " ".join([str(a) for a in bb]) + '\n')
+
     out_file.close()
     in_file.close()
 
@@ -113,4 +120,3 @@ def readXmlSaveTxt(xmlPath,parent_path,labels=[]):
         return labels
     else:
         return []
-

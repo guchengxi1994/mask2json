@@ -5,11 +5,10 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 17:07:28
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 14:19:05
+LastEditTime: 2020-10-10 15:42:02
 '''
 # import json
 import xmltodict
-
 
 
 def json_to_xml(json_str):
@@ -18,13 +17,13 @@ def json_to_xml(json_str):
     xml_str = xmltodict.unparse(json_str, pretty=1)
     return xml_str
 
+
 def root2annotion(xml_str):
     pass
-    
+
 
 def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
     xmin:int,ymin:int,xmax:int,ymax:int):
-
 
     annotation = {}
     # annotation['folder'] = "HBXZ"
@@ -39,7 +38,7 @@ def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
 
     annotation['source'] = source
 
-    size={}
+    size = {}
     size['width'] = width
     # size['width'] = 903
     # size['height'] = 1722
@@ -56,7 +55,6 @@ def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
     ob['difficult'] = 0
     # ob['name'] = 'weld'
 
-
     bndbox = {}
     # bndbox['xmin'] = 387
     # bndbox['ymin'] = 34
@@ -72,15 +70,13 @@ def img2xml(folder:str,filename:str,path:str,width:int,height:int,name:str, \
 
     annotation['object'] = ob
     # dic = {}
-    dicts = {'annotation':annotation}
+    dicts = {'annotation': annotation}
 
     return json_to_xml(dicts)
+
 
 # if __name__ == "__main__":
 #     # with open("D:\\getWeld\\insertXML\\test2.xml",'rb') as f:
 #     f = open("D:\\getWeld\\insertXML\\test2.xml",'w')
 #     f.writelines(img2xml("test","aa","asas\\aa.xx",12,23,"aaa",123,444,4523,664))
 #     f.close()
-
-            
-

@@ -18,6 +18,7 @@ import json
 import os
 import glob
 
+
 def test():
     img = "D:\\testALg\mask2json\mask2json\static\\1-2cvt.png"
     oriImg = "D:\\testALg\mask2json\mask2json\static\\1-2cvt.jpg"
@@ -28,7 +29,7 @@ def test():
     # print(region.shape)
     points = []
     shapes = []
-    for i in range(0,region.shape[0]):
+    for i in range(0, region.shape[0]):
         print(region[i][0])
         points.append(region[i][0].tolist())
 
@@ -40,10 +41,9 @@ def test():
     shape = dict()
     shape['label'] = 'weld'  #whatever other label
     shape['points'] = points
-    shape['group_id']='null'
-    shape['shape_type']='polygon'
-    shape['flags']={}
-
+    shape['group_id'] = 'null'
+    shape['shape_type'] = 'polygon'
+    shape['flags'] = {}
 
     shapes.append(shape)
 
@@ -53,20 +53,17 @@ def test():
     obj['imageHeight'] = imgShape[0]
     obj['imageWidth'] = imgShape[1]
 
-
-    j = json.dumps(obj,sort_keys=True, indent=4)
+    j = json.dumps(obj, sort_keys=True, indent=4)
 
     print(j)
 
-    with open('D:\\testALg\mask2json\mask2json\static\\1-2cvt.json','w') as f:
+    with open('D:\\testALg\mask2json\mask2json\static\\1-2cvt.json', 'w') as f:
         f.write(j)
 
-    
     rmQ.rm('D:\\testALg\mask2json\mask2json\static\\1-2cvt.json')
 
 
-
-def getJsons(imgPath,maskPath,savePath,yamlPath = ''):
+def getJsons(imgPath, maskPath, savePath, yamlPath=''):
     """
     imgPath: origin image path \n
     maskPath : mask image path \n
@@ -75,26 +72,17 @@ def getJsons(imgPath,maskPath,savePath,yamlPath = ''):
     >>> getJsons(path-to-your-imgs,path-to-your-maskimgs,path-to-your-jsonfiles) 
 
     """
-    oriImgs = glob.glob(imgPath+os.sep+'*.jpg')
-    maskImgs = glob.glob(maskPath+os.sep+'*.jpg')
-    
+    oriImgs = glob.glob(imgPath + os.sep + '*.jpg')
+    maskImgs = glob.glob(maskPath + os.sep + '*.jpg')
+
     for i in oriImgs:
-        i_mask = i.replace(imgPath,maskPath)
+        i_mask = i.replace(imgPath, maskPath)
         print(i)
 
-        getMultiShapes.getMultiShapes(i,i_mask,savePath,yamlPath)
-
-
-
-
-            
-
-
+        getMultiShapes.getMultiShapes(i, i_mask, savePath, yamlPath)
 
 
 if __name__ == "__main__":
     # test()
-    getJsons('D:\\getWeldPics\\test5_reshape','D:\\getWeldPics\\masks','D:\\getWeldPics\\jsons','D:\getWeldPics\info.yaml')
-
-
-
+    getJsons('D:\\getWeldPics\\test5_reshape', 'D:\\getWeldPics\\masks',
+             'D:\\getWeldPics\\jsons', 'D:\getWeldPics\info.yaml')

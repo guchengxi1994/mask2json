@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-09-24 10:38:07
+LastEditTime: 2020-10-10 15:48:49
 '''
 try:
     from labelme import __version__
@@ -22,46 +22,47 @@ import yaml
 import copy
 from .methods.getShape import *
 from .methods.img2base64 import imgEncode
-import os,json
+import os, json
 from .methods import rmQ
 # import warnings
 from .methods.logger import logger
-from .img2xml.processor_multiObj  import img2xml_multiobj
+from .img2xml.processor_multiObj import img2xml_multiobj
 
-def readYmal(filepath,labeledImg=None):
+
+def readYmal(filepath, labeledImg=None):
     if os.path.exists(filepath):
         f = open(filepath)
-        y = yaml.load(f,Loader=yaml.FullLoader)
+        y = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
         # print(y)
         tmp = y['label_names']
-        objs = zip(tmp.keys(),tmp.values())
+        objs = zip(tmp.keys(), tmp.values())
         return sorted(objs)
-    elif labeledImg  is not  None and filepath == "" :
+    elif labeledImg is not None and filepath == "":
         """
         should make sure your label is correct!!!
         """
-        labeledImg = np.array(labeledImg,dtype=np.uint8)
+        labeledImg = np.array(labeledImg, dtype=np.uint8)
 
-        labeledImg[labeledImg>0] = 255
-        labeledImg[labeledImg!=255] = 0
+        labeledImg[labeledImg > 0] = 255
+        labeledImg[labeledImg != 255] = 0
 
-        _, labels, stats, centroids = cv2.connectedComponentsWithStats(labeledImg)
+        _, labels, stats, centroids = cv2.connectedComponentsWithStats(
+            labeledImg)
 
         labels = np.max(labels) + 1
-        labels = [x for x in range(1,labels)]
+        labels = [x for x in range(1, labels)]
 
         classes = []
-        for i in range(0,len(labels)):
+        for i in range(0, len(labels)):
             classes.append("class{}".format(i))
 
-        return zip(classes,labels)
+        return zip(classes, labels)
     else:
         raise FileExistsError('file not found')
 
 
-
-def getMultiObjs_voc(oriImgPath,labelPath,savePath):
+def getMultiObjs_voc(oriImgPath, labelPath, savePath):
     # pass
     labelImg = io.imread(labelPath)
     fileName = labelPath.split(os.sep)[-1]
@@ -71,28 +72,28 @@ def getMultiObjs_voc(oriImgPath,labelPath,savePath):
     imgPath = oriImgPath
     logger.warning("auto detecting class numbers")
     if len(imgShape) == 3:
-        labelImg = labelImg[:,:,0]
-    labelImg[labelImg>0] = 255
+        labelImg = labelImg[:, :, 0]
+    labelImg[labelImg > 0] = 255
     # if classFile!='' and os.path.exists(classFile):
     #     with open(classFile,'r') as f:
     #         objs = list(f.readlines())
     # else:
     #     warnings.WarningMessage("auto detected class numbers")
-    _,labels,stats,centroids = cv2.connectedComponentsWithStats(labelImg)
+    _, labels, stats, centroids = cv2.connectedComponentsWithStats(labelImg)
 
     statsShape = stats.shape
     objs = []
-    for i in range(1,statsShape[0]):
-        st = stats[i,:]
+    for i in range(1, statsShape[0]):
+        st = stats[i, :]
 
         width = st[2]
         height = st[3]
 
         xmin = st[0]
         ymin = st[1]
-        
-        xmax = xmin+width
-        ymax = ymin+height
+
+        xmax = xmin + width
+        ymax = ymin + height
 
         ob = {}
         ob['name'] = 'class{}'.format(i)
@@ -108,74 +109,69 @@ def getMultiObjs_voc(oriImgPath,labelPath,savePath):
 
         ob['bndbox'] = bndbox
         objs.append(ob)
-    saveXmlPath = savePath+os.sep + fileName[:-4] + '.xml' 
-    img2xml_multiobj(saveXmlPath,saveXmlPath,"TEST",fileName,imgPath,imgWidth,imgHeight,objs)
-
-
+    saveXmlPath = savePath + os.sep + fileName[:-4] + '.xml'
+    img2xml_multiobj(saveXmlPath, saveXmlPath, "TEST", fileName, imgPath,
+                     imgWidth, imgHeight, objs)
 
 
 def test():
     # BASE_DIR = os.path.abspath(os.curdir)
-    BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) 
-    
+    BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd()))
     """
     do not use cv2.imread to load the label img. there is a bug
     """
     # oriImgPath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_sameclass.jpg'
     # label_img = io.imread('D:\\testALg\\mask2json\\mask2json\\multi_objs_sameclass_json\\label.png')
 
-    oriImgPath = BASE_DIR+'/static/multi_objs.jpg'
-    label_img = io.imread(BASE_DIR+'/multi_objs_json/label.png')
+    oriImgPath = BASE_DIR + '/static/multi_objs.jpg'
+    label_img = io.imread(BASE_DIR + '/multi_objs_json/label.png')
 
     labelShape = label_img.shape
-    
-    labels = readYmal(BASE_DIR+'/multi_objs_json/info.yaml')
+
+    labels = readYmal(BASE_DIR + '/multi_objs_json/info.yaml')
     shapes = []
     obj = dict()
     obj['version'] = __version__
     obj['flags'] = {}
     for la in labels:
-        if la[1]>0:
+        if la[1] > 0:
             # img = label_img[label_img == i[1]]
             img = copy.deepcopy(label_img)
-            
+
             img[img == la[1]] = 255
-            img[img!=255] = 0
+            img[img != 255] = 0
 
-            region = process(img.astype(np.uint8)) 
-
+            region = process(img.astype(np.uint8))
             """
             this if...else... is unnecessary if using getShape.getMultiRegion 
             """
-            if isinstance(region,np.ndarray):
+            if isinstance(region, np.ndarray):
                 points = []
-                for i in range(0,region.shape[0]):
+                for i in range(0, region.shape[0]):
                     # print(region[i][0])
                     points.append(region[i][0].tolist())
                 shape = dict()
                 shape['label'] = la[0]
                 shape['points'] = points
                 shape['group_id'] = 'null'
-                shape['shape_type']='polygon'
-                shape['flags']={}
+                shape['shape_type'] = 'polygon'
+                shape['flags'] = {}
                 shapes.append(shape)
 
-            elif isinstance(region,list):
+            elif isinstance(region, list):
                 for subregion in region:
                     points = []
-                    for i in range(0,subregion.shape[0]):
+                    for i in range(0, subregion.shape[0]):
                         # print(region[i][0])
                         points.append(subregion[i][0].tolist())
                     shape = dict()
                     shape['label'] = la[0]
                     shape['points'] = points
                     shape['group_id'] = 'null'
-                    shape['shape_type']='polygon'
-                    shape['flags']={}
+                    shape['shape_type'] = 'polygon'
+                    shape['flags'] = {}
                     shapes.append(shape)
 
-
-    
     obj['shapes'] = shapes
     obj['imagePath'] = oriImgPath.split(os.sep)[-1]
     obj['imageData'] = str(imgEncode(oriImgPath))
@@ -183,16 +179,20 @@ def test():
     obj['imageHeight'] = labelShape[0]
     obj['imageWidth'] = labelShape[1]
 
-    j = json.dumps(obj,sort_keys=True, indent=4)
+    j = json.dumps(obj, sort_keys=True, indent=4)
 
-    with open(BASE_DIR+'/static/multi_objs.json','w') as f:
+    with open(BASE_DIR + '/static/multi_objs.json', 'w') as f:
         f.write(j)
 
-    
-    rmQ.rm(BASE_DIR+'/static/multi_objs.json')
+    rmQ.rm(BASE_DIR + '/static/multi_objs.json')
 
 
-def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False,areaThresh=500):
+def getMultiShapes(oriImgPath,
+                   labelPath,
+                   savePath='',
+                   labelYamlPath='',
+                   flag=False,
+                   areaThresh=500):
     """
     oriImgPath : for change img to base64  \n
     labelPath : after fcn/unet or other machine learning objects outlining , the generated label img
@@ -203,7 +203,7 @@ def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False,
                     )   \n
 
     """
-    if isinstance(labelPath,str) :
+    if isinstance(labelPath, str):
         if os.path.exists(labelPath):
             label_img = io.imread(labelPath)
         else:
@@ -212,17 +212,17 @@ def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False,
         # img = oriImg
         label_img = labelPath
 
-    if np.max(label_img)>127:
+    if np.max(label_img) > 127:
         # print('too many classes! \n maybe binary?')
-        label_img[label_img>127] = 255
-        label_img[label_img!=255] = 0
-        label_img = label_img/255
+        label_img[label_img > 127] = 255
+        label_img[label_img != 255] = 0
+        label_img = label_img / 255
 
     labelShape = label_img.shape
 
     # print(np.max(label_img))
-    
-    labels = readYmal(labelYamlPath,label_img)
+
+    labels = readYmal(labelYamlPath, label_img)
     # print(list(labels))
     shapes = []
     obj = dict()
@@ -230,42 +230,42 @@ def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False,
     obj['flags'] = {}
     for la in list(labels):
 
-        if la[1]>0:
+        if la[1] > 0:
             # print(la[0])
             img = copy.deepcopy(label_img)
             img = img.astype(np.uint8)
-            
+
             img[img == la[1]] = 255
 
-            img[img!=255] = 0
+            img[img != 255] = 0
 
             region = process(img.astype(np.uint8))
-           
-            if isinstance(region,np.ndarray):
+
+            if isinstance(region, np.ndarray):
                 points = []
-                for i in range(0,region.shape[0]):
+                for i in range(0, region.shape[0]):
                     # print(region[i][0])
                     points.append(region[i][0].tolist())
                 shape = dict()
                 shape['label'] = la[0]
                 shape['points'] = points
                 shape['group_id'] = 'null'
-                shape['shape_type']='polygon'
-                shape['flags']={}
+                shape['shape_type'] = 'polygon'
+                shape['flags'] = {}
                 shapes.append(shape)
 
-            elif isinstance(region,list):
+            elif isinstance(region, list):
                 # print(len(region))
                 for subregion in region:
                     points = []
-                    for i in range(0,subregion.shape[0]):
+                    for i in range(0, subregion.shape[0]):
                         points.append(subregion[i][0].tolist())
                     shape = dict()
                     shape['label'] = la[0]
                     shape['points'] = points
                     shape['group_id'] = 'null'
-                    shape['shape_type']='polygon'
-                    shape['flags']={}
+                    shape['shape_type'] = 'polygon'
+                    shape['flags'] = {}
                     shapes.append(shape)
 
     # print(len(shapes))
@@ -277,66 +277,66 @@ def getMultiShapes(oriImgPath,labelPath,savePath='',labelYamlPath='',flag=False,
     obj['imageHeight'] = labelShape[0]
     obj['imageWidth'] = labelShape[1]
 
-    j = json.dumps(obj,sort_keys=True, indent=4)
+    j = json.dumps(obj, sort_keys=True, indent=4)
 
     if not flag:
-        saveJsonPath = savePath+os.sep + obj['imagePath'][:-4] + '.json'
-        with open(saveJsonPath,'w') as f:
+        saveJsonPath = savePath + os.sep + obj['imagePath'][:-4] + '.json'
+        with open(saveJsonPath, 'w') as f:
             f.write(j)
-   
+
         rmQ.rm(saveJsonPath)
-    
+
     else:
         return j
 
-    
 
-def getMultiObjs_voc_withYaml(oriImgPath,labelPath,yamlPath=''):
+def getMultiObjs_voc_withYaml(oriImgPath, labelPath, yamlPath=''):
     if os.path.exists(yamlPath):
-        f = open(yamlPath,encoding='utf-8')
-        y = yaml.load(f,Loader=yaml.FullLoader)
+        f = open(yamlPath, encoding='utf-8')
+        y = yaml.load(f, Loader=yaml.FullLoader)
         f.close()
 
         label_masks = y['label_names']
     else:
-        raise FileNotFoundError('yaml file not found!')  
+        raise FileNotFoundError('yaml file not found!')
     # print(label_masks)
     savePath = os.path.abspath(os.path.dirname(oriImgPath)) + os.sep + 'xml'
 
     if not os.path.exists(savePath):
         os.mkdir(savePath)
-        
+
     fileName = oriImgPath.split(os.sep)[-1]
-    saveXmlPath = savePath+os.sep + fileName[:-4] + '.xml' 
-    
-    labelImg = io.imread(labelPath) if isinstance(labelPath,str) else labelPath
+    saveXmlPath = savePath + os.sep + fileName[:-4] + '.xml'
+
+    labelImg = io.imread(labelPath) if isinstance(labelPath,
+                                                  str) else labelPath
     fileName = oriImgPath.split(os.sep)[-1]
     imgShape = labelImg.shape
     imgHeight = imgShape[0]
     imgWidth = imgShape[1]
     imgPath = oriImgPath
     objs = []
-    for k,v in label_masks.items():
+    for k, v in label_masks.items():
         # print(k)
         # print(v)
         ma = copy.deepcopy(labelImg)
         ma[ma != int(v)] = 0
-        
-        if np.sum(ma)>0:
+
+        if np.sum(ma) > 0:
             # print(v)
             ma1 = copy.deepcopy(labelImg)
 
-            ma1[ma1!=int(v)] = 0
-            ma1[ma1!=0] = 255
+            ma1[ma1 != int(v)] = 0
+            ma1[ma1 != 0] = 255
 
-            _,labels,stats,centroids = cv2.connectedComponentsWithStats(ma1)
+            _, labels, stats, centroids = cv2.connectedComponentsWithStats(ma1)
 
             del ma1
 
             statsShape = stats.shape
-            
-            for i in range(1,statsShape[0]):
-                st = stats[i,:]
+
+            for i in range(1, statsShape[0]):
+                st = stats[i, :]
                 width = st[2]
                 height = st[3]
                 xmin = st[0]
@@ -344,12 +344,12 @@ def getMultiObjs_voc_withYaml(oriImgPath,labelPath,yamlPath=''):
 
                 # print('area = {}'.format(st[4]))
                 # print('width = {},height = {}'.format(width,height))
-                
-                xmax = xmin+width
-                ymax = ymin+height
+
+                xmax = xmin + width
+                ymax = ymin + height
 
                 ob = {}
-                ob['name']  = k
+                ob['name'] = k
                 ob['difficult'] = 0
 
                 bndbox = {}
@@ -360,25 +360,19 @@ def getMultiObjs_voc_withYaml(oriImgPath,labelPath,yamlPath=''):
                 bndbox['ymax'] = ymax
 
                 ob['bndbox'] = bndbox
-                if width>10 and height>10 and st[4]>=0.75*(width*height):
+                if width > 10 and height > 10 and st[4] >= 0.75 * (width *
+                                                                   height):
                     objs.append(ob)
                     # print(ob)
-        
+
         del ma
-    
+
         # print(objs)
     # print("............................")
 
-    img2xml_multiobj(saveXmlPath,saveXmlPath,"TEST",fileName,imgPath,imgWidth,imgHeight,objs)
+    img2xml_multiobj(saveXmlPath, saveXmlPath, "TEST", fileName, imgPath,
+                     imgWidth, imgHeight, objs)
     objs.clear()
-    
-    
-
-    
-
-
-            
-            
 
 
 if __name__ == "__main__":

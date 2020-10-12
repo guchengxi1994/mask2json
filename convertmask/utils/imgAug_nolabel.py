@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:49:01
+LastEditTime: 2020-10-12 10:26:38
 '''
 import sys
 sys.path.append('..')
@@ -188,7 +188,7 @@ def imgTranslation(oriImg: str, flag=True):
         return d
 
 
-def aug_labelme(filepath, augs=['noise', 'rotation', 'trans', 'flip']):
+def aug_labelme(filepath, augs=['noise', 'rotation', 'trans', 'flip'],num=0):
     # augs = ['noise','rotation','trans','flip']
 
     l = np.random.randint(2, size=len(augs))
@@ -253,7 +253,7 @@ def aug_labelme(filepath, augs=['noise', 'rotation', 'trans', 'flip']):
     if isinstance(img, np.ndarray):
         io.imsave(
             parent_path + os.sep + 'augimgs_' + os.sep + fileName +
-            '_assumble.jpg', img)
+            '_{}_assumble.jpg'.format(num), img)
 
         logger.info("Done!")
         logger.info("see here {}".format(parent_path + os.sep + 'augimgs_'))
@@ -262,7 +262,7 @@ def aug_labelme(filepath, augs=['noise', 'rotation', 'trans', 'flip']):
         for i in range(0, len(img)):
             io.imsave(
                 parent_path + os.sep + 'augimgs_' + os.sep + fileName +
-                '_assumble{}.jpg'.format(i), img[i])
+                '_{}_assumble{}.jpg'.format(num,i), img[i])
 
         logger.info("Done!")
         logger.info("see here {}".format(parent_path + os.sep + 'augimgs_'))

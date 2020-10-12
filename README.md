@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-10-10 11:27:16
+ * @LastEditTime: 2020-10-12 14:15:09
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -288,6 +288,10 @@ script [here](./test_scripts/test_xml2json.py)
 
 ![gif1](./backup/xml2json.gif)
 
+## 2020.10.12
+
+### image augumentation support generating several annotation/images with single image/annotation(json,xml). See [here](./test_scripts/test_multiAug.py)
+
 
 # what to do next
 
@@ -295,11 +299,15 @@ script [here](./test_scripts/test_xml2json.py)
 
 ## 2. ~~support image augmentation without a label/json file~~  (2020.8.21)
 
-## 3. support image augmentation with a labeled file (just support json file right now)
+## 3. ~~support image augmentation with a labeled file (just support json file right now)~~ (2020.9)
 
 ## 4. image augmentation supports custom parameters (auto augmented right now)
 
 ## 5. do something more interesting
+
+## 6. re-write main [script](./convertmask/m2j_m.py)
+
+## 7. solve PyYmal installation error(currently write a [script](./convertmask/utils/methods/yamlUtils.py) by myself. maybe failure in the end.)
 
 
 

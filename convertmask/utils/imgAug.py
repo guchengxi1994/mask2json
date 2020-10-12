@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:49:30
+LastEditTime: 2020-10-12 10:24:38
 '''
 
 import sys
@@ -378,7 +378,7 @@ def imgTranslation(oriImg: str, oriLabel: str, flag=True):
         return d
 
 
-def aug_labelme(filepath, jsonpath, augs=None):
+def aug_labelme(filepath, jsonpath, augs=None, num=0):
     """
     augs: ['flip','noise','affine','rotate','...']
     """
@@ -483,13 +483,15 @@ def aug_labelme(filepath, jsonpath, augs=None):
     if isinstance(img, np.ndarray):
         io.imsave(
             parent_path + os.sep + 'jsons_' + os.sep + fileName +
-            '_assumble.jpg', img)
+            '_{}_assumble.jpg'.format(num), img)
         assumbleJson = getMultiShapes(parent_path + os.sep + 'jsons_' +
-                                      os.sep + fileName + '_assumble.jpg',
+                                      os.sep + fileName +
+                                      '_{}_assumble.jpg'.format(num),
                                       processedImg,
                                       flag=True,
                                       labelYamlPath='')
-        saveJsonPath = parent_path + os.sep + 'jsons_' + os.sep + fileName + '_assumble.json'
+        saveJsonPath = parent_path + os.sep + 'jsons_' + os.sep + fileName + '_{}_assumble.json'.format(
+            num)
         with open(saveJsonPath, 'w') as f:
             f.write(assumbleJson)
 
@@ -500,15 +502,15 @@ def aug_labelme(filepath, jsonpath, augs=None):
         for i in range(0, len(img)):
             io.imsave(
                 parent_path + os.sep + 'jsons_' + os.sep + fileName +
-                '_assumble{}.jpg'.format(i), img[i])
+                '_{}_assumble{}.jpg'.format(num, i), img[i])
             assumbleJson = getMultiShapes(parent_path + os.sep + 'jsons_' +
                                           os.sep + fileName +
-                                          '_assumble{}.jpg'.format(i),
+                                          '_{}_assumble{}.jpg'.format(num, i),
                                           processedImg[i],
                                           flag=True,
                                           labelYamlPath='')
-            saveJsonPath = parent_path + os.sep + 'jsons_' + os.sep + fileName + '_assumble{}.json'.format(
-                i)
+            saveJsonPath = parent_path + os.sep + 'jsons_' + os.sep + fileName + '_{}_assumble{}.json'.format(
+                num, i)
             with open(saveJsonPath, 'w') as f:
                 f.write(assumbleJson)
 
@@ -516,7 +518,7 @@ def aug_labelme(filepath, jsonpath, augs=None):
         print("see here {}".format(parent_path + os.sep + 'jsons_'))
 
 
-def aug_labelimg(filepath, xmlpath, augs=None):
+def aug_labelimg(filepath, xmlpath, augs=None, num=0):
     default_augs = ['noise', 'rotation', 'trans', 'flip']
     if augs is None:
         augs = ['noise', 'rotation', 'trans', 'flip']
@@ -622,13 +624,15 @@ def aug_labelimg(filepath, xmlpath, augs=None):
     if isinstance(img, np.ndarray):
         io.imsave(
             parent_path + os.sep + 'xmls_' + os.sep + fileName +
-            '_assumble.jpg', img)
+            '_{}_assumble.jpg'.format(num), img)
         assumbleJson = getMultiShapes(parent_path + os.sep + 'xmls_' + os.sep +
-                                      fileName + '_assumble.jpg',
+                                      fileName +
+                                      '_{}_assumble.jpg'.format(num),
                                       processedImg,
                                       flag=True,
                                       labelYamlPath='')
-        saveJsonPath = parent_path + os.sep + 'xmls_' + os.sep + fileName + '_assumble.json'
+        saveJsonPath = parent_path + os.sep + 'xmls_' + os.sep + fileName + '_{}_assumble.json'.format(
+            num)
         with open(saveJsonPath, 'w') as f:
             f.write(assumbleJson)
 
@@ -641,15 +645,15 @@ def aug_labelimg(filepath, xmlpath, augs=None):
         for i in range(0, len(img)):
             io.imsave(
                 parent_path + os.sep + 'xmls_' + os.sep + fileName +
-                '_assumble{}.jpg'.format(i), img[i])
+                '_{}_assumble{}.jpg'.format(num, i), img[i])
             assumbleJson = getMultiShapes(parent_path + os.sep + 'xmls_' +
                                           os.sep + fileName +
-                                          '_assumble{}.jpg'.format(i),
+                                          '_{}_assumble{}.jpg'.format(num, i),
                                           processedImg[i],
                                           flag=True,
                                           labelYamlPath='')
-            saveJsonPath = parent_path + os.sep + 'xmls_' + os.sep + fileName + '_assumble{}.json'.format(
-                i)
+            saveJsonPath = parent_path + os.sep + 'xmls_' + os.sep + fileName + '_{}_assumble{}.json'.format(
+                num, i)
             with open(saveJsonPath, 'w') as f:
                 f.write(assumbleJson)
 

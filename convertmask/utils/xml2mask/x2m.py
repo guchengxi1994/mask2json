@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 07:58:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:47:58
+LastEditTime: 2020-10-12 13:47:53
 '''
 import yaml
 
@@ -23,7 +23,10 @@ def yaml2dict(filepath):
     if os.path.exists(filepath):
         f = open(filepath)
         y = yaml.load(f, Loader=yaml.FullLoader)
-        f.close()
+        try:
+            f.close()
+        except:
+            pass
         return y
     else:
         raise FileExistsError('file not found')

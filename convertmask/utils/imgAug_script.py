@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-12 10:38:20
+LastEditTime: 2020-10-12 15:06:29
 '''
 from .methods.logger import logger
 from . import imgAug
@@ -40,6 +40,7 @@ def imgAug_withLabels(imgPath, labelPath, number=1):
                 i_json = i.replace(
                     imgPath,
                     labelPath) if os.path.isdir(labelPath) else labelPath
+                i_json = i_json.replace('.jpg','.xml')
                 imgAug.aug_labelme(i, i_json, num=num)
             num += 1
 
@@ -71,7 +72,7 @@ def imgAug_LabelImg(imgPath, xmlpath, number=1):
     oriImgs = glob.glob(imgPath + os.sep +
                         '*.jpg') if os.path.isdir(imgPath) else [imgPath]
     xmlFiles = glob.glob(xmlpath + os.sep +
-                         '*.json') if os.path.isdir(xmlpath) else [xmlpath]
+                         '*.xml') if os.path.isdir(xmlpath) else [xmlpath]
 
     if type(number) != int:
         logger.error('Augumentation times error.Using 1 as default')
@@ -86,5 +87,6 @@ def imgAug_LabelImg(imgPath, xmlpath, number=1):
             for i in tqdm(oriImgs):
                 i_xml = i.replace(
                     imgPath, xmlpath) if os.path.isdir(xmlpath) else xmlpath
+                i_xml = i_xml.replace('.jpg','.xml')
                 imgAug.aug_labelimg(i, i_xml, num=num)
             num += 1

@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-12 15:47:58
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-13 13:43:05
+LastEditTime: 2020-10-13 16:50:30
 '''
 import xml.etree.ElementTree as ET
 import os
@@ -18,7 +18,7 @@ from skimage import io
 
 
 def y2xConvert(txtPath, imgPath, labelPath):
-    # pass
+    logger.info('only *.jpg supported right now!')
     labels = readLabels(labelPath)
     if not os.path.exists(txtPath):
         raise FileNotFoundError('file not found')
@@ -65,6 +65,57 @@ def y2xConvert(txtPath, imgPath, labelPath):
                              imgShape[1], imgShape[0], objs)
 
             logger.info('Done! See {} .'.format(tmpPath))
+
+        else:
+            logger.info('Multiple files found')
+            parent_path = os.path.dirname(txtPath)
+
+            if not os.path.exists(parent_path + os.sep + '_xmls_'):
+                os.mkdir(parent_path + os.sep + '_xmls_')
+
+            txts = glob.glob(txtPath + os.sep + "*.txt")
+            for i in tqdm(txts):
+                filename = os.path.split(i)[1]
+                imgname = os.path.splitext(filename)[0]
+                i_imgPath = imgPath + os.sep + imgname + '*.jpg'
+
+                if not os.path.exists(i_imgPath):
+                    logger.error('image not found!')
+                    return
+
+                image = io.imread(i_imgPath)
+                folder = imgPath
+                imgShape = image.shape
+                objs = []
+                with open(i, 'r', encoding='utf-8') as f:
+                    contents = f.readlines()
+
+                if len(contents) > 0:
+                    for c in contents:
+                        obj = dict()
+                        tmp = c.split(' ')
+                        clas, x, y, w, h = int(
+                            tmp[0]), tmp[1], tmp[2], tmp[3], tmp[4]
+
+                        bbox = convert(imgShape, float(x), float(y), float(w),
+                                       float(h))
+                        # print(bbox)
+                        obj['name'] = labels[clas]
+                        obj['difficult'] = 0
+                        obj['bndbox'] = {
+                            'xmin': bbox[0],
+                            'ymin': bbox[2],
+                            'xmax': bbox[1],
+                            'ymax': bbox[3]
+                        }
+                        objs.append(obj)
+
+                tmpPath = parent_path + os.sep + '_xmls_' + os.sep + imgname + '.xml'
+                img2xml_multiobj(tmpPath, tmpPath, folder, filename, imgPath,
+                                 imgShape[1], imgShape[0], objs)
+
+            logger.info('Done! See {} .'.format(parent_path + os.sep +
+                                                '_xmls_'))
 
 
 def convert(imgShape, x, y, w, h):

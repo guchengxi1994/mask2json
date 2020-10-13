@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-12 10:24:38
+LastEditTime: 2020-10-12 15:11:06
 '''
 
 import sys
@@ -413,11 +413,9 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
     if np.sum(l) == 0:
         l[0] = 1
 
-    l = l.tolist()
+    l[l != 1] = 1
 
-    # print(l)
-    if len(augs) < 4:
-        l[l != 1] = 1
+    l = l.tolist()
 
     p = list(zip(augs, l))
 
@@ -550,11 +548,9 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
     if np.sum(l) == 0:
         l[0] = 1
 
+    l[l != 1] = 1
+
     l = l.tolist()
-
-    if len(augs) < 4:
-        l[l != 1] = 1
-
     # print(l)
 
     p = list(zip(augs, l))

@@ -9,6 +9,7 @@
 /convertmask/utils/img2xml/__pycache__
 /convertmask/utils/methods/__pycache__
 /convertmask/utils/xml2yolo/__pycache__
+/convertmask/utils/yolo2xml/__pycache__
 /convertmask/utils/xml2mask/__pycache__
 /convertmask/utils/xml2json/__pycache__
 /convertmask/utils/json2xml/__pycache__

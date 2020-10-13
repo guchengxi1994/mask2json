@@ -1,0 +1,24 @@
+<annotation>
+	<folder>D:\testALg\mask2json\mask2json\static\yolo2xml</folder>
+	<filename>test.jpg</filename>
+	<path>D:\testALg\mask2json\mask2json\static\yolo2xml\test.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>416</width>
+		<height>416</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>Q</name>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>234</xmin>
+			<ymin>0</ymin>
+			<xmax>416</xmax>
+			<ymax>16</ymax>
+		</bndbox>
+	</object>
+</annotation>

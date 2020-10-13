@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-10-12 14:15:09
+ * @LastEditTime: 2020-10-13 17:27:02
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -292,6 +292,12 @@ script [here](./test_scripts/test_xml2json.py)
 
 ### image augumentation support generating several annotation/images with single image/annotation(json,xml). See [here](./test_scripts/test_multiAug.py)
 
+## 2020.10.13
+
+### image augumentation support convert yolo txts to xmls(pascal). See [here](./test_scripts/test_yolo2xml.py)
+
+### speed up by using multiprocess
+
 
 # what to do next
 
@@ -308,6 +314,8 @@ script [here](./test_scripts/test_xml2json.py)
 ## 6. re-write main [script](./convertmask/m2j_m.py)
 
 ## 7. solve PyYmal installation error(currently write a [script](./convertmask/utils/methods/yamlUtils.py) by myself. maybe failure in the end.)
+
+## 8. image augmentation zoooom 
 
 
 

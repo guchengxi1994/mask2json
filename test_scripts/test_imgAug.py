@@ -5,11 +5,11 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:39:30
+LastEditTime: 2020-10-14 12:19:43
 '''
 import sys
 sys.path.append("..")
-from convertmask.utils.imgAug import imgFlip, imgNoise, imgRotation, imgTranslation, aug_labelme, aug_labelimg
+from convertmask.utils.imgAug import imgFlip, imgNoise, imgRotation, imgTranslation, aug_labelme, aug_labelimg, imgZoom
 import os
 from skimage import io
 from convertmask.utils.getMultiShapes import getMultiShapes
@@ -82,4 +82,8 @@ if __name__ == "__main__":
 
     #### test4
 
-    aug_labelimg(imgPath2, labelPath2)
+    # aug_labelimg(imgPath2, labelPath2)
+
+    #### test5
+    imgZoom(imgPath, labelPath, 3)
+    # io.imsave(BASE_DIR + os.sep + 'test_zoom.jpg', i)

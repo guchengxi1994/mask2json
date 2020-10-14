@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:48:49
+LastEditTime: 2020-10-14 11:36:41
 '''
 try:
     from labelme import __version__
@@ -375,5 +375,5 @@ def getMultiObjs_voc_withYaml(oriImgPath, labelPath, yamlPath=''):
     objs.clear()
 
 
-if __name__ == "__main__":
-    test()
+# if __name__ == "__main__":
+#     test()

@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-10-13 17:27:02
+ * @LastEditTime: 2020-10-14 12:22:41
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -315,7 +315,7 @@ script [here](./test_scripts/test_xml2json.py)
 
 ## 7. solve PyYmal installation error(currently write a [script](./convertmask/utils/methods/yamlUtils.py) by myself. maybe failure in the end.)
 
-## 8. image augmentation zoooom 
+## 8. ~~image augmentation zoooom~~ (2020.10.14) 
 
 
 

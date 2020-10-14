@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-12 15:11:06
+LastEditTime: 2020-10-14 12:19:21
 '''
 
 import sys
@@ -15,7 +15,7 @@ sys.path.append('..')
 # import warnings
 from skimage import io
 import skimage.util.noise as snoise
-# from skimage import morphology
+from skimage import morphology
 import cv2
 import os
 from .json2mask.convert import processor
@@ -34,6 +34,169 @@ from .methods.logger import logger
 import random
 from convertmask.utils.xml2json.xml2json import x2jConvert_pascal
 from convertmask.utils.json2xml.json2xml import j2xConvert
+from convertmask.utils.methods.entity import Img_clasId
+from scipy import ndimage
+
+kernel = np.ones((5, 5), np.uint8)
+
+
+def _getZoomedImg(img, size):
+    # pass
+    if len(img.shape) == 3:
+        zoomImg = ndimage.zoom(img, (size, size, 1), order=1)
+    else:
+        zoomImg = ndimage.zoom(img, size)
+    # return zoomImg
+    oriImgShape = img.shape
+    zoomImgShape = zoomImg.shape
+    # print(zoomImgShape)
+    if size > 1:
+        vDis = zoomImgShape[0] - oriImgShape[0]
+        hDis = zoomImgShape[1] - oriImgShape[1]
+
+        vDisHalf = int(vDis * 0.5)
+        hDisHalf = int(hDis * 0.5)
+
+        res = zoomImg[vDisHalf:zoomImgShape[0] + vDisHalf - vDis,
+                      hDisHalf:zoomImgShape[1] + hDisHalf - hDis]
+    elif size < 1:
+        # return zoomImg
+        vDis = abs(zoomImgShape[0] - oriImgShape[0])
+        hDis = abs(zoomImgShape[1] - oriImgShape[1])
+        vDisHalf = int(vDis * 0.5)
+        hDisHalf = int(hDis * 0.5)
+
+        res = cv2.copyMakeBorder(zoomImg,
+                                 vDisHalf,
+                                 vDis - vDisHalf,
+                                 hDisHalf,
+                                 hDis - hDisHalf,
+                                 cv2.BORDER_CONSTANT,
+                                 value=[0, 0, 0])
+    return res
+
+
+def _splitImg(maskImg, thres=10):
+    maxLabel = np.max(maskImg)
+    # print(maxLabel)
+    maskImgs = []
+    if maxLabel == 0:
+        pass
+    else:
+        for num in range(1, maxLabel + 1):
+            tmp = maskImg.copy()
+            tmp[tmp != num] = 0
+            tmp[tmp != 0] = 255
+
+            closing = cv2.morphologyEx(tmp, cv2.MORPH_CLOSE, kernel)
+            # dots = np.sum(tmp)
+            # tmpRes = np.zeros((tmp.shape[0], tmp.shape[1]))
+            # _, labels, stats, _ = cv2.connectedComponentsWithStats(tmp)
+            # print(stats)
+            # for i in range(1, stats.shape[0]):
+            #     if stats[i][4] < thres:
+            #         labels[labels == i] = 0
+
+            # labels[labels != 0] = num
+            # print(np.max(tmp))
+            # print(int(0.5 * dots))
+            # tmp2 = tmp.copy()
+            # tmp = tmp.astype(bool)
+            # tmp = morphology.remove_small_objects(tmp,
+            #                                       int(0.5 * dots),in_place=True)
+            # tmp[tmp!=0] = 1
+            # print(num)
+            # print(tmp.shape)
+            # tmp = tmp.astype(int)
+            # tmp[tmp == 1] = num
+            # if np.max(tmp) == num:
+            closing[closing != 0] = num
+            maskImgs.append(Img_clasId(closing, num))
+
+            del tmp, closing
+    return maskImgs
+
+
+def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
+    """
+    size : The zoom factor along the axes, default 0.8~1.8
+    """
+    # pass
+    if isinstance(oriImg, str):
+        if os.path.exists(oriImg):
+            img = io.imread(oriImg)
+        else:
+            raise FileNotFoundError('Original image not found')
+    elif isinstance(oriImg, np.ndarray):
+        img = oriImg
+    else:
+        logger.error('input {} type error'.format('oriImg'))
+        return
+
+    try:
+        size = float(size)
+        # if size == 0.0:
+        #     raise ValueError('zoom factor cannot be zero')
+    except:
+        logger.warning('input {} type error ,got {}.'.format(
+            'size', type(size)))
+        size = random.uniform(0.8, 1.8)
+        size = round(size, 2)
+
+    if size <= 0 or size == 1:
+        size = random.uniform(0.8, 1.8)
+        size = round(size, 2)
+
+    resOri = _getZoomedImg(img, size)
+
+    if isinstance(oriLabel, str):
+        mask = processor(oriLabel, flag=True)
+    elif isinstance(oriLabel, np.ndarray):
+        mask = oriLabel
+    else:
+        raise TypeError(
+            "input parameter 'oriLabel' type {} is not supported".format(
+                type(oriLabel)))
+
+    maskImgs = _splitImg(mask)
+    resMask = np.zeros((resOri.shape[0], resOri.shape[1]))
+    if len(maskImgs) > 0:
+        for m in maskImgs:
+            # print(m.img.shape)
+            res = _getZoomedImg(m.img, size)
+            res[res > 0] = m.clasId
+            res[res != m.clasId] = 0
+            resMask += res
+    resMask = resMask.astype(np.uint8)
+
+    if flag:
+        parent_path = os.path.dirname(oriLabel)
+        if os.path.exists(parent_path + os.sep + 'jsons_'):
+            pass
+        else:
+            os.makedirs(parent_path + os.sep + 'jsons_')
+        fileName = oriLabel.split(os.sep)[-1].replace('.json', '')
+
+        io.imsave(
+            parent_path + os.sep + 'jsons_' + os.sep + fileName + '_zoom.jpg',
+            resOri)
+
+        zoomedMask_j = getMultiShapes(parent_path + os.sep + 'jsons_' +
+                                      os.sep + fileName + '_zoom.jpg',
+                                      resMask,
+                                      flag=True,
+                                      labelYamlPath='')
+        saveJsonPath = parent_path + os.sep + 'jsons_' + os.sep + fileName + '_zoom.json'
+        if zoomedMask_j is not None:
+            with open(saveJsonPath, 'w') as f:
+                f.write(zoomedMask_j)
+        else:
+            pass
+
+    else:
+        d = dict()
+        d['zoom'] = Ori_Pro(resOri, resMask)
+        return d
 
 
 def imgFlip(oriImg: str, oriLabel: str, flip_list=[1, 0, -1], flag=True):
@@ -50,8 +213,11 @@ def imgFlip(oriImg: str, oriLabel: str, flip_list=[1, 0, -1], flag=True):
             img = io.imread(oriImg)
         else:
             raise FileNotFoundError('Original image not found')
-    else:
+    elif isinstance(oriImg, np.ndarray):
         img = oriImg
+    else:
+        logger.error('input {} type error'.format(imgFlip))
+        return
 
     try:
         if len(flip_list) > 1 and (1 in flip_list or 0 in flip_list
@@ -178,8 +344,11 @@ def imgNoise(oriImg: str, oriLabel: str, flag=True):
             img = io.imread(oriImg)
         else:
             raise FileNotFoundError('Original image not found')
-    else:
+    elif isinstance(oriImg, np.ndarray):
         img = oriImg
+    else:
+        logger.error('input {} type error'.format(imgFlip))
+        return
 
     for i in p:
         if i[1] != 0:
@@ -246,7 +415,9 @@ def imgNoise(oriImg: str, oriLabel: str, flag=True):
         elif isinstance(oriLabel, np.ndarray):
             mask = oriLabel
         else:
-            raise TypeError("input parameter 'oriLabel' type is not supported")
+            raise TypeError(
+                "input parameter 'oriLabel' type {} is not supported".format(
+                    type(oriLabel)))
         d['noise'] = Ori_Pro(img, mask)
 
         return d
@@ -264,8 +435,11 @@ def imgRotation(oriImg: str, oriLabel: str, angle=30, scale=1, flag=True):
             img = io.imread(oriImg)
         else:
             raise FileNotFoundError('Original image not found')
-    else:
+    elif isinstance(oriImg, np.ndarray):
         img = oriImg
+    else:
+        logger.error('input {} type error'.format(imgFlip))
+        return
 
     imgShape = img.shape
 
@@ -274,7 +448,9 @@ def imgRotation(oriImg: str, oriLabel: str, angle=30, scale=1, flag=True):
     elif isinstance(oriLabel, np.ndarray):
         mask = oriLabel
     else:
-        raise TypeError("input parameter 'oriLabel' type is not supported")
+        raise TypeError(
+            "input parameter 'oriLabel' type {} is not supported".format(
+                type(oriLabel)))
 
     center = (0.5 * imgShape[1], 0.5 * imgShape[0])
     mat = cv2.getRotationMatrix2D(center, angle, scale)
@@ -325,8 +501,11 @@ def imgTranslation(oriImg: str, oriLabel: str, flag=True):
             img = io.imread(oriImg)
         else:
             raise FileNotFoundError('Original image not found')
-    else:
+    elif isinstance(oriImg, np.ndarray):
         img = oriImg
+    else:
+        logger.error('input {} type error'.format(imgFlip))
+        return
 
     imgShape = img.shape
 
@@ -335,7 +514,9 @@ def imgTranslation(oriImg: str, oriLabel: str, flag=True):
     elif isinstance(oriLabel, np.ndarray):
         mask = oriLabel
     else:
-        raise TypeError("input parameter 'oriLabel' type is not supported")
+        raise TypeError(
+            "input parameter 'oriLabel' type {} is not supported".format(
+                type(oriLabel)))
 
     trans_h = random.randint(0, int(0.5 * imgShape[1]))
     trans_v = random.randint(0, int(0.5 * imgShape[0]))

@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-13 17:22:58
+LastEditTime: 2020-10-14 08:29:56
 '''
 from .methods.logger import logger
 from . import imgAug
@@ -14,8 +14,7 @@ import glob
 import os
 from tqdm import tqdm
 from multiprocessing import Pool
-import multiprocessing
-cpus = multiprocessing.cpu_count()
+from convertmask import __CPUS__
 
 
 def proc_xml(img, imgPath, xmlpath, number):
@@ -99,7 +98,7 @@ def imgAug_LabelImg(imgPath, xmlpath, number=1):
         #     i_xml = i_xml.replace('.jpg','.xml')
         #     imgAug.aug_labelimg(i, i_xml, num=num)
         # num += 1
-    pool = Pool(cpus - 1)
+    pool = Pool(__CPUS__ - 1)
     pool_list = []
     for i in oriImgs:
         for num in tqdm(range(0, number)):

@@ -18,10 +18,8 @@ script:
   # - python test_xml2json.py
   # - python test_img2b64.py
   - cd /home/travis/build/guchengxi1994/mask2json/convertmask
-  - python main_v_0_5_any.py mask2json /home/travis/build/guchengxi1994/mask2json/static/multi_objs.jpg 
-    /home/travis/build/guchengxi1994/mask2json/multi_objs_json/label.png
-    /home/travis/build/guchengxi1994/mask2json/multi_objs_json/info.yaml
-    
+  - python main_v_0_5_any.py mask2json /home/travis/build/guchengxi1994/mask2json/static/multi_objs.jpg  /home/travis/build/guchengxi1994/mask2json/multi_objs_json/label.png  /home/travis/build/guchengxi1994/mask2json/multi_objs_json/info.yaml
+
 notifications:
   on_success: always
 cache: pip

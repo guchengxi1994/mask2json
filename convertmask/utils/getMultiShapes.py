@@ -5,12 +5,12 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-14 11:36:41
+LastEditTime: 2020-10-15 19:19:35
 '''
 try:
-    from labelme import __version__
+    from labelme import __version__ as labelme_version
 except:
-    __version__ = '4.2.9'
+    labelme_version = '4.2.9'
 
 import sys
 sys.path.append("..")
@@ -131,7 +131,7 @@ def test():
     labels = readYmal(BASE_DIR + '/multi_objs_json/info.yaml')
     shapes = []
     obj = dict()
-    obj['version'] = __version__
+    obj['version'] = labelme_version
     obj['flags'] = {}
     for la in labels:
         if la[1] > 0:
@@ -226,7 +226,7 @@ def getMultiShapes(oriImgPath,
     # print(list(labels))
     shapes = []
     obj = dict()
-    obj['version'] = __version__
+    obj['version'] = labelme_version
     obj['flags'] = {}
     for la in list(labels):
 

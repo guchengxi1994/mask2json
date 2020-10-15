@@ -10,7 +10,7 @@ script:
   - cd test_scripts
   - python test_img2xml.py
   - python test_mask2json.py
-  - python test_cpfile.py
+  # - python test_cpfile.py
   - python test_multiObjs2Xml.py
   - python test_json2xml.py
   - python test_xml2yolo.py
@@ -18,6 +18,10 @@ script:
   - python test_list2yaml.py
   - python test_xml2json.py
   - python test_img2b64.py
+  - cd /home/travis/build/guchengxi1994/mask2json/mask2json
+  - python main_v_0_5_any.py mask2json /home/travis/build/guchengxi1994/mask2json/static/multi_objs.jpg 
+    /home/travis/build/guchengxi1994/mask2json/multi_objs_json/label.png
+    /home/travis/build/guchengxi1994/mask2json/multi_objs_json/info.yaml
   # - python test_imgAug.py
 notifications:
   on_success: always

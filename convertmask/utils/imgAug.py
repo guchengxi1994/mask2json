@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-14 12:19:21
+LastEditTime: 2020-10-15 19:40:27
 '''
 
 import sys
@@ -741,6 +741,8 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
 
     jsonpath = x2jConvert_pascal(xmlpath, filepath)
     processedImg = jsonpath
+
+    logger.warning(processedImg)
 
     for i in p:
         # if i[0]!='flip':

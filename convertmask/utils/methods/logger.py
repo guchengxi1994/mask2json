@@ -5,13 +5,13 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-19 08:59:04
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:47:21
+LastEditTime: 2020-10-15 08:33:46
 '''
 import logging
 
 import termcolor
 
-from . import __appname__
+from convertmask import __appname__
 
 COLORS = {
     'WARNING': 'yellow',

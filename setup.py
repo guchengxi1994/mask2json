@@ -5,9 +5,9 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:09:24
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:50:06
+LastEditTime: 2020-10-15 08:32:59
 '''
-from convertmask.utils import __version__
+from convertmask import __version__
 import os
 from setuptools import setup, find_packages
 # import pypandoc

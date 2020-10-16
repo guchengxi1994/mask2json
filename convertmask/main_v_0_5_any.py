@@ -5,10 +5,11 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-15 14:03:34
+LastEditTime: 2020-10-16 14:16:10
 '''
 import sys
 sys.path.append('..')
+import os
 from convertmask import BaseParser, __appname__, __support_methods__
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.imgAug_script import imgAug_withLabels, imgAug_withoutLabels, imgAug_LabelImg
@@ -37,6 +38,7 @@ class Parser(BaseParser):
             'method',
             metavar='PROCESS_METHOD',
             type=str,
+            nargs='?',
             help='the method to be processed. currently, {} are supported.'.
             format(','.join(__support_methods__)))
 
@@ -108,20 +110,22 @@ def script():
 
     # print(args)
     if args['version']:
+        # print(1)
         from convertmask import __version__
         print(__version__)
         del __version__
         return
 
-    if not args['method']:
+    if not args['method'] and not args['version']:
         parser.print_help()
         return
 
-    if not args['input'] and not args['HELP']:
+    if args['method'] and not args['input'] and not args['HELP']:
         logger.error('<=== INPUT FOLDER/FILE MUST NOT BE NULL ===>')
         return
 
     if args['method'] not in __support_methods__:
+        # print(args['method'])
         logger.warning(' only ==>{}  are supported'.format(
             '\n==>'.join(__support_methods__)))
         lis = difflib.get_close_matches(args['method'], __support_methods__)
@@ -153,12 +157,12 @@ def script():
             elif len(params) == 2:
                 inputOriimgPath = params[0]
                 inputMaskPath = params[1]
-                savePath = inputMaskPath
+                savePath = os.path.dirname(inputMaskPath)
                 inputYamlPath = ''
             elif len(params) == 3:
                 inputOriimgPath = params[0]
                 inputMaskPath = params[1]
-                savePath = inputMaskPath
+                savePath = os.path.dirname(inputMaskPath)
                 inputYamlPath = params[2]
             else:
                 raise MethodInputException('Too much input parameters')
@@ -184,7 +188,7 @@ def script():
             elif len(params) == 2:
                 inputOriimgPath = params[0]
                 inputMaskPath = params[1]
-                savePath = inputMaskPath
+                savePath =  os.path.dirname(inputMaskPath)
             else:
                 raise MethodInputException('Too much input parameters')
 

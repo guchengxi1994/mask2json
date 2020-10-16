@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-12 10:28:37
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-13 17:18:45
+LastEditTime: 2020-10-16 14:33:41
 '''
 import sys
 sys.path.append('..')
@@ -22,6 +22,6 @@ imgPath2 = BASE_DIR + os.sep + 'label_255.png'
 labelPath2 = BASE_DIR + os.sep + 'label_255.xml'
 
 if __name__ == "__main__":
-    # imgAug_withLabels(imgPath, labelPath, number=2)
+    imgAug_withLabels(imgPath, labelPath, number=2)
 
-    imgAug_LabelImg(imgPath2, labelPath2, number=50)
+    # imgAug_LabelImg(imgPath2, labelPath2, number=50)

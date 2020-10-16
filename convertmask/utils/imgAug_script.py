@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-14 08:29:56
+LastEditTime: 2020-10-16 14:36:37
 '''
 from .methods.logger import logger
 from . import imgAug
@@ -48,7 +48,7 @@ def imgAug_withLabels(imgPath, labelPath, number=1):
         for i in tqdm(oriImgs):
             i_json = i.replace(
                 imgPath, labelPath) if os.path.isdir(labelPath) else labelPath
-            i_json = i_json.replace('.jpg', '.xml')
+            i_json = i_json.replace('.jpg', '.json')
             imgAug.aug_labelme(i, i_json, num=num)
         # num += 1
 

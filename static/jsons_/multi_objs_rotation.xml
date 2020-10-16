@@ -1,7 +1,7 @@
 <annotation>
 	<folder>D:\testALg\mask2json\mask2json\static\jsons_\multi_objs_rotation.json</folder>
 	<filename>multi_objs_rotation.jpg</filename>
-	<path>D:\testALg\mask2json\mask2json\static/jsons_/multi_objs_rotation.xml</path>
+	<path>D:\testALg\mask2json\mask2json/static/jsons_/multi_objs_rotation.xml</path>
 	<source>
 		<database>Unknown</database>
 	</source>

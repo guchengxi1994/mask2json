@@ -5,23 +5,25 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-24 09:03:04
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-09 15:40:10
+LastEditTime: 2020-10-16 10:22:28
 '''
-import xml.etree.ElementTree as ET 
+import xml.etree.ElementTree as ET
 from convertmask.utils.methods.img2base64 import imgEncode
 from convertmask.utils.methods.logger import logger
 import traceback
 import json
 import os
 from skimage import io
-import numpy as np
-import cv2
+# import numpy as np
+# import cv2
 try:
-    from labelme import __version__
+    from labelme import __version__  as labelmeVersion
 except:
-    __version__ = '4.2.9'
+    from convertmask.labelme_sub import __version__ as labelmeVersion
+    # __version__ = '4.2.9'
 
-def x2jConvert(xmlpath,originImgPath,flag=True):
+
+def x2jConvert(xmlpath, originImgPath, flag=True):
     # pass
     if not os.path.exists(xmlpath) or not os.path.exists(originImgPath):
         logger.error('file not exist')
@@ -32,11 +34,11 @@ def x2jConvert(xmlpath,originImgPath,flag=True):
 
     (fatherPath, filename_ext) = os.path.split(originImgPath)
     (filename, _) = os.path.splitext(filename_ext)
-    
+
     ob = dict()
     ob['imageData'] = base64Code
     ob['flags'] = {}
-    ob['version'] = __version__
+    ob['version'] = labelmeVersion
     ob['imagePath'] = filename_ext
 
     img = io.imread(originImgPath)
@@ -47,18 +49,20 @@ def x2jConvert(xmlpath,originImgPath,flag=True):
     ob['shapes'] = shapes
 
     if flag:
-        with open(fatherPath+os.sep+filename+'.json','w',encoding='utf-8') as f:
-            j = json.dumps(ob,sort_keys=True, indent=4)
+        with open(fatherPath + os.sep + filename + '.json',
+                  'w',
+                  encoding='utf-8') as f:
+            j = json.dumps(ob, sort_keys=True, indent=4)
             f.write(j)
-        
-        logger.info('save to path {}'.format(fatherPath+os.sep+filename+'.json'))
-        return fatherPath+os.sep+filename+'.json'
+
+        logger.info('save to path {}'.format(fatherPath + os.sep + filename +
+                                             '.json'))
+        return fatherPath + os.sep + filename + '.json'
     else:
-        return json.dumps(ob,sort_keys=True, indent=4)
+        return json.dumps(ob, sort_keys=True, indent=4)
 
 
-
-def x2jConvert_pascal(xmlpath,originImgPath,flag=True):
+def x2jConvert_pascal(xmlpath, originImgPath, flag=True):
     # pass
     if not os.path.exists(xmlpath) or not os.path.exists(originImgPath):
         logger.error('file not exist')
@@ -69,11 +73,11 @@ def x2jConvert_pascal(xmlpath,originImgPath,flag=True):
 
     (fatherPath, filename_ext) = os.path.split(originImgPath)
     (filename, _) = os.path.splitext(filename_ext)
-    
+
     ob = dict()
     ob['imageData'] = base64Code
     ob['flags'] = {}
-    ob['version'] = __version__
+    ob['version'] = labelmeVersion
     ob['imagePath'] = filename_ext
 
     img = io.imread(originImgPath)
@@ -84,28 +88,29 @@ def x2jConvert_pascal(xmlpath,originImgPath,flag=True):
     ob['shapes'] = shapes
 
     if flag:
-        with open(fatherPath+os.sep+filename+'_p.json','w',encoding='utf-8') as f:
-            j = json.dumps(ob,sort_keys=True, indent=4)
+        with open(fatherPath + os.sep + filename + '_p.json',
+                  'w',
+                  encoding='utf-8') as f:
+            j = json.dumps(ob, sort_keys=True, indent=4)
             f.write(j)
-        
-        logger.info('save to path {}'.format(fatherPath+os.sep+filename+'_p.json'))
-        return fatherPath+os.sep+filename+'_p.json'
-    else:
-        return json.dumps(ob,sort_keys=True, indent=4)
 
+        logger.info('save to path {}'.format(fatherPath + os.sep + filename +
+                                             '_p.json'))
+        return fatherPath + os.sep + filename + '_p.json'
+    else:
+        return json.dumps(ob, sort_keys=True, indent=4)
 
 
 def getImgShape(xmlPath):
     in_file = open(xmlPath)
     tree = ET.parse(in_file)
-    root = tree.getroot() 
+    root = tree.getroot()
 
     imgSize = root.find('size')
     imgwidth = imgSize.find('width').text
     imgheight = imgSize.find('height').text
 
-    return imgwidth,imgheight
-
+    return imgwidth, imgheight
 
 
 def getPolygon(xmlPath):
@@ -119,21 +124,21 @@ def getPolygon(xmlPath):
             group_id = 'null'
             shape_type = 'polygon'
             # pass
-            
+
             dic = dict()
             label = obj.find('name').text
             polygon = obj.find('polygon')
-                # print(len(polygon))
-            if len(polygon)>2:
+            # print(len(polygon))
+            if len(polygon) > 2:
                 points = []
-                for i in range(0,len(polygon)):
-                        # print(polygon.find('point{}'.format(i)).text)
+                for i in range(0, len(polygon)):
+                    # print(polygon.find('point{}'.format(i)).text)
                     tmp = polygon.find('point{}'.format(i)).text.split(',')
-                    point = [int(tmp[0]),int(tmp[1])]
-                        # print(point)
+                    point = [int(tmp[0]), int(tmp[1])]
+                    # print(point)
                     points.append(point)
 
-                    del tmp,point
+                    del tmp, point
 
                     dic['flags'] = flags
                     dic['group_id'] = group_id
@@ -142,7 +147,7 @@ def getPolygon(xmlPath):
                     dic['label'] = label
             shapes.append(dic)
         # print(shapes)
-        return shapes      
+        return shapes
     except Exception:
         logger.error(traceback.print_exc())
 
@@ -158,11 +163,11 @@ def getPolygonPascal(xmlPath):
             group_id = 'null'
             shape_type = 'polygon'
             # pass
-            
+
             dic = dict()
             label = obj.find('name').text
             polygon = obj.find('bndbox')
-                # print(len(polygon))
+            # print(len(polygon))
             # if len(polygon)>2:
             # points = []
             # for i in range(0,len(polygon)):
@@ -170,16 +175,16 @@ def getPolygonPascal(xmlPath):
             ymin = int(polygon.find('ymin').text)
             xmax = int(polygon.find('xmax').text)
             ymax = int(polygon.find('ymax').text)
-                # print(polygon.find('point{}'.format(i)).text)
-                # tmp = polygon.find('point{}'.format(i)).text.split(',')
+            # print(polygon.find('point{}'.format(i)).text)
+            # tmp = polygon.find('point{}'.format(i)).text.split(',')
             # point = [int(tmp[0]),int(tmp[1])]
-                        # print(point)
-            p1 = [xmin,ymin]
-            p2 = [xmax,ymax]
-            p3 = [xmin,ymax]
-            p4 = [xmax,ymin]
+            # print(point)
+            p1 = [xmin, ymin]
+            p2 = [xmax, ymax]
+            p3 = [xmin, ymax]
+            p4 = [xmax, ymin]
             # points.append(point)
-            points = [p1,p2,p3,p4]
+            points = [p1, p2, p3, p4]
             # del tmp,point
 
             dic['flags'] = flags
@@ -189,7 +194,6 @@ def getPolygonPascal(xmlPath):
             dic['label'] = label
             shapes.append(dic)
         # print(shapes)
-        return shapes      
+        return shapes
     except Exception:
         logger.error(traceback.print_exc())
-            

@@ -5,20 +5,19 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-09 15:24:18
+LastEditTime: 2020-10-14 12:19:43
 '''
 import sys
 sys.path.append("..")
-from convertmask.utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme,aug_labelimg
+from convertmask.utils.imgAug import imgFlip, imgNoise, imgRotation, imgTranslation, aug_labelme, aug_labelimg, imgZoom
 import os
 from skimage import io
 from convertmask.utils.getMultiShapes import getMultiShapes
 
-BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'static'
+BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
 # print(BASE_DIR)
 imgPath = BASE_DIR + os.sep + 'multi_objs.jpg'
 labelPath = BASE_DIR + os.sep + 'multi_objs.json'
-
 
 imgPath2 = BASE_DIR + os.sep + 'label_255.png'
 labelPath2 = BASE_DIR + os.sep + 'label_255.xml'
@@ -68,10 +67,10 @@ if __name__ == "__main__":
     # else:
     #     os.makedirs(parent_path+os.sep+'jsons_')
     # fileName = 'test'
-    # io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.jpg',img) 
+    # io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.jpg',img)
 
-    # assumbleJson = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.jpg',processedImg,flag=True,labelYamlPath='') 
-    
+    # assumbleJson = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.jpg',processedImg,flag=True,labelYamlPath='')
+
     # saveJsonPath = parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.json'
 
     # with open(saveJsonPath,'w') as f:
@@ -81,7 +80,10 @@ if __name__ == "__main__":
 
     # aug_labelme(imgPath,labelPath)
 
-
     #### test4
 
-    aug_labelimg(imgPath2,labelPath2)
+    # aug_labelimg(imgPath2, labelPath2)
+
+    #### test5
+    imgZoom(imgPath, labelPath, 3)
+    # io.imsave(BASE_DIR + os.sep + 'test_zoom.jpg', i)

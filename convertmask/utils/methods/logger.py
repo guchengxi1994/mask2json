@@ -5,13 +5,13 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-19 08:59:04
 LastEditors: xiaoshuyui
-LastEditTime: 2020-08-21 12:53:21
+LastEditTime: 2020-10-15 08:33:46
 '''
 import logging
 
 import termcolor
 
-from . import __appname__
+from convertmask import __appname__
 
 COLORS = {
     'WARNING': 'yellow',
@@ -23,7 +23,6 @@ COLORS = {
 
 
 class ColoredFormatter(logging.Formatter):
-
     def __init__(self, msg, use_color=True):
         logging.Formatter.__init__(self, msg)
         self.use_color = use_color
@@ -31,9 +30,8 @@ class ColoredFormatter(logging.Formatter):
     def format(self, record):
         levelname = record.levelname
         if self.use_color and levelname in COLORS:
-            colored_levelname = termcolor.colored(
-                '[{}]'.format(levelname), color=COLORS[levelname]
-            )
+            colored_levelname = termcolor.colored('[{}]'.format(levelname),
+                                                  color=COLORS[levelname])
             record.levelname = colored_levelname
         return logging.Formatter.format(self, record)
 

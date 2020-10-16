@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-10 09:37:10
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 09:53:06
+LastEditTime: 2020-10-10 15:39:02
 '''
 import sys
 sys.path.append('..')
@@ -18,9 +18,8 @@ try:
 except:
     __version__ = '4.2.9'
 
-BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'static'
+BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
 imgPath = BASE_DIR + os.sep + 'multi_objs_test.jpg'
-
 
 if __name__ == "__main__":
     image = io.imread(imgPath)
@@ -41,11 +40,8 @@ if __name__ == "__main__":
     ob['imageWidth'] = image.shape[1]
     # ob['shapes'] = shapes
 
-    with open(fatherPath+os.sep+filename+'.json','w',encoding='utf-8') as f:
-        j = json.dumps(ob,sort_keys=True, indent=4)
+    with open(fatherPath + os.sep + filename + '.json', 'w',
+              encoding='utf-8') as f:
+        j = json.dumps(ob, sort_keys=True, indent=4)
         f.write(j)
-    print('save to path {}'.format(fatherPath+os.sep+filename+'.json'))
-
-    
-    
-
+    print('save to path {}'.format(fatherPath + os.sep + filename + '.json'))

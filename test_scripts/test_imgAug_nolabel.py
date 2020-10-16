@@ -11,8 +11,8 @@ import sys
 sys.path.append("..")
 import os
 
-from convertmask.utils.imgAug_nolabel import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
-BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'static'
+from convertmask.utils.imgAug_nolabel import imgFlip, imgNoise, imgRotation, imgTranslation, aug_labelme
+BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
 
 imgPath = BASE_DIR + os.sep + 'multi_objs.jpg'
 labelPath = BASE_DIR + os.sep + 'multi_objs.json'

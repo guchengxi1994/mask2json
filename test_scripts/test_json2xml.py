@@ -12,7 +12,6 @@ import sys
 sys.path.append("..")
 from convertmask.utils.json2xml.json2xml import j2xConvert
 
-BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) +os.sep + 'static'
+BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
 
-j2xConvert(BASE_DIR+'/jsons_/multi_objs_rotation.json')
-
+j2xConvert(BASE_DIR + '/jsons_/multi_objs_rotation.json')

@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 10:20:34
+LastEditTime: 2020-10-16 15:01:53
 '''
 
 import sys
@@ -657,7 +657,9 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
     else:
         os.makedirs(parent_path + os.sep + 'jsons_')
 
-    fileName = jsonpath.split(os.sep)[-1].replace(".json", '')
+    # fileName = jsonpath.split(os.sep)[-1].replace(".json", '')
+    (_,fileName) = os.path.split(jsonpath)
+    fileName = fileName.replace(".json", '')
 
     if isinstance(img, np.ndarray):
         io.imsave(
@@ -797,7 +799,10 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
     else:
         os.makedirs(parent_path + os.sep + 'xmls_')
 
-    fileName = jsonpath.split(os.sep)[-1].replace(".json", '')
+    # fileName = jsonpath.split(os.sep)[-1].replace(".json", '')
+
+    (_,fileName) = os.path.split(jsonpath)
+    fileName = fileName.replace(".json", '')
 
     if isinstance(img, np.ndarray):
         io.imsave(

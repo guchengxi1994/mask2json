@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 14:16:10
+LastEditTime: 2020-10-16 14:56:12
 '''
 import sys
 sys.path.append('..')
@@ -272,7 +272,7 @@ def script():
             elif len(params) == 2:
                 inputFilePath = params[0]
                 inputJsonPath = params[1]
-                if not args['--labelImg']:
+                if not args['labelImg']:
                     imgAug_withLabels(inputFilePath, inputJsonPath, number)
                 else:
                     imgAug_LabelImg(inputFilePath, inputJsonPath, number)
@@ -302,7 +302,7 @@ def script():
             elif len(params) == 2:
                 inputFilePath = params[0]
                 inputJsonPath = params[1]
-                if not args['--labelImg']:
+                if not args['labelImg']:
                     x2jConvert(inputFilePath, inputJsonPath, number)
                 else:
                     x2jConvert_pascal(inputFilePath, inputJsonPath, number)

@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 10:41:35
+LastEditTime: 2020-10-16 10:50:00
 '''
 # import argparse
 import json
@@ -21,14 +21,16 @@ from convertmask.utils.methods.logger import logger
 isInstalled = True
 
 try:
-    from labelme.utils.draw import draw_label
+    from labelme.utils import draw_label
 except:
     isInstalled = False
 
 # logger.warning(isInstalled)
 if isInstalled:
+    print('============> 1 <=============')
     import labelme.utils as lUtils  # solve conflict
 else:
+    print('============> 2 <=============')
     from convertmask.labelme_sub import utils as  lUtils
 
 # import cv2
@@ -37,7 +39,7 @@ import numpy as np
 
 from tqdm import tqdm
 
-# from sys import argv
+
 """
 # redundant
 

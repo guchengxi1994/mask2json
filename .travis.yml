@@ -8,16 +8,17 @@ install:
 
 script:
   - cd test_scripts
-  - python test_img2xml.py
-  - python test_mask2json.py
-  - python test_multiObjs2Xml.py
-  - python test_json2xml.py
-  - python test_xml2yolo.py
-  - python test_generateMask.py
-  - python test_list2yaml.py
-  - python test_xml2json.py
-  - python test_img2b64.py
-  - python test_multiAug.py
+  # - python test_img2xml.py
+  # - python test_mask2json.py
+  # - python test_multiObjs2Xml.py
+  # - python test_json2xml.py
+  # - python test_xml2yolo.py
+  # - python test_generateMask.py
+  # - python test_list2yaml.py
+  # - python test_xml2json.py
+  # - python test_img2b64.py
+  # - python test_multiAug.py
+  - python test_main.py
 
 notifications:
   on_success: always

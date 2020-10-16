@@ -5,10 +5,11 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-19 11:27:38
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:46:27
+LastEditTime: 2020-10-16 14:21:15
 '''
 import json
 from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
+from convertmask.utils.methods.logger import logger
 import os
 import numpy as np
 
@@ -59,3 +60,6 @@ def j2xConvert(jsonFilePath: str):
 
     img2xml_multiobj(tmpPath, aimPath, folder, filename, path, width, height,
                      objs)
+    
+    logger.info('see {}'.format(tmpPath))
+

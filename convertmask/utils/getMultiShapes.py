@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-15 19:19:35
+LastEditTime: 2020-10-16 14:15:14
 '''
 try:
     from labelme import __version__ as labelme_version
@@ -65,7 +65,10 @@ def readYmal(filepath, labeledImg=None):
 def getMultiObjs_voc(oriImgPath, labelPath, savePath):
     # pass
     labelImg = io.imread(labelPath)
-    fileName = labelPath.split(os.sep)[-1]
+    # print(labelImg.shape)
+    (_,fileName) = os.path.split(labelPath)
+    # print(fileName)
+    # fileName = labelPath.split(os.sep)[-1]
     imgShape = labelImg.shape
     imgHeight = imgShape[0]
     imgWidth = imgShape[1]
@@ -74,12 +77,8 @@ def getMultiObjs_voc(oriImgPath, labelPath, savePath):
     if len(imgShape) == 3:
         labelImg = labelImg[:, :, 0]
     labelImg[labelImg > 0] = 255
-    # if classFile!='' and os.path.exists(classFile):
-    #     with open(classFile,'r') as f:
-    #         objs = list(f.readlines())
-    # else:
-    #     warnings.WarningMessage("auto detected class numbers")
-    _, labels, stats, centroids = cv2.connectedComponentsWithStats(labelImg)
+
+    _, labels, stats, centroids = cv2.connectedComponentsWithStats(labelImg.astype(np.uint8))
 
     statsShape = stats.shape
     objs = []
@@ -203,6 +202,12 @@ def getMultiShapes(oriImgPath,
                     )   \n
 
     """
+    # print('-==================')
+    # print(oriImgPath)
+    # print(labelPath)
+    # print(savePath)
+    # print(labelYamlPath)
+    # print('-==================')
     if isinstance(labelPath, str):
         if os.path.exists(labelPath):
             label_img = io.imread(labelPath)
@@ -271,7 +276,9 @@ def getMultiShapes(oriImgPath,
     # print(len(shapes))
     obj['shapes'] = shapes
     # print(shapes)
-    obj['imagePath'] = oriImgPath.split(os.sep)[-1]
+    (_,imgname) = os.path.split(oriImgPath)
+    obj['imagePath'] = imgname
+    # print(obj['imagePath'])
     obj['imageData'] = str(imgEncode(oriImgPath))
 
     obj['imageHeight'] = labelShape[0]
@@ -279,8 +286,13 @@ def getMultiShapes(oriImgPath,
 
     j = json.dumps(obj, sort_keys=True, indent=4)
 
+    
+
+    # print(j)
+
     if not flag:
         saveJsonPath = savePath + os.sep + obj['imagePath'][:-4] + '.json'
+        # print(saveJsonPath)
         with open(saveJsonPath, 'w') as f:
             f.write(j)
 

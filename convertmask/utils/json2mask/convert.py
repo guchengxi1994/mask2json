@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 10:50:00
+LastEditTime: 2020-10-16 10:51:48
 '''
 # import argparse
 import json
@@ -27,10 +27,10 @@ except:
 
 # logger.warning(isInstalled)
 if isInstalled:
-    print('============> 1 <=============')
+    # print('============> 1 <=============')
     import labelme.utils as lUtils  # solve conflict
 else:
-    print('============> 2 <=============')
+    # print('============> 2 <=============')
     from convertmask.labelme_sub import utils as  lUtils
 
 # import cv2

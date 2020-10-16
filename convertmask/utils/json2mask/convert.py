@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 10:30:18
+LastEditTime: 2020-10-16 10:37:34
 '''
 # import argparse
 import json
@@ -16,6 +16,7 @@ import os.path as osp
 
 import PIL.Image
 import yaml
+from convertmask.utils.methods.logger import logger
 
 isInstalled = True
 
@@ -23,6 +24,8 @@ try:
     from labelme.utils.draw import draw_label
 except:
     isInstalled = False
+
+logger.warning(isInstalled)
 
 if isInstalled:
     import labelme.utils as lUtils  # solve conflict
@@ -34,7 +37,6 @@ import numpy as np
 # from skimage import img_as_ubyte
 
 from tqdm import tqdm
-from convertmask.utils.methods.logger import logger
 
 # from sys import argv
 """

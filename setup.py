@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:09:24
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-15 08:32:59
+LastEditTime: 2020-10-16 15:08:27
 '''
 from convertmask import __version__
 import os
@@ -47,6 +47,6 @@ setup(
     long_description=open_file('README.md').read(),
     zip_safe=True,
     entry_points={
-        'console_scripts': ['convertmask = convertmask.m2j_m:script']
+        'console_scripts': ['convertmask = convertmask.main_v_0_5_any:script']
     },
 )

@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:46:15
+LastEditTime: 2020-10-16 10:30:18
 '''
 # import argparse
 import json
@@ -17,7 +17,17 @@ import os.path as osp
 import PIL.Image
 import yaml
 
-import labelme.utils as lUtils  # solve conflict
+isInstalled = True
+
+try:
+    from labelme.utils.draw import draw_label
+except:
+    isInstalled = False
+
+if isInstalled:
+    import labelme.utils as lUtils  # solve conflict
+else:
+    from convertmask.labelme_sub import utils as  lUtils
 
 # import cv2
 import numpy as np

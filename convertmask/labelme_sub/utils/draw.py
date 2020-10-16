@@ -8,6 +8,7 @@ import PIL.ImageFont
 
 
 def label_colormap(N=256):
+
     def bitget(byteval, idx):
         return ((byteval & (1 << idx)) != 0)
 
@@ -40,12 +41,7 @@ def _validate_colormap(colormap, n_labels):
 
 # similar function as skimage.color.label2rgb
 def label2rgb(
-    lbl,
-    img=None,
-    n_labels=None,
-    alpha=0.5,
-    thresh_suppress=0,
-    colormap=None,
+    lbl, img=None, n_labels=None, alpha=0.5, thresh_suppress=0, colormap=None,
 ):
     if n_labels is None:
         n_labels = len(np.unique(lbl))
@@ -82,7 +78,8 @@ def draw_label(label, img=None, label_names=None, colormap=None, **kwargs):
     backend_org = plt.rcParams['backend']
     plt.switch_backend('agg')
 
-    plt.subplots_adjust(left=0, right=1, top=1, bottom=0, wspace=0, hspace=0)
+    plt.subplots_adjust(left=0, right=1, top=1, bottom=0,
+                        wspace=0, hspace=0)
     plt.margins(0, 0)
     plt.gca().xaxis.set_major_locator(plt.NullLocator())
     plt.gca().yaxis.set_major_locator(plt.NullLocator())
@@ -92,11 +89,9 @@ def draw_label(label, img=None, label_names=None, colormap=None, **kwargs):
 
     colormap = _validate_colormap(colormap, len(label_names))
 
-    label_viz = label2rgb(label,
-                          img,
-                          n_labels=len(label_names),
-                          colormap=colormap,
-                          **kwargs)
+    label_viz = label2rgb(
+        label, img, n_labels=len(label_names), colormap=colormap, **kwargs
+    )
     plt.imshow(label_viz)
     plt.axis('off')
 
@@ -108,8 +103,8 @@ def draw_label(label, img=None, label_names=None, colormap=None, **kwargs):
         fc = colormap[label_value]
         p = plt.Rectangle((0, 0), 1, 1, fc=fc)
         plt_handlers.append(p)
-        plt_titles.append('{value}: {name}'.format(value=label_value,
-                                                   name=label_name))
+        plt_titles.append('{value}: {name}'
+                          .format(value=label_value, name=label_name))
     plt.legend(plt_handlers, plt_titles, loc='lower right', framealpha=.5)
 
     f = io.BytesIO()
@@ -144,8 +139,10 @@ def draw_instances(
     viz = PIL.Image.fromarray(image)
     draw = PIL.ImageDraw.ImageDraw(viz)
 
-    font_path = osp.join(osp.dirname(matplotlib.__file__),
-                         'mpl-data/fonts/ttf/DejaVuSans.ttf')
+    font_path = osp.join(
+        osp.dirname(matplotlib.__file__),
+        'mpl-data/fonts/ttf/DejaVuSans.ttf'
+    )
     font = PIL.ImageFont.truetype(font_path)
 
     colormap = label_colormap(255)

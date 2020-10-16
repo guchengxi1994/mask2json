@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-24 09:03:04
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:47:43
+LastEditTime: 2020-10-16 10:22:28
 '''
 import xml.etree.ElementTree as ET
 from convertmask.utils.methods.img2base64 import imgEncode
@@ -17,9 +17,10 @@ from skimage import io
 # import numpy as np
 # import cv2
 try:
-    from labelme import __version__
+    from labelme import __version__  as labelmeVersion
 except:
-    __version__ = '4.2.9'
+    from convertmask.labelme_sub import __version__ as labelmeVersion
+    # __version__ = '4.2.9'
 
 
 def x2jConvert(xmlpath, originImgPath, flag=True):
@@ -37,7 +38,7 @@ def x2jConvert(xmlpath, originImgPath, flag=True):
     ob = dict()
     ob['imageData'] = base64Code
     ob['flags'] = {}
-    ob['version'] = __version__
+    ob['version'] = labelmeVersion
     ob['imagePath'] = filename_ext
 
     img = io.imread(originImgPath)
@@ -76,7 +77,7 @@ def x2jConvert_pascal(xmlpath, originImgPath, flag=True):
     ob = dict()
     ob['imageData'] = base64Code
     ob['flags'] = {}
-    ob['version'] = __version__
+    ob['version'] = labelmeVersion
     ob['imagePath'] = filename_ext
 
     img = io.imread(originImgPath)

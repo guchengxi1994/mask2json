@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-15 19:40:27
+LastEditTime: 2020-10-16 10:20:34
 '''
 
 import sys
@@ -34,7 +34,7 @@ from .methods.logger import logger
 import random
 from convertmask.utils.xml2json.xml2json import x2jConvert_pascal
 from convertmask.utils.json2xml.json2xml import j2xConvert
-from convertmask.utils.methods.entity import Img_clasId
+# from convertmask.utils.methods.entity import Img_clasId,Ori_Pro
 from scipy import ndimage
 
 kernel = np.ones((5, 5), np.uint8)
@@ -742,8 +742,7 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
     jsonpath = x2jConvert_pascal(xmlpath, filepath)
     processedImg = jsonpath
 
-    logger.warning(processedImg)
-
+    # logger.warning(processedImg)
     for i in p:
         # if i[0]!='flip':
         if i[1] == 1:

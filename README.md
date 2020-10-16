@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-10-15 08:24:08
+ * @LastEditTime: 2020-10-16 10:15:07
 --> 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
@@ -28,13 +28,15 @@
 
 AND THEN:
 
- Json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./convertmask/draw.py) in labelme path ('../anaconda/Lib/site-packages/labelme/utils ' my path) and add some codes in \_\_init__.py:
+ Json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./convertmask/labelme_sub/utils/draw.py) in labelme path (mine is '../anaconda/Lib/site-packages/labelme/utils ') and add some codes in \_\_init__.py:
 
     from .draw import label_colormap
     from .draw import _validate_colormap
     from .draw import label2rgb
     from .draw import draw_label
     from .draw import draw_instances 
+
+### 'labelme_sub' folder is a copy of labelme (version 4.2.9) and i made some change.
 
 Here shows an example using this script.
 

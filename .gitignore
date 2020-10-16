@@ -9,6 +9,7 @@
 /convertmask/utils/img2xml/__pycache__
 /convertmask/utils/methods/__pycache__
 /convertmask/utils/xml2yolo/__pycache__
+/convertmask/utils/yolo2xml/__pycache__
 /convertmask/utils/xml2mask/__pycache__
 /convertmask/utils/xml2json/__pycache__
 /convertmask/utils/json2xml/__pycache__
@@ -22,3 +23,8 @@
 /static/testXmlSplit
 /ori
 /xml
+/convertmask/labelme_sub/__pycache__
+/convertmask/labelme_sub/cli/__pycache__
+/convertmask/labelme_sub/config/__pycache__
+/convertmask/labelme_sub/utils/__pycache__
+/convertmask/labelme_sub/widgets/__pycache__

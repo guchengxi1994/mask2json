@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:25:31
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 09:34:55
+LastEditTime: 2020-10-10 15:47:13
 '''
 import base64
 import _io
@@ -14,8 +14,9 @@ import numpy as np
 import io
 import PIL
 
+
 def imgEncode(img_or_path):
-    if isinstance(img_or_path,np.ndarray):
+    if isinstance(img_or_path, np.ndarray):
         """
         copy from labelme image.py    
         """
@@ -30,15 +31,15 @@ def imgEncode(img_or_path):
         # _, enc = cv2.imencode('.jpg', img_or_path)
         # base64_data = base64.urlsafe_b64encode(enc.tobytes())
         return img_b64
-    
+
     else:
-        if isinstance(img_or_path,str):
-            i = open(img_or_path,'rb')
-        elif isinstance(img_or_path,_io.BufferedReader):
+        if isinstance(img_or_path, str):
+            i = open(img_or_path, 'rb')
+        elif isinstance(img_or_path, _io.BufferedReader):
             i = img_or_path
         else:
             raise TypeError('Input type error!')
-        
+
         base64_data = base64.b64encode(i.read())
 
         return base64_data.decode()

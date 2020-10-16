@@ -1,0 +1,34 @@
+<annotation>
+	<folder>D:\testALg\mask2json\mask2json\static\multi_objs_sameclass.json</folder>
+	<filename>multi_objs_sameclass.jpg</filename>
+	<path>D:\testALg\mask2json\mask2json/static/multi_objs_sameclass.xml</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>500</width>
+		<height>573</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>banana</name>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>252</xmin>
+			<ymin>439</ymin>
+			<xmax>357</xmax>
+			<ymax>534</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>banana</name>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>253</xmin>
+			<ymin>161</ymin>
+			<xmax>357</xmax>
+			<ymax>263</ymax>
+		</bndbox>
+	</object>
+</annotation>

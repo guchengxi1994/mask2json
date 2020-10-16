@@ -2,9 +2,9 @@ from qtpy import QtCore
 from qtpy import QtGui
 from qtpy import QtWidgets
 
-from labelme import QT5
-from labelme.shape import Shape
-import labelme.utils
+from convertmask.labelme_sub import QT5
+from convertmask.labelme_sub.shape import Shape
+import convertmask.labelme_sub.utils
 
 
 # TODO(unknown):

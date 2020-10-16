@@ -5,11 +5,11 @@ import os.path as osp
 
 import PIL.Image
 
-from labelme import __version__
-from labelme.logger import logger
-from labelme import PY2
-from labelme import QT4
-from labelme import utils
+from convertmask.labelme_sub import __version__
+from convertmask.labelme_sub.logger import logger
+from convertmask.labelme_sub import PY2
+from convertmask.labelme_sub import QT4
+from convertmask.labelme_sub import utils
 
 
 PIL.Image.MAX_IMAGE_PIXELS = None

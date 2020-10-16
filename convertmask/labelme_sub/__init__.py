@@ -1,3 +1,12 @@
+'''
+lanhuage: python
+Descripttion: 
+version: beta
+Author: xiaoshuyui
+Date: 2020-10-16 10:08:47
+LastEditors: xiaoshuyui
+LastEditTime: 2020-10-16 10:54:17
+'''
 # flake8: noqa
 
 import logging
@@ -22,6 +31,6 @@ PY2 = sys.version[0] == '2'
 PY3 = sys.version[0] == '3'
 del sys
 
-from labelme.label_file import LabelFile
-from labelme import testing
-from labelme import utils
+from convertmask.labelme_sub.label_file import LabelFile
+from convertmask.labelme_sub import testing
+from convertmask.labelme_sub import utils

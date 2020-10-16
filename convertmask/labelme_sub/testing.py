@@ -1,8 +1,17 @@
+'''
+lanhuage: python
+Descripttion: 
+version: beta
+Author: xiaoshuyui
+Date: 2020-10-16 10:08:47
+LastEditors: xiaoshuyui
+LastEditTime: 2020-10-16 10:58:04
+'''
 import json
 import os.path as osp
 
 import imgviz
-import labelme.utils
+import convertmask.labelme_sub
 
 
 def assert_labelfile_sanity(filename):
@@ -18,7 +27,7 @@ def assert_labelfile_sanity(filename):
         assert osp.exists(img_file)
         img = imgviz.io.imread(img_file)
     else:
-        img = labelme.utils.img_b64_to_arr(imageData)
+        img = convertmask.labelme_sub.utils.img_b64_to_arr(imageData)
 
     H, W = img.shape[:2]
     assert H == data['imageHeight']

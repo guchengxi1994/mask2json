@@ -1,10 +1,18 @@
+'''
+lanhuage: python
+Descripttion: 
+version: beta
+Author: xiaoshuyui
+Date: 2020-10-16 10:08:47
+LastEditors: xiaoshuyui
+LastEditTime: 2020-10-16 10:55:17
+'''
 import os.path as osp
 import shutil
 
 import yaml
 
-from labelme.logger import logger
-
+from convertmask.labelme_sub.logger import logger
 
 here = osp.dirname(osp.abspath(__file__))
 
@@ -14,8 +22,7 @@ def update_dict(target_dict, new_dict, validate_item=None):
         if validate_item:
             validate_item(key, value)
         if key not in target_dict:
-            logger.warn('Skipping unexpected key in config: {}'
-                        .format(key))
+            logger.warn('Skipping unexpected key in config: {}'.format(key))
             continue
         if isinstance(target_dict[key], dict) and \
                 isinstance(value, dict):
@@ -46,18 +53,15 @@ def get_default_config():
 def validate_config_item(key, value):
     if key == 'validate_label' and value not in [None, 'exact']:
         raise ValueError(
-            "Unexpected value for config key 'validate_label': {}"
-            .format(value)
-        )
+            "Unexpected value for config key 'validate_label': {}".format(
+                value))
     if key == 'shape_color' and value not in [None, 'auto', 'manual']:
         raise ValueError(
-            "Unexpected value for config key 'shape_color': {}"
-            .format(value)
-        )
+            "Unexpected value for config key 'shape_color': {}".format(value))
     if key == 'labels' and value is not None and len(value) != len(set(value)):
         raise ValueError(
-            "Duplicates are detected for config key 'labels': {}".format(value)
-        )
+            "Duplicates are detected for config key 'labels': {}".format(
+                value))
 
 
 def get_config(config_file_or_yaml=None, config_from_args=None):
@@ -70,15 +74,16 @@ def get_config(config_file_or_yaml=None, config_from_args=None):
         if not isinstance(config_from_yaml, dict):
             with open(config_from_yaml) as f:
                 logger.info(
-                    'Loading config file from: {}'.format(config_from_yaml)
-                )
+                    'Loading config file from: {}'.format(config_from_yaml))
                 config_from_yaml = yaml.safe_load(f)
-        update_dict(config, config_from_yaml,
+        update_dict(config,
+                    config_from_yaml,
                     validate_item=validate_config_item)
 
     # 3. command line argument or specified config file
     if config_from_args is not None:
-        update_dict(config, config_from_args,
+        update_dict(config,
+                    config_from_args,
                     validate_item=validate_config_item)
 
     return config

@@ -12,23 +12,23 @@ from qtpy.QtCore import Qt
 from qtpy import QtGui
 from qtpy import QtWidgets
 
-from labelme import __appname__
-from labelme import PY2
-from labelme import QT5
+from convertmask.labelme_sub import __appname__
+from convertmask.labelme_sub import PY2
+from convertmask.labelme_sub import QT5
 
 from . import utils
-from labelme.config import get_config
-from labelme.label_file import LabelFile
-from labelme.label_file import LabelFileError
-from labelme.logger import logger
-from labelme.shape import Shape
-from labelme.widgets import Canvas
-from labelme.widgets import LabelDialog
-from labelme.widgets import LabelListWidget
-from labelme.widgets import LabelListWidgetItem
-from labelme.widgets import ToolBar
-from labelme.widgets import UniqueLabelQListWidget
-from labelme.widgets import ZoomWidget
+from convertmask.labelme_sub.config import get_config
+from convertmask.labelme_sub.label_file import LabelFile
+from convertmask.labelme_sub.label_file import LabelFileError
+from convertmask.labelme_sub.logger import logger
+from convertmask.labelme_sub.shape import Shape
+from convertmask.labelme_sub.widgets import Canvas
+from convertmask.labelme_sub.widgets import LabelDialog
+from convertmask.labelme_sub.widgets import LabelListWidget
+from convertmask.labelme_sub.widgets import LabelListWidgetItem
+from convertmask.labelme_sub.widgets import ToolBar
+from convertmask.labelme_sub.widgets import UniqueLabelQListWidget
+from convertmask.labelme_sub.widgets import ZoomWidget
 
 
 # FIXME

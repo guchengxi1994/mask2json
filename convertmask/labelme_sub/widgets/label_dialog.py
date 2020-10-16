@@ -7,8 +7,8 @@ from qtpy import QtWidgets
 
 QT5 = QT_VERSION[0] == '5'  # NOQA
 
-from labelme.logger import logger
-import labelme.utils
+from convertmask.labelme_sub.logger import logger
+import convertmask.labelme_sub.utils
 
 
 # TODO(unknown):

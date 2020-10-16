@@ -1,3 +1,12 @@
+'''
+lanhuage: python
+Descripttion: 
+version: beta
+Author: xiaoshuyui
+Date: 2020-10-16 10:08:47
+LastEditors: xiaoshuyui
+LastEditTime: 2020-10-16 11:00:53
+'''
 #!/usr/bin/env python
 
 import argparse
@@ -9,7 +18,7 @@ import sys
 import imgviz
 import matplotlib.pyplot as plt
 
-from labelme import utils
+from convertmask.labelme_sub import utils
 
 
 PY2 = sys.version_info[0] == 2

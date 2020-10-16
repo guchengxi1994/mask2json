@@ -7,8 +7,8 @@ import os.path as osp
 import imgviz
 import PIL.Image
 
-from labelme.logger import logger
-from labelme import utils
+from convertmask.labelme_sub.logger import logger
+from convertmask.labelme_sub import utils
 
 
 def main():

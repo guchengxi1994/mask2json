@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 10:37:34
+LastEditTime: 2020-10-16 10:41:35
 '''
 # import argparse
 import json
@@ -25,8 +25,7 @@ try:
 except:
     isInstalled = False
 
-logger.warning(isInstalled)
-
+# logger.warning(isInstalled)
 if isInstalled:
     import labelme.utils as lUtils  # solve conflict
 else:
@@ -174,10 +173,10 @@ def processor(json_file, encoding="utf-8", flag=False):
                         print('Saved to: %s' % out_dir1)
 
                     else:
-
                         return lbl
                 except Exception as e:
-                    print(e)
+                    # print(e)
+                    logger.error(e)
 
         else:
             list_path = os.listdir(json_file)
@@ -240,7 +239,8 @@ def processor(json_file, encoding="utf-8", flag=False):
 
                         print('Saved to: %s' % out_dir1)
                     except Exception as e:
-                        print(e)
+                        # print(e)
+                        logger.error(e)
 
 
 # if __name__ == '__main__':

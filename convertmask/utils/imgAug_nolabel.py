@@ -5,28 +5,70 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-12 10:26:38
+LastEditTime: 2020-10-19 10:10:23
 '''
 import sys
 sys.path.append('..')
 from skimage import io
 import skimage.util.noise as snoise
 import cv2
-# from convertmask.utils.json2mask.convert import processor
-# from .getMultiShapes import getMultiShapes
-# from utils.img2base64 import imgEncode
-# from .methods.img2base64 import imgEncode
-# from .methods import rmQ
-# import traceback
-# from .entity import *
 from .methods.entity import *
 import numpy as np
-# import shutil
-# import json
-# from .logger import logger
 from .methods.logger import logger
 import random
 import os
+from convertmask.utils.imgAug import _getZoomedImg
+
+
+def imgZoom(oriImg, size, flag=True):
+    """
+    size : The zoom factor along the axes, default 0.8~1.8
+    """
+    # pass
+    if isinstance(oriImg, str):
+        if os.path.exists(oriImg):
+            img = io.imread(oriImg)
+        else:
+            raise FileNotFoundError('Original image not found')
+    elif isinstance(oriImg, np.ndarray):
+        img = oriImg
+    else:
+        logger.error('input {} type error'.format('oriImg'))
+        return
+
+    try:
+        size = float(size)
+        # if size == 0.0:
+        #     raise ValueError('zoom factor cannot be zero')
+    except:
+        logger.warning('input {} type error ,got {}.'.format(
+            'size', type(size)))
+        size = random.uniform(0.8, 1.8)
+        size = round(size, 2)
+
+    if size <= 0 or size == 1:
+        size = random.uniform(0.8, 1.8)
+        size = round(size, 2)
+
+    resOri = _getZoomedImg(img, size)
+
+    if flag:
+        parent_path = os.path.dirname(oriImg)
+        if os.path.exists(parent_path + os.sep + 'jsons_'):
+            pass
+        else:
+            os.makedirs(parent_path + os.sep + 'jsons_')
+        tmp = os.path.splitext(oriImg)[0]
+        fileName = tmp.split(os.sep)[-1]
+
+        io.imsave(
+            parent_path + os.sep + 'jsons_' + os.sep + fileName + '_zoom.jpg',
+            resOri)
+
+    else:
+        d = dict()
+        d['zoom'] = Ori_Pro(resOri, None)
+        return d
 
 
 def imgFlip(oriImg: str, flag=True, flip_list=[1, 0, -1]):
@@ -188,7 +230,7 @@ def imgTranslation(oriImg: str, flag=True):
         return d
 
 
-def aug_labelme(filepath, augs=['noise', 'rotation', 'trans', 'flip'],num=0):
+def aug(filepath, augs=['noise', 'rotation', 'trans', 'flip','zoom'], num=0):
     # augs = ['noise','rotation','trans','flip']
 
     l = np.random.randint(2, size=len(augs))
@@ -222,6 +264,15 @@ def aug_labelme(filepath, augs=['noise', 'rotation', 'trans', 'flip'],num=0):
                 img = tmp.oriImg
 
                 del t, tmp
+            
+            elif i[0] == 'zoom':
+                zoomFactor = random.uniform(0.8, 1.8)
+                z = imgZoom(img,zoomFactor,flag=False)
+                tmp = z['zoom']
+                img = tmp.oriImg
+
+                del z,tmp
+
 
             elif i[0] == 'flip':
                 imgList = []
@@ -239,6 +290,7 @@ def aug_labelme(filepath, augs=['noise', 'rotation', 'trans', 'flip'],num=0):
                 img = imgList
 
                 del tmp, f, imgList
+
 
     parent_path = os.path.dirname(filepath)
 
@@ -262,7 +314,7 @@ def aug_labelme(filepath, augs=['noise', 'rotation', 'trans', 'flip'],num=0):
         for i in range(0, len(img)):
             io.imsave(
                 parent_path + os.sep + 'augimgs_' + os.sep + fileName +
-                '_{}_assumble{}.jpg'.format(num,i), img[i])
+                '_{}_assumble{}.jpg'.format(num, i), img[i])
 
         logger.info("Done!")
         logger.info("see here {}".format(parent_path + os.sep + 'augimgs_'))

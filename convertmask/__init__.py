@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:51:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-15 10:14:38
+LastEditTime: 2020-10-19 10:23:00
 '''
 __version__ = '0.5.0'
 __appname__ = 'convertmask'
@@ -19,6 +19,17 @@ __support_methods__ = [
     'xml2yolo',
     'augmentation',
 ]
+
+__support_methods_simplified__ = {
+    'mask2json': 'm2j',
+    'mask2xml': 'm2x',
+    'json2mask': 'j2m',
+    'json2xml': 'j2x',
+    'xml2json': 'x2j',
+    'yolo2xml': 'y2x',
+    'xml2yolo': 'x2y',
+    'augmentation': 'aug',
+}
 
 import multiprocessing
 __CPUS__ = multiprocessing.cpu_count()

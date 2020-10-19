@@ -6,7 +6,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-16 11:06:01
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 15:02:20
+LastEditTime: 2020-10-19 10:42:14
 '''
 import sys
 sys.path.append("..")
@@ -39,8 +39,9 @@ if __name__ == "__main__":
     label_img = BASE_DIR + '/multi_objs_json/label.png'
     labelPath = BASE_DIR + '/multi_objs_json/info.yaml'
 
-    code = 'python {} mask2json -i {}  {}  {}'.format(mainScriptPath, oriImgPath,
-                                                   label_img, labelPath)
+    code = 'python {} mask2json -i {}  {}  {}'.format(mainScriptPath,
+                                                      oriImgPath, label_img,
+                                                      labelPath)
 
     os.system(code)
 
@@ -49,7 +50,7 @@ if __name__ == "__main__":
     label_img = BASE_DIR + '/multi_objs_json/label.png'
 
     code = 'python {} mask2xml -i {}  {} '.format(mainScriptPath, oriImgPath,
-                                                   label_img)
+                                                  label_img)
 
     os.system(code)
 
@@ -72,11 +73,25 @@ if __name__ == "__main__":
     oriImgPath2 = BASE_DIR + '/static/label_255.png'
     labelPath2 = BASE_DIR + '/static/label_255.xml'
 
-    code = 'python {} augmentation -i {}  {} -N 2'.format(mainScriptPath,
-                                                     oriImgPath1, labelPath1)
+    code = 'python {} augmentation -i {}  {} -N 2'.format(
+        mainScriptPath, oriImgPath1, labelPath1)
     os.system(code)
 
     code = 'python {} augmentation -i {} {} -N 20 --labelImg'.format(
         mainScriptPath, oriImgPath2, labelPath2)
     os.system(code)
 
+    logger.info('9.simplified test')
+    oriImgPath1 = BASE_DIR + '/static/multi_objs.jpg'
+    labelPath1 = BASE_DIR + '/static/multi_objs.json'
+
+    oriImgPath2 = BASE_DIR + '/static/label_255.png'
+    labelPath2 = BASE_DIR + '/static/label_255.xml'
+
+    code = 'python {} aug -i {}  {} -N 2'.format(mainScriptPath, oriImgPath1,
+                                                 labelPath1)
+    os.system(code)
+
+    code = 'python {} aug -i {} {} -N 20 --labelImg'.format(
+        mainScriptPath, oriImgPath2, labelPath2)
+    os.system(code)

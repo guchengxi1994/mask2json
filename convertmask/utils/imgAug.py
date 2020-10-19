@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-19 10:14:50
+LastEditTime: 2020-10-19 11:00:17
 '''
 
 import sys
@@ -106,7 +106,7 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
     elif isinstance(oriImg, np.ndarray):
         img = oriImg
     else:
-        logger.error('input {} type error'.format('oriImg'))
+        logger.error('input {} type {} error'.format('oriImg',type(oriImg)))
         return
 
     try:
@@ -146,8 +146,8 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
     resMask = resMask.astype(np.uint8)
 
     if np.max(resMask) == 0:
-        logger.warning('After zoom,none connected area detected!')
-        return
+        logger.warning('After zoom,none ROIs detected! Zoomfactor={} maybe too large.'.format(size))
+        # return
 
     if flag:
         parent_path = os.path.dirname(oriLabel)
@@ -176,6 +176,7 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
 
     else:
         d = dict()
+        # print(resOri.shape)
         d['zoom'] = Ori_Pro(resOri, resMask)
         return d
 
@@ -566,9 +567,13 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
             logger.warning(
                 'augumentation method is not supported.using default augumentation method.'
             )
-            augs = ['noise', 'rotation', 'trans', 'flip']
+            augs = ['noise', 'rotation', 'trans', 'flip','zoom']
 
     # l = np.random.randint(2,size=len(augs)).tolist()
+
+    if 'flip' in augs:
+        augs.remove('flip')
+        augs.append('flip')
 
     l = np.random.randint(2, size=len(augs))
 
@@ -612,6 +617,7 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
             elif i[0] == 'zoom':
                 zoomFactor = random.uniform(0.8, 1.8)
                 z = imgZoom(img,processedImg,zoomFactor,flag=False)
+                # print(type(z))
                 tmp = z['zoom']
                 img = tmp.oriImg
 
@@ -711,9 +717,13 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
             logger.warning(
                 'augumentation method is not supported.using default augumentation method.'
             )
-            augs = ['noise', 'rotation', 'trans', 'flip']
+            augs = ['noise', 'rotation', 'trans', 'flip','zoom']
 
     # l = np.random.randint(2,size=len(augs)).tolist()
+
+    if 'flip' in augs:
+        augs.remove('flip')
+        augs.append('flip')
 
     l = np.random.randint(2, size=len(augs))
 

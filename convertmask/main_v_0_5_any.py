@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-19 10:43:09
+LastEditTime: 2020-10-19 11:04:36
 '''
 import sys
 sys.path.append('..')
@@ -126,7 +126,7 @@ def script():
         logger.error('<=== INPUT FOLDER/FILE MUST NOT BE NULL ===>')
         return
 
-    if args['method'] not in __support_methods__ or args[
+    if args['method'] not in __support_methods__ and args[
             'method'] not in supported_simplified_methods:
         # print(args['method'])
         kvs = getKV(__support_methods_simplified__)

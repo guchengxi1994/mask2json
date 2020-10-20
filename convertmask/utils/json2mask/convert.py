@@ -5,14 +5,12 @@
 @Author: xiaoshuyui
 @Date: 2020-07-01 11:06:44
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 09:32:33
+LastEditTime: 2020-10-20 16:51:32
 '''
-# import argparse
+
 import json
 import os
 import os.path as osp
-# import base64
-# import warnings
 
 import PIL.Image
 import yaml

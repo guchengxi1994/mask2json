@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-20 10:01:52
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 10:43:39
+LastEditTime: 2020-10-20 11:04:52
 '''
 from convertmask.utils.methods.logger import logger
 
@@ -33,7 +33,7 @@ def setConfigParam(cfg:configparser.ConfigParser,sectionName:str,propertyName:st
         cfgRoot = config_ROOT
     
     with open(cfgRoot,'w+') as f:
-        f.write(f)
+        cfp.write(f)
 
 
     

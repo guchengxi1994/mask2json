@@ -6,7 +6,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-16 11:06:01
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 10:57:36
+LastEditTime: 2020-10-20 11:13:32
 '''
 import sys
 sys.path.append("..")
@@ -108,6 +108,6 @@ if __name__ == "__main__":
                                                  labelPath1)
     os.system(code)
 
-    code = 'python {} aug -i -L {} {} -N 20 --labelImg'.format(
+    code = 'python {} aug -i  {} {} -L -N 20 --labelImg'.format(
         mainScriptPath, oriImgPath2, labelPath2)
     os.system(code)

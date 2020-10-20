@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-19 11:00:17
+LastEditTime: 2020-10-20 10:53:35
 '''
 
 import sys
@@ -21,7 +21,7 @@ import os
 from .json2mask.convert import processor
 from .getMultiShapes import getMultiShapes
 from .methods.img2base64 import imgEncode
-from .methods import rmQ
+from .methods import rmQ ,entity
 import traceback
 from .methods.entity import *
 import numpy as np
@@ -32,6 +32,10 @@ import random
 from convertmask.utils.xml2json.xml2json import x2jConvert_pascal
 from convertmask.utils.json2xml.json2xml import j2xConvert
 from scipy import ndimage
+
+import convertmask.utils.methods.configUtils as ccfg
+LOGFlag = ccfg.getConfigParam(ccfg.cfp,'log','show')
+del ccfg
 
 kernel = np.ones((5, 5), np.uint8)
 
@@ -91,6 +95,10 @@ def _splitImg(maskImg):
 
             del tmp, closing
     return maskImgs
+
+
+def imgDistort(oriImg: str, oriLabel: str, flag=True):
+    pass
 
 
 def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
@@ -170,7 +178,7 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
         if zoomedMask_j is not None:
             with open(saveJsonPath, 'w') as f:
                 f.write(zoomedMask_j)
-            logger.info('Done! See {} .'.format(saveJsonPath))
+            logger.info('Done! See {} .'.format(saveJsonPath)) if LOGFlag == 'True' else entity.do_nothing()
         else:
             pass
 

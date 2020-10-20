@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-19 10:10:38
+LastEditTime: 2020-10-20 09:45:36
 '''
 from .methods.logger import logger
 from . import imgAug
@@ -25,6 +25,9 @@ def proc_xml(img, imgPath, xmlpath, number):
 
 
 def imgAug_withLabels(imgPath, labelPath, number=1):
+    """
+    number : file number you want to generate.
+    """
     logger.info("currently, only *.jpg supported")
 
     oriImgs = glob.glob(imgPath + os.sep +
@@ -75,6 +78,9 @@ def imgAug_withoutLabels(imgPath, number=1):
 
 
 def imgAug_LabelImg(imgPath, xmlpath, number=1):
+    """
+    number : file number you want to generate.
+    """
     logger.info("currently, only *.jpg supported")
 
     oriImgs = glob.glob(imgPath + os.sep +

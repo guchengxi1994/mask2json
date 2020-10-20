@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:54:29
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:48:17
+LastEditTime: 2020-10-20 10:56:43
 '''
 import xml.etree.ElementTree as ET
 import os
@@ -52,8 +52,8 @@ def x2yConvert(xmlpath, labelPath=''):
                     for i in labels:
                         f.write(i + '\n')
 
-            print('Done!')
-            print("see here {}".format(parent_path + os.sep + 'txts_'))
+            logger.info('Done!')
+            logger.info("see here {}".format(parent_path + os.sep + 'txts_'))
 
 
 def readLabels(labelPath):

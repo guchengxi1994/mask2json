@@ -5,9 +5,9 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:51:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-19 10:23:00
+LastEditTime: 2020-10-20 10:46:42
 '''
-__version__ = '0.5.0'
+__version__ = '0.5.1'
 __appname__ = 'convertmask'
 __support_methods__ = [
     'mask2json',
@@ -37,6 +37,10 @@ del multiprocessing
 
 import argparse
 from convertmask.utils.methods.logger import logger
+
+import convertmask.utils.methods.configUtils as ccfg
+ccfg.setConfigParam(ccfg.cfp,'log','show','True')
+del ccfg
 
 
 class BaseParser(object):

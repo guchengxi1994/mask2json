@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 14:15:14
+LastEditTime: 2020-10-20 19:29:33
 '''
 try:
     from labelme import __version__ as labelme_version
@@ -216,6 +216,8 @@ def getMultiShapes(oriImgPath,
     else:
         # img = oriImg
         label_img = labelPath
+    
+    print(np.max(label_img))
 
     if np.max(label_img) > 127:
         # print('too many classes! \n maybe binary?')
@@ -224,8 +226,6 @@ def getMultiShapes(oriImgPath,
         label_img = label_img / 255
 
     labelShape = label_img.shape
-
-    # print(np.max(label_img))
 
     labels = readYmal(labelYamlPath, label_img)
     # print(list(labels))

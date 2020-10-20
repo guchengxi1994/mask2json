@@ -1,11 +1,11 @@
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: test xmls to json files. currently is just supported for labelImg and labelImgTool (https://github.com/lzx1413/LabelImgTool)
 version: beta
 Author: xiaoshuyui
 Date: 2020-09-24 09:41:23
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:43:48
+LastEditTime: 2020-10-20 09:49:30
 '''
 import sys
 sys.path.append('..')

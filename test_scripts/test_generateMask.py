@@ -1,11 +1,11 @@
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: According to xmls, generate mask files.
 version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 11:04:01
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:38:48
+LastEditTime: 2020-10-20 09:37:33
 '''
 import sys
 sys.path.append("..")

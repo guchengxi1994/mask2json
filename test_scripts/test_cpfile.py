@@ -1,11 +1,11 @@
 '''
 @lanhuage: python
-@Descripttion: 
+@Descripttion: Deprecated.
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-07-13 16:28:35
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:38:21
+LastEditTime: 2020-10-20 09:35:54
 '''
 import os
 import shutil

@@ -1,11 +1,11 @@
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: test my yaml reader.
 version: beta
 Author: xiaoshuyui
 Date: 2020-10-12 09:21:32
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-12 13:28:28
+LastEditTime: 2020-10-20 09:46:54
 '''
 import sys
 sys.path.append('..')

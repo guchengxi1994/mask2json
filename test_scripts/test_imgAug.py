@@ -1,11 +1,11 @@
 '''
 @lanhuage: python
-@Descripttion: 
+@Descripttion: image augmentation with labels.
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-14 12:19:43
+LastEditTime: 2020-10-20 09:40:34
 '''
 import sys
 sys.path.append("..")
@@ -85,5 +85,5 @@ if __name__ == "__main__":
     # aug_labelimg(imgPath2, labelPath2)
 
     #### test5
-    imgZoom(imgPath, labelPath, 3)
+    imgZoom(imgPath, labelPath, 1.2)
     # io.imsave(BASE_DIR + os.sep + 'test_zoom.jpg', i)

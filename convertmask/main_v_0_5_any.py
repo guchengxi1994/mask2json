@@ -5,12 +5,12 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 14:56:12
+LastEditTime: 2020-10-20 11:11:21
 '''
 import sys
 sys.path.append('..')
 import os
-from convertmask import BaseParser, __appname__, __support_methods__
+from convertmask import BaseParser, __appname__, __support_methods__, __support_methods_simplified__
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.imgAug_script import imgAug_withLabels, imgAug_withoutLabels, imgAug_LabelImg
 from convertmask.utils.json2xml.json2xml import j2xConvert
@@ -20,6 +20,18 @@ from convertmask.utils.xml2json.xml2json import getPolygon, x2jConvert, x2jConve
 from convertmask.utils.yolo2xml.yolo2xml import y2xConvert
 from convertmask.utils.xml2yolo.xml2yolo import x2yConvert
 import difflib
+import convertmask.utils.methods.configUtils as ccfg
+ccfg.setConfigParam(ccfg.cfp,'log','show','True')
+
+supported_simplified_methods = __support_methods_simplified__.values()
+
+
+def getKV(dic: dict):
+    res = []
+    for k, v in dic.items():
+        res.append('{}({})'.format(v, k))
+
+    return res
 
 
 class MethodInputException(Exception):
@@ -78,7 +90,9 @@ class Parser(BaseParser):
 
 
 def script():
-    # argList = [('-l', '--labels', 'label files path','store_true')]
+    """
+    eg. argList = [('-l', '--labels', 'label files path','store_true')]
+    """
     argList = [
         ('-n', '--nolabel', 'image augmentation without labels'),
         ('-H', '--HELP',
@@ -92,16 +106,7 @@ def script():
             'type': int,
             'help': 'image augmentation numbers, default 1'
         },
-        # {
-        #     'shortName':
-        #     '-c',
-        #     'fullName':
-        #     '--objectClasses',
-        #     'type':
-        #     str,
-        #     'help':
-        #     'classes information, yaml(for labelme) and txt(for labelImg) are supported.'
-        # },
+        ('-L', '--nolog', 'remove "annoying" logs')
     ]
 
     p = Parser(argList, __appname__)
@@ -124,10 +129,14 @@ def script():
         logger.error('<=== INPUT FOLDER/FILE MUST NOT BE NULL ===>')
         return
 
-    if args['method'] not in __support_methods__:
+    if args['nolog']:
+        ccfg.setConfigParam(ccfg.cfp, 'log', 'show', 'False')
+
+    if args['method'] not in __support_methods__ and args[
+            'method'] not in supported_simplified_methods:
         # print(args['method'])
-        logger.warning(' only ==>{}  are supported'.format(
-            '\n==>'.join(__support_methods__)))
+        kvs = getKV(__support_methods_simplified__)
+        logger.warning(' only ==>{}  are supported'.format('\n==>'.join(kvs)))
         lis = difflib.get_close_matches(args['method'], __support_methods__)
         # print(lis)
         if len(lis) > 0:
@@ -135,7 +144,8 @@ def script():
             del lis
             return
 
-    if args['method'] == 'mask2json':
+    if args['method'] == 'mask2json' or args[
+            'method'] == __support_methods_simplified__['mask2json']:
         if args['HELP']:
             print('\n')
             print("<==== {} detailed information ====>".format(args['method']))
@@ -170,7 +180,8 @@ def script():
             getJsons(inputOriimgPath, inputMaskPath, savePath, inputYamlPath)
             print('Done!')
 
-    if args['method'] == 'mask2xml':
+    if args['method'] == 'mask2xml' or args[
+            'method'] == __support_methods_simplified__['mask2xml']:
         if args['HELP']:
             print('\n')
             print("<==== {} detailed information ====>".format(args['method']))
@@ -188,14 +199,15 @@ def script():
             elif len(params) == 2:
                 inputOriimgPath = params[0]
                 inputMaskPath = params[1]
-                savePath =  os.path.dirname(inputMaskPath)
+                savePath = os.path.dirname(inputMaskPath)
             else:
                 raise MethodInputException('Too much input parameters')
 
             getXmls(inputOriimgPath, inputMaskPath, savePath)
             print('Done!')
 
-    if args['method'] == 'json2xml':
+    if args['method'] == 'json2xml' or args[
+            'method'] == __support_methods_simplified__['json2xml']:
         if args['HELP']:
             print('\n')
             print("<==== {} detailed information ====>".format(args['method']))
@@ -218,7 +230,8 @@ def script():
             j2xConvert(inputJsonPath)
             print('Done!')
 
-    if args['method'] == 'json2mask':
+    if args['method'] == 'json2mask' or args[
+            'method'] == __support_methods_simplified__['json2mask']:
         if args['HELP']:
             print('\n')
             print("<==== {} detailed information ====>".format(args['method']))
@@ -241,7 +254,8 @@ def script():
             processor(inputJsonPath)
             print('Done!')
 
-    if args['method'] == 'augmentation':
+    if args['method'] == 'augmentation' or args[
+            'method'] == __support_methods_simplified__['augmentation']:
         if not args['number']:
             number = 1
         else:
@@ -280,8 +294,9 @@ def script():
             else:
                 raise MethodInputException('There must be some errors.')
 
-    if args['method'] == 'xml2json':
-        logger.info('<===  This is a test script.  ===>')
+    if args['method'] == 'xml2json' or args[
+            'method'] == __support_methods_simplified__['xml2json']:
+        logger.info('<===  This is a test function.  ===>')
         if args['HELP']:
             print('\n')
             print("<==== {} detailed information ====>".format(args['method']))
@@ -310,7 +325,8 @@ def script():
             else:
                 raise MethodInputException('Too much input parameters')
 
-    if args['method'] == 'yolo2xml':
+    if args['method'] == 'yolo2xml' or args[
+            'method'] == __support_methods_simplified__['yolo2xml']:
         if args['HELP']:
             print('\n')
             print("<==== {} detailed information ====>".format(args['method']))
@@ -338,7 +354,8 @@ def script():
             y2xConvert(txtPath=txtpath, imgPath=imgpath, labelPath=labelPath)
             print('Done!')
 
-    if args['method'] == 'xml2yolo':
+    if args['method'] == 'xml2yolo' or args[
+            'method'] == __support_methods_simplified__['xml2yolo']:
         if args['HELP']:
             print('\n')
             print("<==== {} detailed information ====>".format(args['method']))

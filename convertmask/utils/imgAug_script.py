@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 14:36:37
+LastEditTime: 2020-10-20 09:45:36
 '''
 from .methods.logger import logger
 from . import imgAug
@@ -25,6 +25,9 @@ def proc_xml(img, imgPath, xmlpath, number):
 
 
 def imgAug_withLabels(imgPath, labelPath, number=1):
+    """
+    number : file number you want to generate.
+    """
     logger.info("currently, only *.jpg supported")
 
     oriImgs = glob.glob(imgPath + os.sep +
@@ -70,11 +73,14 @@ def imgAug_withoutLabels(imgPath, number=1):
             number = 1
     for num in range(0, number):
         for i in tqdm(oriImgs):
-            imgAug_nolabel.aug_labelme(i, num=num)
+            imgAug_nolabel.aug(i, num=num)
         # num += 1
 
 
 def imgAug_LabelImg(imgPath, xmlpath, number=1):
+    """
+    number : file number you want to generate.
+    """
     logger.info("currently, only *.jpg supported")
 
     oriImgs = glob.glob(imgPath + os.sep +
@@ -91,13 +97,7 @@ def imgAug_LabelImg(imgPath, xmlpath, number=1):
                 'Augumentation times {} is less than 1.Using 1 as default'.
                 format(number))
             number = 1
-        # for num in range(0, number):
-        # for i in tqdm(oriImgs):
-        #     i_xml = i.replace(
-        #         imgPath, xmlpath) if os.path.isdir(xmlpath) else xmlpath
-        #     i_xml = i_xml.replace('.jpg','.xml')
-        #     imgAug.aug_labelimg(i, i_xml, num=num)
-        # num += 1
+
     pool = Pool(__CPUS__ - 1)
     pool_list = []
     for i in oriImgs:

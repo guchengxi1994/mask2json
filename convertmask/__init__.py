@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:51:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 11:07:44
+LastEditTime: 2020-10-20 11:11:31
 '''
 __version__ = '0.5.1'
 __appname__ = 'convertmask'
@@ -37,11 +37,6 @@ del multiprocessing
 
 import argparse
 from convertmask.utils.methods.logger import logger
-
-import convertmask.utils.methods.configUtils as ccfg
-# print(ccfg.config_ROOT)
-ccfg.setConfigParam(ccfg.cfp,'log','show','True')
-del ccfg
 
 
 class BaseParser(object):

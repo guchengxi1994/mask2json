@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 10:49:44
+LastEditTime: 2020-10-20 11:11:21
 '''
 import sys
 sys.path.append('..')
@@ -21,6 +21,7 @@ from convertmask.utils.yolo2xml.yolo2xml import y2xConvert
 from convertmask.utils.xml2yolo.xml2yolo import x2yConvert
 import difflib
 import convertmask.utils.methods.configUtils as ccfg
+ccfg.setConfigParam(ccfg.cfp,'log','show','True')
 
 supported_simplified_methods = __support_methods_simplified__.values()
 

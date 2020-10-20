@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 15:01:53
+LastEditTime: 2020-10-20 10:53:35
 '''
 
 import sys
@@ -20,22 +20,22 @@ import cv2
 import os
 from .json2mask.convert import processor
 from .getMultiShapes import getMultiShapes
-# from utils.img2base64 import imgEncode
 from .methods.img2base64 import imgEncode
-from .methods import rmQ
+from .methods import rmQ ,entity
 import traceback
-# from .entity import *
 from .methods.entity import *
 import numpy as np
 import shutil
 import json
-# from .logger import logger
 from .methods.logger import logger
 import random
 from convertmask.utils.xml2json.xml2json import x2jConvert_pascal
 from convertmask.utils.json2xml.json2xml import j2xConvert
-# from convertmask.utils.methods.entity import Img_clasId,Ori_Pro
 from scipy import ndimage
+
+import convertmask.utils.methods.configUtils as ccfg
+LOGFlag = ccfg.getConfigParam(ccfg.cfp,'log','show')
+del ccfg
 
 kernel = np.ones((5, 5), np.uint8)
 
@@ -76,7 +76,7 @@ def _getZoomedImg(img, size):
     return res
 
 
-def _splitImg(maskImg, thres=10):
+def _splitImg(maskImg):
     maxLabel = np.max(maskImg)
     # print(maxLabel)
     maskImgs = []
@@ -88,33 +88,17 @@ def _splitImg(maskImg, thres=10):
             tmp[tmp != num] = 0
             tmp[tmp != 0] = 255
 
-            closing = cv2.morphologyEx(tmp, cv2.MORPH_CLOSE, kernel)
-            # dots = np.sum(tmp)
-            # tmpRes = np.zeros((tmp.shape[0], tmp.shape[1]))
-            # _, labels, stats, _ = cv2.connectedComponentsWithStats(tmp)
-            # print(stats)
-            # for i in range(1, stats.shape[0]):
-            #     if stats[i][4] < thres:
-            #         labels[labels == i] = 0
-
-            # labels[labels != 0] = num
-            # print(np.max(tmp))
-            # print(int(0.5 * dots))
-            # tmp2 = tmp.copy()
-            # tmp = tmp.astype(bool)
-            # tmp = morphology.remove_small_objects(tmp,
-            #                                       int(0.5 * dots),in_place=True)
-            # tmp[tmp!=0] = 1
-            # print(num)
-            # print(tmp.shape)
-            # tmp = tmp.astype(int)
-            # tmp[tmp == 1] = num
-            # if np.max(tmp) == num:
+            closing = cv2.morphologyEx(tmp, cv2.MORPH_CLOSE, kernel)  # remove small connected area
+            
             closing[closing != 0] = num
             maskImgs.append(Img_clasId(closing, num))
 
             del tmp, closing
     return maskImgs
+
+
+def imgDistort(oriImg: str, oriLabel: str, flag=True):
+    pass
 
 
 def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
@@ -130,7 +114,7 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
     elif isinstance(oriImg, np.ndarray):
         img = oriImg
     else:
-        logger.error('input {} type error'.format('oriImg'))
+        logger.error('input {} type {} error'.format('oriImg',type(oriImg)))
         return
 
     try:
@@ -169,6 +153,10 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
             resMask += res
     resMask = resMask.astype(np.uint8)
 
+    if np.max(resMask) == 0:
+        logger.warning('After zoom,none ROIs detected! Zoomfactor={} maybe too large.'.format(size))
+        # return
+
     if flag:
         parent_path = os.path.dirname(oriLabel)
         if os.path.exists(parent_path + os.sep + 'jsons_'):
@@ -190,11 +178,13 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
         if zoomedMask_j is not None:
             with open(saveJsonPath, 'w') as f:
                 f.write(zoomedMask_j)
+            logger.info('Done! See {} .'.format(saveJsonPath)) if LOGFlag == 'True' else entity.do_nothing()
         else:
             pass
 
     else:
         d = dict()
+        # print(resOri.shape)
         d['zoom'] = Ori_Pro(resOri, resMask)
         return d
 
@@ -563,9 +553,9 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
     """
     augs: ['flip','noise','affine','rotate','...']
     """
-    default_augs = ['noise', 'rotation', 'trans', 'flip']
+    default_augs = ['noise', 'rotation', 'trans', 'flip','zoom']
     if augs is None:
-        augs = ['noise', 'rotation', 'trans', 'flip']
+        augs = ['noise', 'rotation', 'trans', 'flip','zoom']
 
     # elif not isinstance(augs,list):
     else:
@@ -585,9 +575,13 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
             logger.warning(
                 'augumentation method is not supported.using default augumentation method.'
             )
-            augs = ['noise', 'rotation', 'trans', 'flip']
+            augs = ['noise', 'rotation', 'trans', 'flip','zoom']
 
     # l = np.random.randint(2,size=len(augs)).tolist()
+
+    if 'flip' in augs:
+        augs.remove('flip')
+        augs.append('flip')
 
     l = np.random.randint(2, size=len(augs))
 
@@ -627,6 +621,15 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
                 img, processedImg = tmp.oriImg, tmp.processedImg
 
                 del t, tmp
+
+            elif i[0] == 'zoom':
+                zoomFactor = random.uniform(0.8, 1.8)
+                z = imgZoom(img,processedImg,zoomFactor,flag=False)
+                # print(type(z))
+                tmp = z['zoom']
+                img = tmp.oriImg
+
+                del z,tmp
 
             elif i[0] == 'flip':
                 imgList = []
@@ -700,9 +703,9 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
 
 
 def aug_labelimg(filepath, xmlpath, augs=None, num=0):
-    default_augs = ['noise', 'rotation', 'trans', 'flip']
+    default_augs = ['noise', 'rotation', 'trans', 'flip','zoom']
     if augs is None:
-        augs = ['noise', 'rotation', 'trans', 'flip']
+        augs = ['noise', 'rotation', 'trans', 'flip','zoom']
 
     # elif not isinstance(augs,list):
     else:
@@ -722,9 +725,13 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
             logger.warning(
                 'augumentation method is not supported.using default augumentation method.'
             )
-            augs = ['noise', 'rotation', 'trans', 'flip']
+            augs = ['noise', 'rotation', 'trans', 'flip','zoom']
 
     # l = np.random.randint(2,size=len(augs)).tolist()
+
+    if 'flip' in augs:
+        augs.remove('flip')
+        augs.append('flip')
 
     l = np.random.randint(2, size=len(augs))
 
@@ -769,6 +776,14 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
                 img, processedImg = tmp.oriImg, tmp.processedImg
 
                 del t, tmp
+            
+            elif i[0] == 'zoom':
+                zoomFactor = random.uniform(0.8, 1.8)
+                z = imgZoom(img,processedImg,zoomFactor,flag=False)
+                tmp = z['zoom']
+                img = tmp.oriImg
+
+                del z,tmp
 
             elif i[0] == 'flip':
                 imgList = []

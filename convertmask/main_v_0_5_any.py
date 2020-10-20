@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-19 11:04:36
+LastEditTime: 2020-10-20 10:49:44
 '''
 import sys
 sys.path.append('..')
@@ -20,6 +20,7 @@ from convertmask.utils.xml2json.xml2json import getPolygon, x2jConvert, x2jConve
 from convertmask.utils.yolo2xml.yolo2xml import y2xConvert
 from convertmask.utils.xml2yolo.xml2yolo import x2yConvert
 import difflib
+import convertmask.utils.methods.configUtils as ccfg
 
 supported_simplified_methods = __support_methods_simplified__.values()
 
@@ -104,6 +105,7 @@ def script():
             'type': int,
             'help': 'image augmentation numbers, default 1'
         },
+        ('-L', '--nolog', 'remove "annoying" logs')
     ]
 
     p = Parser(argList, __appname__)
@@ -125,6 +127,9 @@ def script():
     if args['method'] and not args['input'] and not args['HELP']:
         logger.error('<=== INPUT FOLDER/FILE MUST NOT BE NULL ===>')
         return
+
+    if args['nolog']:
+        ccfg.setConfigParam(ccfg.cfp, 'log', 'show', 'False')
 
     if args['method'] not in __support_methods__ and args[
             'method'] not in supported_simplified_methods:

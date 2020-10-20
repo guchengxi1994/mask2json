@@ -1,11 +1,11 @@
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: Test convert images to base64 code and save to json files.
 version: beta
 Author: xiaoshuyui
 Date: 2020-10-10 09:37:10
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:39:02
+LastEditTime: 2020-10-20 09:38:54
 '''
 import sys
 sys.path.append('..')

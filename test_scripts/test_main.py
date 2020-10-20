@@ -1,12 +1,12 @@
 #coding=utf-8
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: main test script.
 version: beta
 Author: xiaoshuyui
 Date: 2020-10-16 11:06:01
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-19 10:42:14
+LastEditTime: 2020-10-20 10:57:36
 '''
 import sys
 sys.path.append("..")
@@ -93,5 +93,21 @@ if __name__ == "__main__":
     os.system(code)
 
     code = 'python {} aug -i {} {} -N 20 --labelImg'.format(
+        mainScriptPath, oriImgPath2, labelPath2)
+    os.system(code)
+
+
+    logger.info('10.no log test')
+    oriImgPath1 = BASE_DIR + '/static/multi_objs.jpg'
+    labelPath1 = BASE_DIR + '/static/multi_objs.json'
+
+    oriImgPath2 = BASE_DIR + '/static/label_255.png'
+    labelPath2 = BASE_DIR + '/static/label_255.xml'
+
+    code = 'python {} aug -i {}  {} -N 2'.format(mainScriptPath, oriImgPath1,
+                                                 labelPath1)
+    os.system(code)
+
+    code = 'python {} aug -i -L {} {} -N 20 --labelImg'.format(
         mainScriptPath, oriImgPath2, labelPath2)
     os.system(code)

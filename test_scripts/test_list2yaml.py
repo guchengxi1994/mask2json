@@ -1,11 +1,11 @@
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: test convert label(file or list) to yaml file.
 version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 08:26:06
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:39:53
+LastEditTime: 2020-10-20 09:41:21
 '''
 import sys
 sys.path.append("..")

@@ -1,11 +1,11 @@
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: Image augmentation without label files.
 version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:52:18
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 09:44:28
+LastEditTime: 2020-10-20 09:40:05
 '''
 import sys
 sys.path.append("..")

@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:33:39
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 14:06:19
+LastEditTime: 2020-10-20 10:55:15
 '''
 
 from . import getMultiShapes
@@ -43,7 +43,7 @@ def getJsons(imgPath, maskPath, savePath, yamlPath=''):
     else:
         logger.error('input error. got [{},{},{},{}]. file maybe missing.'.format(
             imgPath, maskPath, savePath, yamlPath))
-    logger.info('See here. {}'.format(savePath))
+    logger.info('Done! See here. {}'.format(savePath))
 
 
 def getXmls(imgPath, maskPath, savePath):
@@ -66,4 +66,4 @@ def getXmls(imgPath, maskPath, savePath):
     else:
         logger.error('input error. got [{},{},{}]. file maybe missing.'.format(
             imgPath, maskPath, savePath))
-    logger.info('See here. {}'.format(savePath))
+    logger.info('Done! See here. {}'.format(savePath))

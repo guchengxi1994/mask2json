@@ -1,14 +1,14 @@
 '''
 @lanhuage: python
-@Descripttion: 
+@Descripttion:  Deprecated. Just for test. For more information,see convertmask.utils.json2mask.convert
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:32:14
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:36:32
+LastEditTime: 2020-10-20 09:31:57
 '''
-# coding: utf-8
-import argparse
+import sys
+sys.path.append('..')
 import json
 import os
 import os.path as osp
@@ -16,7 +16,16 @@ import warnings
 import numpy as np
 import PIL.Image
 import yaml
-from labelme import utils
+# from labelme import utils
+try:
+    from labelme.utils import draw_label
+except:
+    isInstalled = False
+
+if isInstalled:
+    import labelme.utils as lUtils  # solve conflict
+else:
+    from convertmask.labelme_sub import utils as  lUtils
 
 
 def main():
@@ -26,8 +35,8 @@ def main():
         path = os.path.join(json_file, list[i])
         if os.path.isfile(path) and path.endswith('.json'):
             data = json.load(open(path))
-            img = utils.img_b64_to_arr(data['imageData'])
-            lbl, lbl_names = utils.labelme_shapes_to_label(
+            img = lUtils.img_b64_to_arr(data['imageData'])
+            lbl, lbl_names = lUtils.labelme_shapes_to_label(
                 img.shape, data['shapes'])
             # lbl[lbl>0] = 255
             # print(lbl)
@@ -35,7 +44,7 @@ def main():
             captions = [
                 '%d: %s' % (l, name) for l, name in enumerate(lbl_names)
             ]
-            lbl_viz = utils.draw_label(lbl, img, captions)
+            lbl_viz = lUtils.draw_label(lbl, img, captions)
             out_dir = osp.basename(list[i]).replace('.', '_')
             out_dir = osp.join(osp.dirname(list[i]), out_dir)
             if not osp.exists(out_dir):
@@ -62,14 +71,14 @@ def main():
 def singleFile(filePath):
     if os.path.isfile(filePath) and filePath.endswith('.json'):
         data = json.load(open(filePath))
-        img = utils.img_b64_to_arr(data['imageData'])
-        lbl, lbl_names = utils.labelme_shapes_to_label(img.shape,
+        img = lUtils.img_b64_to_arr(data['imageData'])
+        lbl, lbl_names = lUtils.labelme_shapes_to_label(img.shape,
                                                        data['shapes'])
         # lbl[lbl>0] = 255
         # print(lbl)
 
         captions = ['%d: %s' % (l, name) for l, name in enumerate(lbl_names)]
-        lbl_viz = utils.draw_label(lbl, img, captions)
+        lbl_viz = lUtils.draw_label(lbl, img, captions)
         out_dir = osp.basename(filePath).replace('.', '_')
         out_dir = osp.join(osp.dirname(filePath), out_dir)
         if not osp.exists(out_dir):

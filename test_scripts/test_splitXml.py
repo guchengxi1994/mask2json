@@ -1,11 +1,11 @@
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: test split long images to sub images and generate label files.
 version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 14:17:43
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:43:56
+LastEditTime: 2020-10-20 09:47:32
 '''
 import sys
 sys.path.append("..")

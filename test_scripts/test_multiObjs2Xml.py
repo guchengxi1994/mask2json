@@ -1,11 +1,11 @@
 '''
 @lanhuage: python
-@Descripttion: 
+@Descripttion: test mask images to xml.
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-07-14 08:46:20
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:44:06
+LastEditTime: 2020-10-20 09:46:31
 '''
 import sys
 sys.path.append("..")

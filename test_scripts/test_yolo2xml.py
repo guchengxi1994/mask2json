@@ -1,11 +1,11 @@
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: convert yolo txts to xmls(a class file needed.)
 version: beta
 Author: xiaoshuyui
 Date: 2020-10-12 16:13:26
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-12 16:25:50
+LastEditTime: 2020-10-20 09:50:33
 '''
 import sys
 sys.path.append('..')

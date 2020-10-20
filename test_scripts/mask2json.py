@@ -1,11 +1,11 @@
 '''
 @lanhuage: python
-@Descripttion: 
+@Descripttion: Deprecated. Just for test. For more information,see convertmask.utils.mask2json_script.
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:24:12
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 13:58:53
+LastEditTime: 2020-10-20 09:34:55
 '''
 import cv2
 import sys

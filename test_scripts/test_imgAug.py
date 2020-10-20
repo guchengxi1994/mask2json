@@ -1,11 +1,11 @@
 '''
 @lanhuage: python
-@Descripttion: 
+@Descripttion: image augmentation with labels.
 @version: beta
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-19 09:37:23
+LastEditTime: 2020-10-20 09:40:34
 '''
 import sys
 sys.path.append("..")

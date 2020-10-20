@@ -1,11 +1,11 @@
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: Deprecated. For more information,see test_imgAug, test_multiAug
 version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:36:01
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:37:12
+LastEditTime: 2020-10-20 09:35:44
 '''
 import sys
 sys.path.append("..")

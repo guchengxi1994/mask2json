@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 09:45:36
+LastEditTime: 2020-10-21 14:13:34
 '''
 from .methods.logger import logger
 from . import imgAug
@@ -17,14 +17,14 @@ from multiprocessing import Pool
 from convertmask import __CPUS__
 
 
-def proc_xml(img, imgPath, xmlpath, number):
+def proc_xml(img, imgPath, xmlpath, number, labelpath):
     i_xml = img.replace(imgPath,
                         xmlpath) if os.path.isdir(xmlpath) else xmlpath
     i_xml = i_xml.replace('.jpg', '.xml')
-    imgAug.aug_labelimg(img, i_xml, num=number)
+    imgAug.aug_labelimg(img, i_xml, num=number, labelpath=labelpath)
 
 
-def imgAug_withLabels(imgPath, labelPath, number=1):
+def imgAug_withLabels(imgPath, labelPath, number=1, yamlFilePath=''):
     """
     number : file number you want to generate.
     """
@@ -52,7 +52,7 @@ def imgAug_withLabels(imgPath, labelPath, number=1):
             i_json = i.replace(
                 imgPath, labelPath) if os.path.isdir(labelPath) else labelPath
             i_json = i_json.replace('.jpg', '.json')
-            imgAug.aug_labelme(i, i_json, num=num)
+            imgAug.aug_labelme(i, i_json, num=num, yamlFilePath=yamlFilePath)
         # num += 1
 
 
@@ -77,7 +77,7 @@ def imgAug_withoutLabels(imgPath, number=1):
         # num += 1
 
 
-def imgAug_LabelImg(imgPath, xmlpath, number=1):
+def imgAug_LabelImg(imgPath, xmlpath, number=1,yamlFilePath=''):
     """
     number : file number you want to generate.
     """
@@ -103,7 +103,7 @@ def imgAug_LabelImg(imgPath, xmlpath, number=1):
     for i in oriImgs:
         for num in tqdm(range(0, number)):
             resultspool = pool.apply_async(proc_xml,
-                                           (i, imgPath, xmlpath, num))
+                                           (i, imgPath, xmlpath, num,yamlFilePath))
             pool_list.append(resultspool)
 
     logger.info('successfully create {} tasks'.format(len(pool_list)))

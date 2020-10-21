@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 14:15:14
+LastEditTime: 2020-10-21 15:24:50
 '''
 try:
     from labelme import __version__ as labelme_version
@@ -29,15 +29,29 @@ from .methods.logger import logger
 from .img2xml.processor_multiObj import img2xml_multiobj
 
 
+def rs(st:str):
+    s = st.replace('\n','').strip()
+    return s
+
+
 def readYmal(filepath, labeledImg=None):
     if os.path.exists(filepath):
-        f = open(filepath)
-        y = yaml.load(f, Loader=yaml.FullLoader)
-        f.close()
-        # print(y)
-        tmp = y['label_names']
-        objs = zip(tmp.keys(), tmp.values())
-        return sorted(objs)
+        if filepath.endswith('.yaml'):
+            f = open(filepath)
+            y = yaml.load(f, Loader=yaml.FullLoader)
+            f.close()
+            # print(y)
+            tmp = y['label_names']
+            objs = zip(tmp.keys(), tmp.values())
+            return sorted(objs)
+        elif filepath.endswith('.txt'):
+            f = open(filepath,'r',encoding='utf-8')
+            classList = f.readlines()
+            f.close()
+            l3 = [rs(i) for i in classList]
+            l = list(range(1,len(classList)+1))
+            objs = zip(l3,l)
+            return sorted(objs)
     elif labeledImg is not None and filepath == "":
         """
         should make sure your label is correct!!!
@@ -216,6 +230,8 @@ def getMultiShapes(oriImgPath,
     else:
         # img = oriImg
         label_img = labelPath
+    
+    # print(np.max(label_img))
 
     if np.max(label_img) > 127:
         # print('too many classes! \n maybe binary?')
@@ -224,8 +240,6 @@ def getMultiShapes(oriImgPath,
         label_img = label_img / 255
 
     labelShape = label_img.shape
-
-    # print(np.max(label_img))
 
     labels = readYmal(labelYamlPath, label_img)
     # print(list(labels))
@@ -237,7 +251,7 @@ def getMultiShapes(oriImgPath,
 
         if la[1] > 0:
             # print(la[0])
-            img = copy.deepcopy(label_img)
+            img = copy.deepcopy(label_img)   # img = label_img.copy()
             img = img.astype(np.uint8)
 
             img[img == la[1]] = 255

@@ -5,9 +5,9 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:51:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 11:11:31
+LastEditTime: 2020-10-21 13:22:18
 '''
-__version__ = '0.5.1'
+__version__ = '0.5.2'
 __appname__ = 'convertmask'
 __support_methods__ = [
     'mask2json',

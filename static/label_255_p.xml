@@ -1,7 +1,7 @@
 <annotation>
-	<folder>TEST</folder>
+	<folder>D:\testALg\mask2json\mask2json\static\label_255_p.json</folder>
 	<filename>label_255.png</filename>
-	<path>D:\testALg\mask2json\mask2json\static\multi_objs.jpg</path>
+	<path>D:\testALg\mask2json\mask2json\static/label_255_p.xml</path>
 	<source>
 		<database>Unknown</database>
 	</source>

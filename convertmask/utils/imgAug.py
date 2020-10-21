@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 10:53:35
+LastEditTime: 2020-10-21 16:28:30
 '''
 
 import sys
@@ -19,9 +19,10 @@ from skimage import morphology
 import cv2
 import os
 from .json2mask.convert import processor
+from .json2mask.convertWithLabel import processor as processorWithLabel
 from .getMultiShapes import getMultiShapes
 from .methods.img2base64 import imgEncode
-from .methods import rmQ ,entity
+from .methods import rmQ, entity
 import traceback
 from .methods.entity import *
 import numpy as np
@@ -34,7 +35,7 @@ from convertmask.utils.json2xml.json2xml import j2xConvert
 from scipy import ndimage
 
 import convertmask.utils.methods.configUtils as ccfg
-LOGFlag = ccfg.getConfigParam(ccfg.cfp,'log','show')
+LOGFlag = ccfg.getConfigParam(ccfg.cfp, 'log', 'show')
 del ccfg
 
 kernel = np.ones((5, 5), np.uint8)
@@ -77,23 +78,27 @@ def _getZoomedImg(img, size):
 
 
 def _splitImg(maskImg):
-    maxLabel = np.max(maskImg)
+    # maxLabel = np.max(maskImg)
+    labels = np.unique(maskImg).tolist()
     # print(maxLabel)
     maskImgs = []
-    if maxLabel == 0:
+    if max(labels) == 0:
         pass
     else:
-        for num in range(1, maxLabel + 1):
-            tmp = maskImg.copy()
-            tmp[tmp != num] = 0
-            tmp[tmp != 0] = 255
+        for num in labels:
+            if num != 0:
+                tmp = maskImg.copy()
+                tmp[tmp != num] = 0
+                tmp[tmp != 0] = 255
 
-            closing = cv2.morphologyEx(tmp, cv2.MORPH_CLOSE, kernel)  # remove small connected area
-            
-            closing[closing != 0] = num
-            maskImgs.append(Img_clasId(closing, num))
+                closing = cv2.morphologyEx(
+                    tmp, cv2.MORPH_CLOSE,
+                    kernel)  # remove small connected area
 
-            del tmp, closing
+                closing[closing != 0] = num
+                maskImgs.append(Img_clasId(closing, num))
+
+                del tmp, closing
     return maskImgs
 
 
@@ -101,7 +106,11 @@ def imgDistort(oriImg: str, oriLabel: str, flag=True):
     pass
 
 
-def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
+def imgZoom(oriImg: str,
+            oriLabel: str,
+            size: float = 0,
+            flag=True,
+            labelFile=''):
     """
     size : The zoom factor along the axes, default 0.8~1.8
     """
@@ -114,7 +123,7 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
     elif isinstance(oriImg, np.ndarray):
         img = oriImg
     else:
-        logger.error('input {} type {} error'.format('oriImg',type(oriImg)))
+        logger.error('input {} type {} error'.format('oriImg', type(oriImg)))
         return
 
     try:
@@ -134,7 +143,11 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
     resOri = _getZoomedImg(img, size)
 
     if isinstance(oriLabel, str):
-        mask = processor(oriLabel, flag=True)
+        if os.path.exists(labelFile):
+            # print(True)
+            mask = processorWithLabel(oriLabel, labelFile, flag=True)
+        else:
+            mask = processor(oriLabel, flag=True)
     elif isinstance(oriLabel, np.ndarray):
         mask = oriLabel
     else:
@@ -143,18 +156,24 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
                 type(oriLabel)))
 
     maskImgs = _splitImg(mask)
+    # print('========='+str(len(maskImgs)))
     resMask = np.zeros((resOri.shape[0], resOri.shape[1]))
     if len(maskImgs) > 0:
         for m in maskImgs:
-            # print(m.img.shape)
+            # print(np.max(m.img))           
             res = _getZoomedImg(m.img, size)
             res[res > 0] = m.clasId
             res[res != m.clasId] = 0
             resMask += res
+            # io.imsave('D:\\testALg\\mask2json\\mask2json\\static\\jsons_\\{}.png'.format(np.max(m.img)),resMask*255)
     resMask = resMask.astype(np.uint8)
+    # io.imsave('D:\\testALg\\mask2json\\mask2json\\static\\jsons_\\12.png',resMask*255)
+    # print(np.max(resMask))
 
     if np.max(resMask) == 0:
-        logger.warning('After zoom,none ROIs detected! Zoomfactor={} maybe too large.'.format(size))
+        logger.warning(
+            'After zoom,none ROIs detected! Zoomfactor={} maybe too large.'.
+            format(size))
         # return
 
     if flag:
@@ -173,23 +192,29 @@ def imgZoom(oriImg: str, oriLabel: str, size: float = 0, flag=True):
                                       os.sep + fileName + '_zoom.jpg',
                                       resMask,
                                       flag=True,
-                                      labelYamlPath='')
+                                      labelYamlPath=labelFile)
         saveJsonPath = parent_path + os.sep + 'jsons_' + os.sep + fileName + '_zoom.json'
         if zoomedMask_j is not None:
             with open(saveJsonPath, 'w') as f:
                 f.write(zoomedMask_j)
-            logger.info('Done! See {} .'.format(saveJsonPath)) if LOGFlag == 'True' else entity.do_nothing()
+            logger.info('Done! See {} .'.format(
+                saveJsonPath)) if LOGFlag == 'True' else entity.do_nothing()
         else:
             pass
 
     else:
         d = dict()
         # print(resOri.shape)
+        # io.imsave('D:\\testALg\\mask2json\\mask2json\\static\\jsons_\\13.png',resMask*255)
         d['zoom'] = Ori_Pro(resOri, resMask)
         return d
 
 
-def imgFlip(oriImg: str, oriLabel: str, flip_list=[1, 0, -1], flag=True):
+def imgFlip(oriImg: str,
+            oriLabel: str,
+            flip_list=[1, 0, -1],
+            flag=True,
+            labelFile=''):
     """
     flipList: flip type. see cv2.flip :
     1: 水平翻转 \n
@@ -212,9 +237,12 @@ def imgFlip(oriImg: str, oriLabel: str, flip_list=[1, 0, -1], flag=True):
     try:
         if len(flip_list) > 1 and (1 in flip_list or 0 in flip_list
                                    or -1 in flip_list):
-            # mask = processor(oriLabel,flag=True)
+
             if isinstance(oriLabel, str):
-                mask = processor(oriLabel, flag=True)
+                if os.path.exists(labelFile):
+                    mask = processorWithLabel(oriLabel, labelFile, flag=True)
+                else:
+                    mask = processor(oriLabel, flag=True)
             elif isinstance(oriLabel, np.ndarray):
                 mask = oriLabel
             else:
@@ -319,7 +347,7 @@ def imgFlip(oriImg: str, oriLabel: str, flip_list=[1, 0, -1], flag=True):
         print(traceback.format_exc())
 
 
-def imgNoise(oriImg: str, oriLabel: str, flag=True):
+def imgNoise(oriImg: str, oriLabel: str, flag=True, labelFile=''):
     """
     see skimage.util.random_noise    
     """
@@ -337,7 +365,7 @@ def imgNoise(oriImg: str, oriLabel: str, flag=True):
     elif isinstance(oriImg, np.ndarray):
         img = oriImg
     else:
-        logger.error('input {} type error'.format(imgFlip))
+        logger.error('input type error')
         return
 
     for i in p:
@@ -388,7 +416,7 @@ def imgNoise(oriImg: str, oriLabel: str, flag=True):
                                               os.sep + fileName + '_noise.jpg',
                                               oriLabel,
                                               flag=True,
-                                              labelYamlPath='')
+                                              labelYamlPath=labelFile)
                 with open(
                         parent_path + os.sep + 'jsons_' + os.sep + fileName +
                         '_noise.json', 'w') as f:
@@ -401,19 +429,30 @@ def imgNoise(oriImg: str, oriLabel: str, flag=True):
         d = dict()
         # mask = processor(oriLabel,flag=True)
         if isinstance(oriLabel, str):
-            mask = processor(oriLabel, flag=True)
+            if os.path.exists(labelFile):
+                mask = processorWithLabel(oriLabel, labelFile, flag=True)
+            else:
+                mask = processor(oriLabel, flag=True)
         elif isinstance(oriLabel, np.ndarray):
             mask = oriLabel
         else:
             raise TypeError(
                 "input parameter 'oriLabel' type {} is not supported".format(
                     type(oriLabel)))
+        # print('======================')
+        # print(np.max(mask))
+        # print('======================')
         d['noise'] = Ori_Pro(img, mask)
 
         return d
 
 
-def imgRotation(oriImg: str, oriLabel: str, angle=30, scale=1, flag=True):
+def imgRotation(oriImg: str,
+                oriLabel: str,
+                angle=30,
+                scale=1,
+                flag=True,
+                labelFile=''):
     """
     旋转
     """
@@ -434,7 +473,10 @@ def imgRotation(oriImg: str, oriLabel: str, angle=30, scale=1, flag=True):
     imgShape = img.shape
 
     if isinstance(oriLabel, str):
-        mask = processor(oriLabel, flag=True)
+        if os.path.exists(labelFile):
+            mask = processorWithLabel(oriLabel, labelFile, flag=True)
+        else:
+            mask = processor(oriLabel, flag=True)
     elif isinstance(oriLabel, np.ndarray):
         mask = oriLabel
     else:
@@ -482,7 +524,7 @@ def imgRotation(oriImg: str, oriLabel: str, angle=30, scale=1, flag=True):
         return d
 
 
-def imgTranslation(oriImg: str, oriLabel: str, flag=True):
+def imgTranslation(oriImg: str, oriLabel: str, flag=True, labelFile=''):
     """
     image translation
     """
@@ -500,7 +542,10 @@ def imgTranslation(oriImg: str, oriLabel: str, flag=True):
     imgShape = img.shape
 
     if isinstance(oriLabel, str):
-        mask = processor(oriLabel, flag=True)
+        if os.path.exists(labelFile):
+            mask = processorWithLabel(oriLabel, labelFile, flag=True)
+        else:
+            mask = processor(oriLabel, flag=True)
     elif isinstance(oriLabel, np.ndarray):
         mask = oriLabel
     else:
@@ -549,13 +594,13 @@ def imgTranslation(oriImg: str, oriLabel: str, flag=True):
         return d
 
 
-def aug_labelme(filepath, jsonpath, augs=None, num=0):
+def aug_labelme(filepath, jsonpath, augs=None, num=0, yamlFilePath=''):
     """
     augs: ['flip','noise','affine','rotate','...']
     """
-    default_augs = ['noise', 'rotation', 'trans', 'flip','zoom']
+    default_augs = ['noise', 'rotation', 'trans', 'flip', 'zoom']
     if augs is None:
-        augs = ['noise', 'rotation', 'trans', 'flip','zoom']
+        augs = ['noise', 'rotation', 'trans', 'flip', 'zoom']
 
     # elif not isinstance(augs,list):
     else:
@@ -575,7 +620,7 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
             logger.warning(
                 'augumentation method is not supported.using default augumentation method.'
             )
-            augs = ['noise', 'rotation', 'trans', 'flip','zoom']
+            augs = ['noise', 'rotation', 'trans', 'flip', 'zoom']
 
     # l = np.random.randint(2,size=len(augs)).tolist()
 
@@ -591,17 +636,23 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
     l[l != 1] = 1
 
     l = l.tolist()
+    # l = [0, 0, 0, 1, 0]     # for test 
 
     p = list(zip(augs, l))
 
     img = filepath
-    processedImg = jsonpath
+    # processedImg = jsonpath
+    processedImg = processorWithLabel(jsonpath, yamlFilePath, flag=True)
+    # print("======================={}".format(np.max(processedImg)))
 
     for i in p:
         # if i[0]!='flip':
         if i[1] == 1:
             if i[0] == 'noise':
-                n = imgNoise(img, processedImg, flag=False)
+                n = imgNoise(img,
+                             processedImg,
+                             flag=False,
+                             labelFile=yamlFilePath)
                 tmp = n['noise']
                 img, processedImg = tmp.oriImg, tmp.processedImg
 
@@ -609,14 +660,21 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
 
             elif i[0] == 'rotation':
                 angle = random.randint(-45, 45)
-                r = imgRotation(img, processedImg, flag=False, angle=angle)
+                r = imgRotation(img,
+                                processedImg,
+                                flag=False,
+                                angle=angle,
+                                labelFile=yamlFilePath)
                 tmp = r['rotation']
                 img, processedImg = tmp.oriImg, tmp.processedImg
 
                 del r, tmp
 
             elif i[0] == 'trans':
-                t = imgTranslation(img, processedImg, flag=False)
+                t = imgTranslation(img,
+                                   processedImg,
+                                   flag=False,
+                                   labelFile=yamlFilePath)
                 tmp = t['trans']
                 img, processedImg = tmp.oriImg, tmp.processedImg
 
@@ -624,18 +682,26 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
 
             elif i[0] == 'zoom':
                 zoomFactor = random.uniform(0.8, 1.8)
-                z = imgZoom(img,processedImg,zoomFactor,flag=False)
+                # print("==========2============={}".format(np.max(processedImg)))
+                z = imgZoom(img,
+                            processedImg,
+                            zoomFactor,
+                            flag=False,
+                            labelFile='')
                 # print(type(z))
                 tmp = z['zoom']
-                img = tmp.oriImg
-
-                del z,tmp
+                img, processedImg = tmp.oriImg, tmp.processedImg
+                
+                del z, tmp
 
             elif i[0] == 'flip':
                 imgList = []
                 processedImgList = []
 
-                f = imgFlip(img, processedImg, flag=False)
+                f = imgFlip(img,
+                            processedImg,
+                            flag=False,
+                            labelFile=yamlFilePath)
 
                 tmp = f['h_v']
                 imgList.append(tmp.oriImg)
@@ -661,8 +727,10 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
         os.makedirs(parent_path + os.sep + 'jsons_')
 
     # fileName = jsonpath.split(os.sep)[-1].replace(".json", '')
-    (_,fileName) = os.path.split(jsonpath)
+    (_, fileName) = os.path.split(jsonpath)
     fileName = fileName.replace(".json", '')
+
+    # io.imsave('D:\\testALg\\mask2json\\mask2json\\static\\jsons_\\12.png',processedImg*255)
 
     if isinstance(img, np.ndarray):
         io.imsave(
@@ -673,7 +741,7 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
                                       '_{}_assumble.jpg'.format(num),
                                       processedImg,
                                       flag=True,
-                                      labelYamlPath='')
+                                      labelYamlPath=yamlFilePath)
         saveJsonPath = parent_path + os.sep + 'jsons_' + os.sep + fileName + '_{}_assumble.json'.format(
             num)
         with open(saveJsonPath, 'w') as f:
@@ -692,7 +760,7 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
                                           '_{}_assumble{}.jpg'.format(num, i),
                                           processedImg[i],
                                           flag=True,
-                                          labelYamlPath='')
+                                          labelYamlPath=yamlFilePath)
             saveJsonPath = parent_path + os.sep + 'jsons_' + os.sep + fileName + '_{}_assumble{}.json'.format(
                 num, i)
             with open(saveJsonPath, 'w') as f:
@@ -702,10 +770,10 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0):
         print("see here {}".format(parent_path + os.sep + 'jsons_'))
 
 
-def aug_labelimg(filepath, xmlpath, augs=None, num=0):
-    default_augs = ['noise', 'rotation', 'trans', 'flip','zoom']
+def aug_labelimg(filepath, xmlpath, augs=None, num=0, labelpath=''):
+    default_augs = ['noise', 'rotation', 'trans', 'flip', 'zoom']
     if augs is None:
-        augs = ['noise', 'rotation', 'trans', 'flip','zoom']
+        augs = ['noise', 'rotation', 'trans', 'flip', 'zoom']
 
     # elif not isinstance(augs,list):
     else:
@@ -725,7 +793,7 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
             logger.warning(
                 'augumentation method is not supported.using default augumentation method.'
             )
-            augs = ['noise', 'rotation', 'trans', 'flip','zoom']
+            augs = ['noise', 'rotation', 'trans', 'flip', 'zoom']
 
     # l = np.random.randint(2,size=len(augs)).tolist()
 
@@ -749,9 +817,9 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
     # processedImg = xmlpath
 
     jsonpath = x2jConvert_pascal(xmlpath, filepath)
-    processedImg = jsonpath
+    processedImg = processorWithLabel(jsonpath, labelpath, flag=True)
+    # os.remove(jsonpath)
 
-    # logger.warning(processedImg)
     for i in p:
         # if i[0]!='flip':
         if i[1] == 1:
@@ -776,14 +844,14 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
                 img, processedImg = tmp.oriImg, tmp.processedImg
 
                 del t, tmp
-            
+
             elif i[0] == 'zoom':
                 zoomFactor = random.uniform(0.8, 1.8)
-                z = imgZoom(img,processedImg,zoomFactor,flag=False)
+                z = imgZoom(img, processedImg, zoomFactor, flag=False)
                 tmp = z['zoom']
-                img = tmp.oriImg
+                img, processedImg = tmp.oriImg, tmp.processedImg
 
-                del z,tmp
+                del z, tmp
 
             elif i[0] == 'flip':
                 imgList = []
@@ -816,7 +884,7 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
 
     # fileName = jsonpath.split(os.sep)[-1].replace(".json", '')
 
-    (_,fileName) = os.path.split(jsonpath)
+    (_, fileName) = os.path.split(jsonpath)
     fileName = fileName.replace(".json", '')
 
     if isinstance(img, np.ndarray):
@@ -828,16 +896,17 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
                                       '_{}_assumble.jpg'.format(num),
                                       processedImg,
                                       flag=True,
-                                      labelYamlPath='')
+                                      labelYamlPath=labelpath)
         saveJsonPath = parent_path + os.sep + 'xmls_' + os.sep + fileName + '_{}_assumble.json'.format(
             num)
         with open(saveJsonPath, 'w') as f:
             f.write(assumbleJson)
 
         j2xConvert(saveJsonPath)
-        os.remove(saveJsonPath)
+        # os.remove(saveJsonPath)
         print("Done!")
         print("see here {}".format(parent_path + os.sep + 'xmls_'))
+        # print("see here {}".format(saveJsonPath))
 
     elif isinstance(img, list):
         for i in range(0, len(img)):
@@ -849,7 +918,7 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
                                           '_{}_assumble{}.jpg'.format(num, i),
                                           processedImg[i],
                                           flag=True,
-                                          labelYamlPath='')
+                                          labelYamlPath=labelpath)
             saveJsonPath = parent_path + os.sep + 'xmls_' + os.sep + fileName + '_{}_assumble{}.json'.format(
                 num, i)
             with open(saveJsonPath, 'w') as f:

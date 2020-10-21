@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 16:28:30
+LastEditTime: 2020-10-21 19:00:43
 '''
 
 import sys
@@ -375,12 +375,14 @@ def imgNoise(oriImg: str, oriLabel: str, flag=True, labelFile=''):
     img = np.array(img * 255).astype(np.uint8)
 
     if flag:
-        parent_path = os.path.dirname(oriLabel)
+        # parent_path = os.path.dirname(oriImg)
+        (parent_path,file_path) = os.path.split(oriImg)
         if os.path.exists(parent_path + os.sep + 'jsons_'):
             pass
         else:
             os.makedirs(parent_path + os.sep + 'jsons_')
-        fileName = oriLabel.split(os.sep)[-1].replace('.json', '')
+        # fileName = oriImg.split(os.sep)[-1].replace('.json', '')
+        fileName = os.path.splitext(file_path)[0]
 
         io.imsave(
             parent_path + os.sep + 'jsons_' + os.sep + fileName + '_noise.jpg',
@@ -524,9 +526,10 @@ def imgRotation(oriImg: str,
         return d
 
 
-def imgTranslation(oriImg: str, oriLabel: str, flag=True, labelFile=''):
+def imgTranslation(oriImg: str, oriLabel: str, flag=True, labelFile='',factor=0.5):
     """
     image translation
+    factor : Translation factor
     """
     if isinstance(oriImg, str):
         if os.path.exists(oriImg):
@@ -553,8 +556,8 @@ def imgTranslation(oriImg: str, oriLabel: str, flag=True, labelFile=''):
             "input parameter 'oriLabel' type {} is not supported".format(
                 type(oriLabel)))
 
-    trans_h = random.randint(0, int(0.5 * imgShape[1]))
-    trans_v = random.randint(0, int(0.5 * imgShape[0]))
+    trans_h = random.randint(0, int(factor * imgShape[1]))
+    trans_v = random.randint(0, int(factor * imgShape[0]))
 
     trans_mat = np.float32([[1, 0, trans_h], [0, 1, trans_v]])
 
@@ -642,7 +645,10 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0, yamlFilePath=''):
 
     img = filepath
     # processedImg = jsonpath
-    processedImg = processorWithLabel(jsonpath, yamlFilePath, flag=True)
+    if os.path.exists(yamlFilePath):
+        processedImg = processorWithLabel(jsonpath, yamlFilePath, flag=True)
+    else:
+        processedImg = jsonpath
     # print("======================={}".format(np.max(processedImg)))
 
     for i in p:
@@ -817,21 +823,24 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0, labelpath=''):
     # processedImg = xmlpath
 
     jsonpath = x2jConvert_pascal(xmlpath, filepath)
-    processedImg = processorWithLabel(jsonpath, labelpath, flag=True)
+    # processedImg = processorWithLabel(jsonpath, labelpath, flag=True)
+    if os.path.exists(labelpath):
+        processedImg = processorWithLabel(jsonpath, labelpath, flag=True)
+    else:
+        processedImg = jsonpath
     # os.remove(jsonpath)
 
     for i in p:
-        # if i[0]!='flip':
         if i[1] == 1:
-            if i[0] == 'noise':
-                n = imgNoise(img, processedImg, flag=False)
-                tmp = n['noise']
-                img, processedImg = tmp.oriImg, tmp.processedImg
+            # if i[0] == 'noise':
+            #     n = imgNoise(img, processedImg, flag=False)
+            #     tmp = n['noise']
+            #     img, processedImg = tmp.oriImg, tmp.processedImg
 
-                del n, tmp
+            #     del n, tmp
 
-            elif i[0] == 'rotation':
-                angle = random.randint(-45, 45)
+            if i[0] == 'rotation':
+                angle = random.randint(-10, 10)
                 r = imgRotation(img, processedImg, flag=False, angle=angle)
                 tmp = r['rotation']
                 img, processedImg = tmp.oriImg, tmp.processedImg
@@ -839,7 +848,7 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0, labelpath=''):
                 del r, tmp
 
             elif i[0] == 'trans':
-                t = imgTranslation(img, processedImg, flag=False)
+                t = imgTranslation(img, processedImg, flag=False,factor=0.1)
                 tmp = t['trans']
                 img, processedImg = tmp.oriImg, tmp.processedImg
 

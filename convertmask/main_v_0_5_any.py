@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 14:12:50
+LastEditTime: 2020-10-21 17:27:30
 '''
 import sys
 sys.path.append('..')
@@ -85,7 +85,7 @@ class Parser(BaseParser):
                                      arg['fullName'],
                                      type=arg['type'],
                                      help=arg['help'],
-                                     nargs=arg.get('nargs','+'))
+                                     )
         else:
             raise TypeError('input argument type error')
 

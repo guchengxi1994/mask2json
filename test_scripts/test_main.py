@@ -6,7 +6,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-16 11:06:01
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 11:13:32
+LastEditTime: 2020-10-21 19:09:01
 '''
 import sys
 sys.path.append("..")
@@ -69,16 +69,28 @@ if __name__ == "__main__":
     logger.info('8.augmentation')
     oriImgPath1 = BASE_DIR + '/static/multi_objs.jpg'
     labelPath1 = BASE_DIR + '/static/multi_objs.json'
+    yamlFilePath = BASE_DIR + os.sep + 'static/multi_objs.yaml'
+    
 
-    oriImgPath2 = BASE_DIR + '/static/label_255.png'
-    labelPath2 = BASE_DIR + '/static/label_255.xml'
+    oriImgPath2 = BASE_DIR + '/static/multi_objs.jpg'
+    labelPath2 = BASE_DIR + '/static/multi_objs.xml'
+    txtFilePath = BASE_DIR + os.sep + 'static/multi_objs.txt'
 
     code = 'python {} augmentation -i {}  {} -N 2'.format(
         mainScriptPath, oriImgPath1, labelPath1)
     os.system(code)
 
-    code = 'python {} augmentation -i {} {} -N 20 --labelImg'.format(
+    code = 'python {} augmentation -i {} {} -N 2 --labelImg'.format(
         mainScriptPath, oriImgPath2, labelPath2)
+    os.system(code)
+
+
+    code = 'python {} augmentation -i {}  {} -N 2 -c {}'.format(
+        mainScriptPath, oriImgPath1, labelPath1,yamlFilePath)
+    os.system(code)
+
+    code = 'python {} augmentation -i {} {} -N 2 --labelImg -c {}'.format(
+        mainScriptPath, oriImgPath2, labelPath2,txtFilePath)
     os.system(code)
 
     logger.info('9.simplified test')

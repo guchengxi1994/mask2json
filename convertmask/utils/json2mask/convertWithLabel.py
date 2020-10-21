@@ -5,10 +5,11 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-20 16:50:35
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 19:02:47
+LastEditTime: 2020-10-21 14:57:44
 '''
 
 from convertmask.utils.methods.logger import logger
+from convertmask.utils.xml2mask.x2m import labels2yaml
 import json
 import os
 import yaml
@@ -16,17 +17,7 @@ import cv2
 import io
 import traceback
 import PIL
-
-isInstalled = True
-
-try:
-    from labelme.utils import draw_label
-except:
-    isInstalled = False
-if isInstalled:
-    import labelme.utils as lUtils  # solve conflict
-else:
-    from convertmask.labelme_sub import utils as lUtils
+from convertmask.labelme_sub import utils as lUtils
 
 import numpy as np
 from tqdm import tqdm
@@ -45,17 +36,17 @@ def processor(json_file, yaml_file, encoding='utf-8', flag=False):
                     data = json.load(open(json_file, encoding=encoding))
                     img = lUtils.img_b64_to_arr(data['imageData'])
                     mask = generateMaskFile(data, yaml_file)
+                    # print('<============{}'.format(np.max(mask)))
+                    res = mask.copy()
 
-                    lbl_names = getYamlKeys(yaml_file)
-
-                    captions = [
-                        '%d: %s' % (l, name)
-                        for l, name in enumerate(lbl_names)
-                    ]
-
-                    lbl_viz = draw_label(mask, img, captions)
+                    # print('\n<============{}'.format(np.max(mask)))
 
                     if not flag:
+                        lbl_names = getYamlKeys(yaml_file)
+                        captions = []
+                        for k, v in lbl_names.items():
+                            captions.append('{}:{}'.format(v, k))
+                        lbl_viz = draw_label(mask, img, captions)
                         out_dir = os.path.basename(json_file).split('.json')[0]
                         save_file_name = out_dir
 
@@ -90,9 +81,10 @@ def processor(json_file, yaml_file, encoding='utf-8', flag=False):
                                   'w') as f:
                             yaml.safe_dump(info, f, default_flow_style=False)
 
-                        print(parent_path + 'masks_')
+                        print("Saved to " + parent_path + 'masks_')
                     else:
-                        return mask
+                        # print('============>{}'.format(np.max(res)))
+                        return res
 
                 except:
                     traceback.print_exc()
@@ -135,7 +127,7 @@ def processor(json_file, yaml_file, encoding='utf-8', flag=False):
                         maskvizdir = json_file + 'mask_viz'
 
                         out_dir1 = maskdir
-                        
+
                         PIL.Image.fromarray(lbl).save(out_dir1 + '/' +
                                                       save_file_name + '.png')
                         PIL.Image.fromarray(lbl_viz).save(maskvizdir + '/' +
@@ -163,15 +155,21 @@ def generateMaskFile(data, yamlFile):
     imageHeight = data["imageHeight"]
     imageWidth = data["imageWidth"]
     mask = np.zeros((imageHeight, imageWidth)).astype(np.uint8)
+    yamlInfomation = readYamlFile(yamlFile)
+    # print(yamlInfomation)
     try:
         shapes = data['shapes']
+        # print(shapes)
         for i in shapes:
             k = i["label"]
-            v = readYamlFileVals(yamlFile, k)
+            # print(k)
+            v = readYamlFileVals(yamlInfomation, k)
+            # print(v)
             polygon = i["points"]
             if v != 0:
+                # print('lllllllllllllllllll')
                 mask = draw_mask(polygon, mask, int(v))
-        # print(np.max(mask))
+        # print("<==================>".format(np.max(mask)))
         return mask
 
     except Exception as e:
@@ -187,23 +185,50 @@ def draw_mask(polygon: list, mask: np.ndarray, val: int):
     return mask
 
 
-def readYamlFileVals(yamlFile, k):
-    f = open(yamlFile, 'r', encoding='utf-8')
-    x = yaml.load(f.read(), Loader=yaml.FullLoader)
-    try:
-        res = x['label_names'][k]
-        return res
-    except:
-        return 0
-    finally:
-        f.close()
+def readYamlFile(yamlFile):
+    if isinstance(yamlFile, str) and os.path.exists(yamlFile):
+        if yamlFile.endswith('.yaml'):
+            f = open(yamlFile, 'r', encoding='utf-8')
+            x = yaml.load(f.read(), Loader=yaml.FullLoader)
+            try:
+                res = x['label_names']
+                return res
+            except:
+                return None
+            finally:
+                f.close()
+        elif yamlFile.endswith('.txt'):
+            with open(yamlFile, 'r', encoding='utf-8') as f:
+                classList = f.readlines()
+            res = labels2yaml(classList, savefile=False)
+            return res['label_names']
+
+    elif isinstance(yamlFile, dict):
+        try:
+            res = x['label_names']
+            return res
+        except:
+            return None
+    else:
+        logger.error(
+            'input type error. must be a .txt file or .yaml file or a dict like \{"label_names":["classA":1,...,"classN":10]\}'
+        )
+
+
+def readYamlFileVals(classInfomation: dict, k: str):
+    return classInfomation.get(k, 0)
 
 
 def getYamlKeys(yamlFile):
     f = open(yamlFile, 'r', encoding='utf-8')
-    x = yaml.load(f.read(), Loader=yaml.FullLoader)
-    # print(x['label_names'])
-    return x['label_names']
+    if yamlFile.endswith('.yaml'):
+        x = yaml.load(f.read(), Loader=yaml.FullLoader)
+        f.close()
+        return x['label_names']
+    else:
+        lis = f.readlines()
+        f.close()
+        return labels2yaml(lis, savefile=False)['label_names']
 
 
 def draw_label(label, img=None, label_names=None, colormap=None, **kwargs):
@@ -217,6 +242,7 @@ def draw_label(label, img=None, label_names=None, colormap=None, **kwargs):
         List of label names.
     """
     import matplotlib.pyplot as plt
+    label_process = label.copy()
 
     backend_org = plt.rcParams['backend']
     plt.switch_backend('agg')
@@ -227,24 +253,29 @@ def draw_label(label, img=None, label_names=None, colormap=None, **kwargs):
     plt.gca().yaxis.set_major_locator(plt.NullLocator())
 
     if label_names is None:
-        label_names = [str(l) for l in range(label.max() + 1)]
+        label_names = [str(l) for l in range(label_process.max() + 1)]
+    # print(label_process.max())
+    colormap = _validate_colormap(colormap, label_process.max() + 1)
 
-    colormap = _validate_colormap(colormap, len(label_names))
-
-    label_viz = label2rgb(label,
-                          img,
-                          n_labels=len(label_names),
-                          colormap=colormap,
-                          **kwargs)
+    label_viz = label2rgb(
+        label_process,
+        img,
+        #   n_labels=np.max(label_process)+1,
+        n_labels=len(np.unique(label_process)),
+        colormap=colormap,
+        **kwargs)
     plt.imshow(label_viz)
     plt.axis('off')
 
     plt_handlers = []
     plt_titles = []
-    for label_value, label_name in enumerate(label_names):
-        if label_value not in label:
-            continue
-        fc = colormap[label_value]
+    # print(label_names)
+    for label_value, label_name in label2dict(label_names).items():
+        # if int(label_value) not in label_process:
+        #     continue
+        # print(label_value)
+        # print(label_name)
+        fc = colormap[int(label_value)]
         p = plt.Rectangle((0, 0), 1, 1, fc=fc)
         plt_handlers.append(p)
         plt_titles.append('{value}: {name}'.format(value=label_value,
@@ -265,6 +296,7 @@ def draw_label(label, img=None, label_names=None, colormap=None, **kwargs):
 
 
 def _validate_colormap(colormap, n_labels):
+    # print(n_labels)
     if colormap is None:
         colormap = lUtils.label_colormap(n_labels)
     else:
@@ -287,9 +319,10 @@ def label2rgb(
     if n_labels is None:
         n_labels = len(np.unique(lbl))
 
-    # print(lbl)
-    lbl = reLabeled(n_labels, lbl)
-    colormap = _validate_colormap(colormap, n_labels)
+    # print(n_labels)
+    # lbl = reLabeled(n_labels, lbl)
+    colormap = _validate_colormap(colormap, np.max(lbl))
+    # colormap = _validate_colormap(colormap, n_labels)
     colormap = (colormap * 255).astype(np.uint8)
 
     lbl_viz = colormap[lbl]
@@ -311,9 +344,17 @@ def reLabeled(n_labels, lbl: np.ndarray):
     tmp.sort()
     # print(tmp)
     for i in range(0, n_labels):
-        # pass
         if tmp[i] == 0:
             pass
         else:
             lbl[lbl == tmp[i]] = i
     return lbl
+
+
+def label2dict(lis: list):
+    dic = dict()
+    for i in lis:
+        tmp = i.split(':')
+        dic[str(tmp[0])] = str(tmp[1])
+        del tmp
+    return dic

@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 11:11:21
+LastEditTime: 2020-10-21 14:12:50
 '''
 import sys
 sys.path.append('..')
@@ -84,7 +84,8 @@ class Parser(BaseParser):
             self.parser.add_argument(arg['shortName'],
                                      arg['fullName'],
                                      type=arg['type'],
-                                     help=arg['help'])
+                                     help=arg['help'],
+                                     nargs=arg.get('nargs','+'))
         else:
             raise TypeError('input argument type error')
 
@@ -92,6 +93,7 @@ class Parser(BaseParser):
 def script():
     """
     eg. argList = [('-l', '--labels', 'label files path','store_true')]
+
     """
     argList = [
         ('-n', '--nolabel', 'image augmentation without labels'),
@@ -106,7 +108,13 @@ def script():
             'type': int,
             'help': 'image augmentation numbers, default 1'
         },
-        ('-L', '--nolog', 'remove "annoying" logs')
+        ('-L', '--nolog', 'remove "annoying" logs'),
+        {
+            'shortName': '-c',
+            'fullName': '--classfilepath',
+            'type':str,
+            'help':'class-information-path(for labelme is a *.yaml file,for labelImg is a *.txt file. without this file, this script has some errors when generate mask files and image augumentation.)'
+        }
     ]
 
     p = Parser(argList, __appname__)
@@ -276,6 +284,10 @@ def script():
             print('\n')
         else:
             params = args['input']
+            if args['classfilepath']:
+                classFilePath = args['classfilepath']
+            else:
+                classFilePath = ''
             if len(params) < 1:
                 raise MethodInputException('Not enough input parameters')
             elif len(params) == 1 and args['nolabel']:
@@ -287,9 +299,9 @@ def script():
                 inputFilePath = params[0]
                 inputJsonPath = params[1]
                 if not args['labelImg']:
-                    imgAug_withLabels(inputFilePath, inputJsonPath, number)
+                    imgAug_withLabels(inputFilePath, inputJsonPath, number,yamlFilePath=classFilePath)
                 else:
-                    imgAug_LabelImg(inputFilePath, inputJsonPath, number)
+                    imgAug_LabelImg(inputFilePath, inputJsonPath, number,yamlFilePath=classFilePath)
                 print('Done!')
             else:
                 raise MethodInputException('There must be some errors.')

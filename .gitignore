@@ -21,6 +21,8 @@
 /static/test_xmls/txts_
 /static/xmls_
 /static/testXmlSplit
+/static/tmps_
+/static/augxmls_
 /ori
 /xml
 /convertmask/labelme_sub/__pycache__

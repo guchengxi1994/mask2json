@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 19:00:43
+LastEditTime: 2020-10-21 19:23:32
 '''
 
 import sys
@@ -160,7 +160,7 @@ def imgZoom(oriImg: str,
     resMask = np.zeros((resOri.shape[0], resOri.shape[1]))
     if len(maskImgs) > 0:
         for m in maskImgs:
-            # print(np.max(m.img))           
+            # print(np.max(m.img))
             res = _getZoomedImg(m.img, size)
             res[res > 0] = m.clasId
             res[res != m.clasId] = 0
@@ -257,7 +257,7 @@ def imgFlip(oriImg: str,
             v_mask = cv2.flip(mask, 0) if 0 in flip_list else None
             h_v_mask = cv2.flip(mask, -1) if -1 in flip_list else None
             """
-            maybe dict zip is better :)
+            maybe dict or zip is better :)
             """
 
             if flag:
@@ -376,7 +376,7 @@ def imgNoise(oriImg: str, oriLabel: str, flag=True, labelFile=''):
 
     if flag:
         # parent_path = os.path.dirname(oriImg)
-        (parent_path,file_path) = os.path.split(oriImg)
+        (parent_path, file_path) = os.path.split(oriImg)
         if os.path.exists(parent_path + os.sep + 'jsons_'):
             pass
         else:
@@ -526,7 +526,11 @@ def imgRotation(oriImg: str,
         return d
 
 
-def imgTranslation(oriImg: str, oriLabel: str, flag=True, labelFile='',factor=0.5):
+def imgTranslation(oriImg: str,
+                   oriLabel: str,
+                   flag=True,
+                   labelFile='',
+                   factor=0.5):
     """
     image translation
     factor : Translation factor
@@ -639,7 +643,7 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0, yamlFilePath=''):
     l[l != 1] = 1
 
     l = l.tolist()
-    # l = [0, 0, 0, 1, 0]     # for test 
+    # l = [0, 0, 0, 1, 0]     # for test
 
     p = list(zip(augs, l))
 
@@ -697,7 +701,7 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0, yamlFilePath=''):
                 # print(type(z))
                 tmp = z['zoom']
                 img, processedImg = tmp.oriImg, tmp.processedImg
-                
+
                 del z, tmp
 
             elif i[0] == 'flip':
@@ -776,6 +780,7 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0, yamlFilePath=''):
         print("see here {}".format(parent_path + os.sep + 'jsons_'))
 
 
+# will be redundant in 0.5.3 ,see imgAug_xmls.aug_labelimg for details
 def aug_labelimg(filepath, xmlpath, augs=None, num=0, labelpath=''):
     default_augs = ['noise', 'rotation', 'trans', 'flip', 'zoom']
     if augs is None:
@@ -848,7 +853,7 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0, labelpath=''):
                 del r, tmp
 
             elif i[0] == 'trans':
-                t = imgTranslation(img, processedImg, flag=False,factor=0.1)
+                t = imgTranslation(img, processedImg, flag=False, factor=0.1)
                 tmp = t['trans']
                 img, processedImg = tmp.oriImg, tmp.processedImg
 

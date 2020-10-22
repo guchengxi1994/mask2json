@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-19 11:27:38
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 15:07:04
+LastEditTime: 2020-10-21 19:29:59
 '''
 import json
 from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
@@ -45,9 +45,9 @@ def j2xConvert(jsonFilePath: str):
         obj['name'] = label
         obj['difficult'] = 0
         bndbox = dict()
-        bndbox['xmin'] = np.min(tmp[:, 0])
+        bndbox['xmin'] = np.min(tmp[:, 0]) if np.min(tmp[:, 0])>0 else 1  # https://github.com/AlexeyAB/darknet  the bounding box cannot be 0
         bndbox['xmax'] = np.max(tmp[:, 0])
-        bndbox['ymin'] = np.min(tmp[:, 1])
+        bndbox['ymin'] = np.min(tmp[:, 1]) if np.min(tmp[:, 1])>0 else 1  
         bndbox['ymax'] = np.max(tmp[:, 1])
 
         obj['bndbox'] = bndbox

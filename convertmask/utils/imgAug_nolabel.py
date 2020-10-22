@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-19 10:10:23
+LastEditTime: 2020-10-22 10:20:28
 '''
 import sys
 sys.path.append('..')
@@ -54,15 +54,15 @@ def imgZoom(oriImg, size, flag=True):
 
     if flag:
         parent_path = os.path.dirname(oriImg)
-        if os.path.exists(parent_path + os.sep + 'jsons_'):
+        if os.path.exists(parent_path + os.sep + 'augimgs_'):
             pass
         else:
-            os.makedirs(parent_path + os.sep + 'jsons_')
+            os.makedirs(parent_path + os.sep + 'augimgs_')
         tmp = os.path.splitext(oriImg)[0]
         fileName = tmp.split(os.sep)[-1]
 
         io.imsave(
-            parent_path + os.sep + 'jsons_' + os.sep + fileName + '_zoom.jpg',
+            parent_path + os.sep + 'augimgs_' + os.sep + fileName + '_zoom.jpg',
             resOri)
 
     else:
@@ -156,7 +156,6 @@ def imgNoise(oriImg: str, flag=True):
 
 
 def imgRotation(oriImg: str, angle=30, scale=1, flag=True):
-
     if isinstance(oriImg, str):
         if os.path.exists(oriImg):
             img = io.imread(oriImg)

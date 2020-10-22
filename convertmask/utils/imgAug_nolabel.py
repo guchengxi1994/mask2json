@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-22 10:20:28
+LastEditTime: 2020-10-22 14:36:44
 '''
 import sys
 sys.path.append('..')
@@ -191,7 +191,7 @@ def imgRotation(oriImg: str, angle=30, scale=1, flag=True):
         return d
 
 
-def imgTranslation(oriImg: str, flag=True):
+def imgTranslation(oriImg: str, flag=True,th:int=0,tv:int=0):
     if isinstance(oriImg, str):
         if os.path.exists(oriImg):
             img = io.imread(oriImg)
@@ -202,8 +202,8 @@ def imgTranslation(oriImg: str, flag=True):
 
     imgShape = img.shape
 
-    trans_h = random.randint(0, int(0.5 * imgShape[1]))
-    trans_v = random.randint(0, int(0.5 * imgShape[0]))
+    trans_h = random.randint(0, int(0.5 * imgShape[1])) if th == 0 else th
+    trans_v = random.randint(0, int(0.5 * imgShape[0])) if tv == 0 else tv
 
     trans_mat = np.float32([[1, 0, trans_h], [0, 1, trans_v]])
     transImg = cv2.warpAffine(img, trans_mat, (imgShape[1], imgShape[0]))

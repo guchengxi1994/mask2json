@@ -5,8 +5,10 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-21 19:10:40
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-22 13:34:11
+LastEditTime: 2020-10-22 17:15:11
 '''
+from matplotlib.pyplot import flag
+from numpy.lib.function_base import angle
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.imgAug_nolabel import imgFlip, imgNoise, imgRotation, imgTranslation, imgZoom
 import xml.etree.ElementTree as ET
@@ -17,6 +19,7 @@ import os
 from skimage import io
 import shutil
 from convertmask.utils.methods.entity import Ori_Pro
+import random
 """
 if flag == True, then images and xmls will be saved. Better just for test.
 """
@@ -97,6 +100,80 @@ def rotate_xml(src, xmin, ymin, xmax, ymax, angle, scale=1.):
     return rx, ry, rw, rh
 
 
+def trans_xml(src, xmin, ymin, xmax, ymax, th, tv):
+    w = src.shape[1]  # width
+    h = src.shape[0]  # height
+
+    xmin = xmin + tv
+    xmax = xmax + tv if xmax + tv <= w else w
+    ymin = ymin + th
+    ymax = ymax + th if ymax + th <= h else h
+
+    return xmin, xmax, ymin, ymax
+
+
+def trans_img(src, th, tv):
+    w = src.shape[1]  # width
+    h = src.shape[0]  # height
+    return cv2.copyMakeBorder(src, th, 0, tv, 0, cv2.BORDER_CONSTANT)[0:h, 0:w]
+
+
+def zoom_img(src, zoomfactor):
+    oriImgShape = src.shape
+    w = oriImgShape[1]  # width
+    h = oriImgShape[0]  # height
+
+    resW = int(w * zoomfactor)
+    resH = int(h * zoomfactor)
+
+    zoomImg = cv2.resize(src, (resW, resH), cv2.INTER_AREA)
+    zoomImgShape = zoomImg.shape
+    if zoomfactor > 1:
+        vDis = zoomImgShape[0] - oriImgShape[0]
+        hDis = zoomImgShape[1] - oriImgShape[1]
+        vDisHalf = int(vDis * 0.5)
+        hDisHalf = int(hDis * 0.5)
+        res = zoomImg[vDisHalf:zoomImgShape[0] + vDisHalf - vDis,
+                      hDisHalf:zoomImgShape[1] + hDisHalf - hDis]
+    elif zoomfactor < 1:
+        vDis = abs(zoomImgShape[0] - oriImgShape[0])
+        hDis = abs(zoomImgShape[1] - oriImgShape[1])
+        vDisHalf = int(vDis * 0.5)
+        hDisHalf = int(hDis * 0.5)
+
+        res = cv2.copyMakeBorder(
+            zoomImg,
+            vDisHalf,
+            vDis - vDisHalf,
+            hDisHalf,
+            hDis - hDisHalf,
+            cv2.BORDER_CONSTANT,
+        )
+    return res
+
+
+def zoom_xml(src, zoomfactor, xmin, ymin, xmax, ymax):
+    # print(zoomfactor)
+    oriImgShape = src.shape
+    if zoomfactor < 1:
+        vDis = 0.5 * (oriImgShape[0] - oriImgShape[0] * zoomfactor)
+        hDis = 0.5 * (oriImgShape[1] - oriImgShape[1] * zoomfactor)
+        resYmin = zoomfactor * ymin + vDis
+        resYmax = zoomfactor * ymax + vDis
+        resXmin = zoomfactor * xmin + hDis
+        resXmax = zoomfactor * xmax + hDis
+    else:
+        vDis = abs(0.5 * (oriImgShape[0] - oriImgShape[0] * zoomfactor))
+        hDis = abs(0.5 * (oriImgShape[1] - oriImgShape[1] * zoomfactor))
+
+        resYmin = zoomfactor * ymin - vDis
+        resYmax = zoomfactor * ymax - vDis
+        resXmin = zoomfactor * xmin - hDis
+        resXmax = zoomfactor * xmax - hDis
+
+    return resXmin, resXmax, resYmin, resYmax
+
+
 def rotate(oriImg: np.ndarray, label: str, angle=10, scale=1, flag=False):
     # rotatedImg = imgRotation(oriImg, angle, scale, flag=flag)['rotation']
     rotated = rotate_image(oriImg, angle, scale)
@@ -116,8 +193,6 @@ def rotate(oriImg: np.ndarray, label: str, angle=10, scale=1, flag=False):
     tree.write(label)
 
     rotatedImg = Ori_Pro(rotated, label)
-
-    rotatedImg.processedImg = label
     return rotatedImg
 
 
@@ -162,12 +237,57 @@ def noise(oriImg: np.ndarray, label: str, flag=False):
     return noisedImg
 
 
-def translation():
-    pass
+def translation(oriImg: np.ndarray, label: str, flag=False, factor=0.3):
+    th = random.randint(0, int(factor * oriImg.shape[1]))
+    tv = random.randint(0, int(factor * oriImg.shape[0]))
+    # transImg = imgTranslation(oriImg,flag=False,th=th,tv=tv)['trans']
+    transed = trans_img(oriImg, th, tv)
+    # print(transed.shape)
+    tree = ET.parse(label)
+    root = tree.getroot()
+    for box in root.iter('bndbox'):
+        xmin = float(box.find('xmin').text)
+        ymin = float(box.find('ymin').text)
+        xmax = float(box.find('xmax').text)
+        ymax = float(box.find('ymax').text)
+        xmin, xmax, ymin, ymax = trans_xml(oriImg, xmin, ymin, xmax, ymax, th,
+                                           tv)
+        box.find('xmin').text = str(xmin)
+        box.find('ymin').text = str(ymin)
+        box.find('xmax').text = str(xmax)
+        box.find('ymax').text = str(ymax)
+        box.set('updated', 'yes')
+    tree.write(label)
+
+    transImg = Ori_Pro(transed, label)
+    return transImg
 
 
-def zoom():
-    pass
+# maybe do it like cv2.imresize
+def zoom(oriImg: np.ndarray, label: str, flag=False, zoomfactor=0):
+    if zoomfactor <= 0 or zoomfactor == 1:
+        zoomfactor = random.uniform(0.8, 1.8)
+        zoomfactor = round(zoomfactor, 2)
+
+    zoomed = zoom_img(oriImg, zoomfactor)
+    tree = ET.parse(label)
+    root = tree.getroot()
+    for box in root.iter('bndbox'):
+        xmin = float(box.find('xmin').text)
+        ymin = float(box.find('ymin').text)
+        xmax = float(box.find('xmax').text)
+        ymax = float(box.find('ymax').text)
+        xmin, xmax, ymin, ymax = zoom_xml(oriImg, zoomfactor, xmin, ymin, xmax,
+                                          ymax)
+        box.find('xmin').text = str(xmin)
+        box.find('ymin').text = str(ymin)
+        box.find('xmax').text = str(xmax)
+        box.find('ymax').text = str(ymax)
+        box.set('updated', 'yes')
+    tree.write(label)
+
+    zoomedImg = Ori_Pro(zoomed, label)
+    return zoomedImg
 
 
 def aug_labelimg(filepath, xmlpath, augs=None, num=0):
@@ -204,7 +324,6 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
     l[l != 1] = 1
 
     l = l.tolist()
-    # print(l)
 
     p = list(zip(augs, l))
 
@@ -220,18 +339,71 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
     labelPath = parent_path + os.sep + 'tmps_' + os.sep + filename + '_tmps.xml'
     shutil.copyfile(xmlpath, labelPath)
     img = io.imread(filepath)
-    noisedImg = noise(img, labelPath)
-    rotatedImg = rotate(noisedImg.oriImg, noisedImg.processedImg)
 
-    resXmlPath = parent_path + os.sep + 'augxmls_' + os.sep + filename + '_assumbel.xml'
-    resImgPath = parent_path + os.sep + 'augxmls_' + os.sep + filename + '_assumbel.jpg'
+    for i in p:
+        if i[1] == 1:
+            # if i[0] == 'test':
+            #     pass
+            if i[0] == 'rotation':
+                angle = random.randint(-10, 10)
+                r = rotate(img, labelPath, angle)
+                img, labelPath = r.oriImg, r.processedImg
+                del r
 
-    tree = ET.parse(labelPath)
-    root = tree.getroot()
-    root.find('folder').text = str(resImgPath.split(os.sep)[-1] if \
-                                resImgPath.split(os.sep)[-1] != "" else resImgPath.split(os.sep)[-2] )
-    root.find('filename').text = filename + '_assumbel.jpg'
-    root.find('path').text = resImgPath
-    tree.write(resXmlPath)
+            elif i[0] == 'trans':
+                t = translation(img, labelPath)
+                img, labelPath = t.oriImg, t.processedImg
+                del t
 
-    io.imsave(resImgPath, rotatedImg.oriImg)
+            elif i[0] == 'zoom':
+                z = zoom(img, labelPath)
+                img, labelPath = z.oriImg, z.processedImg
+                del z
+
+            elif i[0] == 'noise':
+                n = noise(img, labelPath)
+                img, labelPath = n.oriImg, n.processedImg
+                del n
+
+            elif i[0] == 'flip':
+                f = flip(img, labelPath)
+                # img,labelPath =
+                img = []
+                labelPath = []
+                for i in f:
+                    img.append(i.oriImg)
+                    labelPath.append(i.processedImg)
+                del f
+
+    if not isinstance(img, list):
+        resXmlPath = parent_path + os.sep + 'augxmls_' + os.sep + filename + '_assumbel.xml'
+        resImgPath = parent_path + os.sep + 'augxmls_' + os.sep + filename + '_assumbel.jpg'
+
+        tree = ET.parse(labelPath)
+        root = tree.getroot()
+        root.find('folder').text = str(resImgPath.split(os.sep)[-1] if \
+                                    resImgPath.split(os.sep)[-1] != "" else resImgPath.split(os.sep)[-2] )
+        root.find('filename').text = filename + '_assumbel.jpg'
+        root.find('path').text = resImgPath
+        tree.write(resXmlPath)
+
+        io.imsave(resImgPath, img)
+    else:
+        for i in range(0, len(img)):
+            resXmlPath = parent_path + os.sep + 'augxmls_' + os.sep + filename + '_assumbel_{}.xml'.format(
+                i)
+            resImgPath = parent_path + os.sep + 'augxmls_' + os.sep + filename + '_assumbel_{}.jpg'.format(
+                i)
+
+            tree = ET.parse(labelPath[i])
+            root = tree.getroot()
+            root.find('folder').text = str(resImgPath.split(os.sep)[-1] if \
+                                        resImgPath.split(os.sep)[-1] != "" else resImgPath.split(os.sep)[-2] )
+            root.find(
+                'filename').text = filename + '_assumbel_{}.jpg'.format(i)
+            root.find('path').text = resImgPath
+            tree.write(resXmlPath)
+
+            io.imsave(resImgPath, img[i])
+
+    logger.info('Done! See {}.'.format(parent_path + os.sep + 'augxmls_'))

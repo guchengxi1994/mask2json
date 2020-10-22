@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 19:23:32
+LastEditTime: 2020-10-22 15:29:16
 '''
 
 import sys
@@ -837,12 +837,12 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0, labelpath=''):
 
     for i in p:
         if i[1] == 1:
-            # if i[0] == 'noise':
-            #     n = imgNoise(img, processedImg, flag=False)
-            #     tmp = n['noise']
-            #     img, processedImg = tmp.oriImg, tmp.processedImg
+            if i[0] == 'noise':
+                n = imgNoise(img, processedImg, flag=False)
+                tmp = n['noise']
+                img, processedImg = tmp.oriImg, tmp.processedImg
 
-            #     del n, tmp
+                del n, tmp
 
             if i[0] == 'rotation':
                 angle = random.randint(-10, 10)

@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 17:27:30
+LastEditTime: 2020-10-21 19:21:57
 '''
 import sys
 sys.path.append('..')
@@ -21,7 +21,7 @@ from convertmask.utils.yolo2xml.yolo2xml import y2xConvert
 from convertmask.utils.xml2yolo.xml2yolo import x2yConvert
 import difflib
 import convertmask.utils.methods.configUtils as ccfg
-ccfg.setConfigParam(ccfg.cfp,'log','show','True')
+ccfg.setConfigParam(ccfg.cfp, 'log', 'show', 'True')
 
 supported_simplified_methods = __support_methods_simplified__.values()
 
@@ -81,11 +81,12 @@ class Parser(BaseParser):
                                      action='store_true')
         elif type(arg) is dict:
             # pass
-            self.parser.add_argument(arg['shortName'],
-                                     arg['fullName'],
-                                     type=arg['type'],
-                                     help=arg['help'],
-                                     )
+            self.parser.add_argument(
+                arg['shortName'],
+                arg['fullName'],
+                type=arg['type'],
+                help=arg['help'],
+            )
         else:
             raise TypeError('input argument type error')
 
@@ -110,10 +111,14 @@ def script():
         },
         ('-L', '--nolog', 'remove "annoying" logs'),
         {
-            'shortName': '-c',
-            'fullName': '--classfilepath',
-            'type':str,
-            'help':'class-information-path(for labelme is a *.yaml file,for labelImg is a *.txt file. without this file, this script has some errors when generate mask files and image augumentation.)'
+            'shortName':
+            '-c',
+            'fullName':
+            '--classfilepath',
+            'type':
+            str,
+            'help':
+            'class-information-path(for labelme is a *.yaml file,for labelImg is a *.txt file. without this file, this script has some errors when generate mask files and image augumentation.)'
         }
     ]
 
@@ -299,9 +304,15 @@ def script():
                 inputFilePath = params[0]
                 inputJsonPath = params[1]
                 if not args['labelImg']:
-                    imgAug_withLabels(inputFilePath, inputJsonPath, number,yamlFilePath=classFilePath)
+                    imgAug_withLabels(inputFilePath,
+                                      inputJsonPath,
+                                      number,
+                                      yamlFilePath=classFilePath)
                 else:
-                    imgAug_LabelImg(inputFilePath, inputJsonPath, number,yamlFilePath=classFilePath)
+                    imgAug_LabelImg(inputFilePath,
+                                    inputJsonPath,
+                                    number,
+                                    yamlFilePath=classFilePath)
                 print('Done!')
             else:
                 raise MethodInputException('There must be some errors.')

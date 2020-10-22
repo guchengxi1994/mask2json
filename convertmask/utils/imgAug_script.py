@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 14:13:34
+LastEditTime: 2020-10-21 19:25:40
 '''
 from .methods.logger import logger
 from . import imgAug
@@ -77,6 +77,7 @@ def imgAug_withoutLabels(imgPath, number=1):
         # num += 1
 
 
+# will be redundant in 0.5.3 ,see imgAug_xmls.aug_labelimg for details
 def imgAug_LabelImg(imgPath, xmlpath, number=1,yamlFilePath=''):
     """
     number : file number you want to generate.

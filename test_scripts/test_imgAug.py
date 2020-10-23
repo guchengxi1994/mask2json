@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 09:40:34
+LastEditTime: 2020-10-23 09:40:03
 '''
 import sys
 sys.path.append("..")
@@ -26,64 +26,68 @@ if __name__ == "__main__":
 
     #### test1
 
-    # imgFlip(imgPath, labelPath)
+    imgFlip(imgPath, labelPath)
 
-    # imgNoise(imgPath,labelPath)
+    imgNoise(imgPath, labelPath)
 
-    # imgRotation(imgPath,labelPath)
+    imgRotation(imgPath, labelPath)
 
-    # imgTranslation(imgPath,labelPath)
+    imgTranslation(imgPath, labelPath)
+
+    imgZoom(imgPath, labelPath, 1.2)
 
     #### test2
 
-    # n = imgNoise(imgPath,labelPath,flag=False)
+    n = imgNoise(imgPath, labelPath, flag=False)
 
-    # tmp = n['noise']
+    tmp = n['noise']
 
-    # img , processedImg = tmp.oriImg , tmp.processedImg
+    img, processedImg = tmp.oriImg, tmp.processedImg
 
-    # r = imgRotation(img,processedImg,flag=False,angle=15)
+    r = imgRotation(img, processedImg, flag=False, angle=15)
 
-    # tmp = r['rotation']
+    tmp = r['rotation']
 
-    # img , processedImg = tmp.oriImg , tmp.processedImg
+    img, processedImg = tmp.oriImg, tmp.processedImg
 
-    # t = imgTranslation(img,processedImg,flag=False)
+    t = imgTranslation(img, processedImg, flag=False)
 
-    # tmp = t['trans']
+    tmp = t['trans']
 
-    # img , processedImg = tmp.oriImg , tmp.processedImg
+    img, processedImg = tmp.oriImg, tmp.processedImg
 
-    # f = imgFlip(img,processedImg,flag=False)
+    f = imgFlip(img, processedImg, flag=False)
 
-    # tmp = f['h_v']
+    tmp = f['h_v']
 
-    # img , processedImg = tmp.oriImg , tmp.processedImg
+    img, processedImg = tmp.oriImg, tmp.processedImg
 
-    # parent_path = os.path.dirname(imgPath)
+    parent_path = os.path.dirname(imgPath)
 
-    # if os.path.exists(parent_path+os.sep+'jsons_'):
-    #     pass
-    # else:
-    #     os.makedirs(parent_path+os.sep+'jsons_')
-    # fileName = 'test'
-    # io.imsave(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.jpg',img)
+    if os.path.exists(parent_path + os.sep + 'jsons_'):
+        pass
+    else:
+        os.makedirs(parent_path + os.sep + 'jsons_')
+    fileName = 'test'
+    io.imsave(
+        parent_path + os.sep + 'jsons_' + os.sep + fileName + '_assumble.jpg',
+        img)
 
-    # assumbleJson = getMultiShapes(parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.jpg',processedImg,flag=True,labelYamlPath='')
+    assumbleJson = getMultiShapes(parent_path + os.sep + 'jsons_' + os.sep +
+                                  fileName + '_assumble.jpg',
+                                  processedImg,
+                                  flag=True,
+                                  labelYamlPath='')
 
-    # saveJsonPath = parent_path+os.sep+'jsons_'+os.sep+fileName+'_assumble.json'
+    saveJsonPath = parent_path + os.sep + 'jsons_' + os.sep + fileName + '_assumble.json'
 
-    # with open(saveJsonPath,'w') as f:
-    #     f.write(assumbleJson)
+    with open(saveJsonPath, 'w') as f:
+        f.write(assumbleJson)
 
     #### test3
 
-    # aug_labelme(imgPath,labelPath)
+    aug_labelme(imgPath, labelPath)
 
     #### test4
 
     # aug_labelimg(imgPath2, labelPath2)
-
-    #### test5
-    imgZoom(imgPath, labelPath, 1.2)
-    # io.imsave(BASE_DIR + os.sep + 'test_zoom.jpg', i)

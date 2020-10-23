@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 07:58:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-12 13:47:53
+LastEditTime: 2020-10-21 13:56:33
 '''
 import yaml
 
@@ -41,8 +41,9 @@ def labels2yaml(labels: list, savePath='', savefile=True):
     tmp['_background_'] = 0
     classId = 1
     for i in range(0, len(labels)):
-        if labels[i] != '_background_':
-            tmp[labels[i]] = classId
+        x = labels[i].replace('\n','').strip()
+        if x != '_background_':
+            tmp[x] = classId
             classId += 1
     data = dict()
     data['label_names'] = tmp

@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 11:11:21
+LastEditTime: 2020-10-23 09:39:00
 '''
 import sys
 sys.path.append('..')
@@ -16,12 +16,12 @@ from convertmask.utils.imgAug_script import imgAug_withLabels, imgAug_withoutLab
 from convertmask.utils.json2xml.json2xml import j2xConvert
 from convertmask.utils.mask2json_script import getJsons, getXmls
 from convertmask.utils.json2mask.convert import processor
-from convertmask.utils.xml2json.xml2json import getPolygon, x2jConvert, x2jConvert_pascal
+from convertmask.utils.xml2json.xml2json import x2jConvert, x2jConvert_pascal
 from convertmask.utils.yolo2xml.yolo2xml import y2xConvert
 from convertmask.utils.xml2yolo.xml2yolo import x2yConvert
 import difflib
 import convertmask.utils.methods.configUtils as ccfg
-ccfg.setConfigParam(ccfg.cfp,'log','show','True')
+ccfg.setConfigParam(ccfg.cfp, 'log', 'show', 'True')
 
 supported_simplified_methods = __support_methods_simplified__.values()
 
@@ -81,10 +81,12 @@ class Parser(BaseParser):
                                      action='store_true')
         elif type(arg) is dict:
             # pass
-            self.parser.add_argument(arg['shortName'],
-                                     arg['fullName'],
-                                     type=arg['type'],
-                                     help=arg['help'])
+            self.parser.add_argument(
+                arg['shortName'],
+                arg['fullName'],
+                type=arg['type'],
+                help=arg['help'],
+            )
         else:
             raise TypeError('input argument type error')
 
@@ -92,6 +94,7 @@ class Parser(BaseParser):
 def script():
     """
     eg. argList = [('-l', '--labels', 'label files path','store_true')]
+
     """
     argList = [
         ('-n', '--nolabel', 'image augmentation without labels'),
@@ -106,7 +109,17 @@ def script():
             'type': int,
             'help': 'image augmentation numbers, default 1'
         },
-        ('-L', '--nolog', 'remove "annoying" logs')
+        ('-L', '--nolog', 'remove "annoying" logs'),
+        {
+            'shortName':
+            '-c',
+            'fullName':
+            '--classfilepath',
+            'type':
+            str,
+            'help':
+            'class-information-path(for labelme is a *.yaml file,for labelImg is a *.txt file. without this file, this script has some errors when generate mask files and image augumentation.)'
+        }
     ]
 
     p = Parser(argList, __appname__)
@@ -276,6 +289,10 @@ def script():
             print('\n')
         else:
             params = args['input']
+            if args['classfilepath']:
+                classFilePath = args['classfilepath']
+            else:
+                classFilePath = ''
             if len(params) < 1:
                 raise MethodInputException('Not enough input parameters')
             elif len(params) == 1 and args['nolabel']:
@@ -287,9 +304,14 @@ def script():
                 inputFilePath = params[0]
                 inputJsonPath = params[1]
                 if not args['labelImg']:
-                    imgAug_withLabels(inputFilePath, inputJsonPath, number)
+                    imgAug_withLabels(inputFilePath,
+                                      inputJsonPath,
+                                      number,
+                                      yamlFilePath=classFilePath)
                 else:
-                    imgAug_LabelImg(inputFilePath, inputJsonPath, number)
+                    imgAug_LabelImg(inputFilePath,
+                                    inputJsonPath,
+                                    number)
                 print('Done!')
             else:
                 raise MethodInputException('There must be some errors.')

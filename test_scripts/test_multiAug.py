@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-12 10:28:37
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 09:45:21
+LastEditTime: 2020-10-21 16:18:09
 '''
 import sys
 sys.path.append('..')
@@ -21,7 +21,11 @@ labelPath = BASE_DIR + os.sep + 'multi_objs.json'
 imgPath2 = BASE_DIR + os.sep + 'label_255.png'
 labelPath2 = BASE_DIR + os.sep + 'label_255.xml'
 
-if __name__ == "__main__":
-    imgAug_withLabels(imgPath, labelPath, number=2)
+yamlFilePath = BASE_DIR + os.sep + 'multi_objs.yaml'
 
-    imgAug_LabelImg(imgPath2, labelPath2, number=50)
+txtFilePath = BASE_DIR + os.sep + 'multi_objs.txt'
+
+if __name__ == "__main__":
+    imgAug_withLabels(imgPath, labelPath, number=1, yamlFilePath=yamlFilePath)
+
+    # imgAug_LabelImg(imgPath2, labelPath2, number=2, yamlFilePath=txtFilePath)

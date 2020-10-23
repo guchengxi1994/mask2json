@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-10-19 17:35:20
+ * @LastEditTime: 2020-10-23 09:50:55
 --> 
 
 
@@ -14,15 +14,15 @@
 
 [![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
 
-# mask2json
+# Introduction
 
- a small tool for image augmentation, including mask files to json/xml files , image augmentation(flip,rotation,noise,...) and so on
+ A small tool for image augmentation, including mask files to json/xml files , image augmentation(flip,rotation,noise,...) and so on
 
- ## HOW TO USE
+ ## HOW TO USE.
 
- This script is used to convert mask-labels to json files for [labelme](https://github.com/wkentaro/labelme).
+ ### Installation.
 
- FIRST:
+ Try:
 
     pip install -r requestments.txt [-i https://pypi.tuna.tsinghua.edu.cn/simple/] 
 
@@ -31,155 +31,27 @@
     pip install -r requirements.txt [-i https://pypi.tuna.tsinghua.edu.cn/simple/] --ignore-installed
 
 
-AND THEN:
+### Use.
 
- Json files to masks can be found on this [site](https://blog.csdn.net/gaoyi135/article/details/103870646). Sometimes there will be an ERROR,should add this [file](./convertmask/labelme_sub/utils/draw.py) in labelme path (mine is '../anaconda/Lib/site-packages/labelme/utils ') and add some codes in \_\_init__.py:
+Under this version, these tools are provided.
 
-    from .draw import label_colormap
-    from .draw import _validate_colormap
-    from .draw import label2rgb
-    from .draw import draw_label
-    from .draw import draw_instances 
+#### 1.[augmentation](./static/docs/augment.md)
 
-### 'labelme_sub' folder is a copy of labelme (version 4.2.9) and i made some change.
+#### 2.[img2xml](./static/docs/img2xml.md)
 
-Here shows an example using this script.
+#### 3.[json2mask](./static/docs/json2mask.md)
 
-origin image
+#### 4.[json2xml](./static/docs/json2xml.md)
 
-![img1](./static/1-2cvt.jpg)
+#### 5.[longImgSplit](./static/docs/longImgSplit.md)
 
-mask image
+#### 6.[xml2json](./static/docs/xml2json.md)
 
-![img1](./static/1-2cvt.png)
+#### 7.[xml2mask](./static/docs/xml2mask.md)
 
-manually_labeled image
+#### 8.[xml2yolo](./static/docs/xml2yolo.md)
 
-![img1](./backup/manually_labeled.png)
-
-auto_labeled image
-
-![img1](./backup/auto_labeled.png)
-![img1](./backup/auto_labeled_ori.png)
-
-Also ,for [labelimg](https://github.com/tzutalin/labelImg),a small tool to convert results(yolo) to [xml-files](./convertmask/utils/img2xml).
-
-### (1) for labelme mask files
-
-the test script can be found [here](./test_scripts/test_mask2json.py)
-
-    from convertmask.utils import getMultiShapes
-    getMultiShapes.getMultiShapes(param1,param2,param3,param4)
-
-param1:path which saves the origin imgs
-
-param2:path which saves the mask imgs (file names should match the origin imgs)
-
-param3:converted json files save path
-
-param4:can be blank (better don't), a yaml file path which saves the class information
-
-### (2) for labelimg mask files
-
-the test script can be found [here](./test_scripts/test_multiObjs2Xml.py)
-
-    from convertmask.utils.getMultiShapes import getMultiObjs_voc as gvoc
-    gvoc(param1,param2,param3)
-
-param1:path which saves the origin imgs
-
-param2:path which saves the mask imgs (file names should match the origin imgs)
-
-param3:converted xml files save path
-
-### (3) for json files  to mask files
-
-the test script can be found [here](./test_scripts/json2mask.py)
-
-    from convertmask.utils.convert import processor
-    processor(param1,param2)
-
-param1:json file or folder
-
-param2:can be blank,encoding type, default 'utf-8'
-
-### (4) for json files to xml files
-
-the test script can be found [here](./test_scripts/test_json2xml.py)
-
-    from convertmask.utils.json2xml import j2xConvert
-    j2xConvert(path-of-your-jsonfile)
-
-### (5) image augmentation
-
-the test script can be found [here](./test_scripts/test_imgAug.py)
-
-    from convertmask.utils.imgAug import imgFlip,imgNoise,imgRotation,imgTranslation,aug_labelme
-    
-    imgFlip(imgPath, labelPath)
-    imgNoise(imgPath,labelPath)
-    imgRotation(imgPath,labelPath)
-    imgTranslation(imgPath,labelPath)
-
-details see [Here](#2020.8.17)
-
-## AILERNATIVE
-
-you can try:
-
-    pip install -U convertmask
-
-and 
-
-    pip uninstall convertmask
-
-to delete convertmask.
-
-it is a test release. : )
-
-### version 0.3.1 (2020.8.20 , pre-release)
-
-#### 1.try :
-
-    convertmask -h | --help
-
-to read the guide.
-
-#### 2.try:
-
-    convertmask -v | --version
-
-to show the current version
-
-#### 3.try:
-
-    convertmask m2j 
-
-to test mask to json function(should type in some file path)
-
-#### 4.try:
-
-    convertmask m2x 
-
-to test mask to xml function(should type in some file path)
-
-#### 5.try:
-
-    convertmask j2m 
-
-to test json to mask function(should type in some file path)
-
-#### 6.try:
-
-    convertmask j2x 
-
-to test json to xml function(should type in some file path)
-
-#### 7.try:
-
-    convertmask aug 
-
-to test image augmentation function(should type in some file path)
+#### 9.[yolo2xml](./static/docs/yolo2xml.md)
 
 
 

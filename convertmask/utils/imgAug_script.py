@@ -5,11 +5,12 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 09:45:36
+LastEditTime: 2020-10-23 09:34:27
 '''
 from .methods.logger import logger
 from . import imgAug
 from . import imgAug_nolabel
+from . import imgAug_xmls
 import glob
 import os
 from tqdm import tqdm
@@ -21,10 +22,10 @@ def proc_xml(img, imgPath, xmlpath, number):
     i_xml = img.replace(imgPath,
                         xmlpath) if os.path.isdir(xmlpath) else xmlpath
     i_xml = i_xml.replace('.jpg', '.xml')
-    imgAug.aug_labelimg(img, i_xml, num=number)
+    imgAug_xmls.aug_labelimg(img, i_xml, num=number)
 
 
-def imgAug_withLabels(imgPath, labelPath, number=1):
+def imgAug_withLabels(imgPath, labelPath, number=1, yamlFilePath=''):
     """
     number : file number you want to generate.
     """
@@ -52,7 +53,7 @@ def imgAug_withLabels(imgPath, labelPath, number=1):
             i_json = i.replace(
                 imgPath, labelPath) if os.path.isdir(labelPath) else labelPath
             i_json = i_json.replace('.jpg', '.json')
-            imgAug.aug_labelme(i, i_json, num=num)
+            imgAug.aug_labelme(i, i_json, num=num, yamlFilePath=yamlFilePath)
         # num += 1
 
 

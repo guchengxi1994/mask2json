@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-22 15:29:16
+LastEditTime: 2020-10-23 13:20:18
 '''
 
 import sys
@@ -100,10 +100,6 @@ def _splitImg(maskImg):
 
                 del tmp, closing
     return maskImgs
-
-
-def imgDistort(oriImg: str, oriLabel: str, flag=True):
-    pass
 
 
 def imgZoom(oriImg: str,

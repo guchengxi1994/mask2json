@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-10-23 09:50:55
+ * @LastEditTime: 2020-10-23 13:54:07
 --> 
 
 
@@ -58,6 +58,16 @@ Under this version, these tools are provided.
 
 # CHANGE LOGS
 
+
+## 2020.10.23
+
+### 1.image distortion supported.
+
+![image1](./backup/multi_objs_distort.jpg)
+
+see [here](./convertmask/utils/optional/distort.py) or [test-script](./test_scripts/test_localWrap.py) for details.
+
+
 ## 2020.10.13
 
 ### 1.image augumentation support convert yolo txts to xmls(pascal). See [here](./test_scripts/test_yolo2xml.py)
@@ -83,7 +93,7 @@ script [here](./test_scripts/test_xml2json.py)
 
 ## 2020.8.24
 
-### support convert xml files to yolo files. see [here](./test_scripts/test_xml2yolo.py)
+### 1.support convert xml files to yolo files. see [here](./test_scripts/test_xml2yolo.py)
 
 examples:
 

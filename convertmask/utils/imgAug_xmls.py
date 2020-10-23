@@ -5,13 +5,12 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-21 19:10:40
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-22 17:15:11
+LastEditTime: 2020-10-23 10:38:08
 '''
-from matplotlib.pyplot import flag
-from numpy.lib.function_base import angle
+# from matplotlib.pyplot import flag
+# from numpy.lib.function_base import angle
 from convertmask.utils.methods.logger import logger
-from convertmask.utils.imgAug_nolabel import imgFlip, imgNoise, imgRotation, imgTranslation, imgZoom
-import xml.etree.ElementTree as ET
+from convertmask.utils.imgAug_nolabel import imgNoise
 import cv2
 import math
 import numpy as np
@@ -20,6 +19,7 @@ from skimage import io
 import shutil
 from convertmask.utils.methods.entity import Ori_Pro
 import random
+import xml.etree.ElementTree as ET
 """
 if flag == True, then images and xmls will be saved. Better just for test.
 """
@@ -321,7 +321,7 @@ def aug_labelimg(filepath, xmlpath, augs=None, num=0):
     if np.sum(l) == 0:
         l[0] = 1
 
-    l[l != 1] = 1
+    # l[l != 1] = 1    ## For test
 
     l = l.tolist()
 

@@ -5,11 +5,12 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 19:25:40
+LastEditTime: 2020-10-23 09:34:27
 '''
 from .methods.logger import logger
 from . import imgAug
 from . import imgAug_nolabel
+from . import imgAug_xmls
 import glob
 import os
 from tqdm import tqdm
@@ -17,11 +18,11 @@ from multiprocessing import Pool
 from convertmask import __CPUS__
 
 
-def proc_xml(img, imgPath, xmlpath, number, labelpath):
+def proc_xml(img, imgPath, xmlpath, number):
     i_xml = img.replace(imgPath,
                         xmlpath) if os.path.isdir(xmlpath) else xmlpath
     i_xml = i_xml.replace('.jpg', '.xml')
-    imgAug.aug_labelimg(img, i_xml, num=number, labelpath=labelpath)
+    imgAug_xmls.aug_labelimg(img, i_xml, num=number)
 
 
 def imgAug_withLabels(imgPath, labelPath, number=1, yamlFilePath=''):
@@ -77,8 +78,7 @@ def imgAug_withoutLabels(imgPath, number=1):
         # num += 1
 
 
-# will be redundant in 0.5.3 ,see imgAug_xmls.aug_labelimg for details
-def imgAug_LabelImg(imgPath, xmlpath, number=1,yamlFilePath=''):
+def imgAug_LabelImg(imgPath, xmlpath, number=1):
     """
     number : file number you want to generate.
     """
@@ -104,7 +104,7 @@ def imgAug_LabelImg(imgPath, xmlpath, number=1,yamlFilePath=''):
     for i in oriImgs:
         for num in tqdm(range(0, number)):
             resultspool = pool.apply_async(proc_xml,
-                                           (i, imgPath, xmlpath, num,yamlFilePath))
+                                           (i, imgPath, xmlpath, num))
             pool_list.append(resultspool)
 
     logger.info('successfully create {} tasks'.format(len(pool_list)))

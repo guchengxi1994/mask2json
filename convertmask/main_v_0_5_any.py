@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-15 08:17:08
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 19:21:57
+LastEditTime: 2020-10-23 09:39:00
 '''
 import sys
 sys.path.append('..')
@@ -16,7 +16,7 @@ from convertmask.utils.imgAug_script import imgAug_withLabels, imgAug_withoutLab
 from convertmask.utils.json2xml.json2xml import j2xConvert
 from convertmask.utils.mask2json_script import getJsons, getXmls
 from convertmask.utils.json2mask.convert import processor
-from convertmask.utils.xml2json.xml2json import getPolygon, x2jConvert, x2jConvert_pascal
+from convertmask.utils.xml2json.xml2json import x2jConvert, x2jConvert_pascal
 from convertmask.utils.yolo2xml.yolo2xml import y2xConvert
 from convertmask.utils.xml2yolo.xml2yolo import x2yConvert
 import difflib
@@ -311,8 +311,7 @@ def script():
                 else:
                     imgAug_LabelImg(inputFilePath,
                                     inputJsonPath,
-                                    number,
-                                    yamlFilePath=classFilePath)
+                                    number)
                 print('Done!')
             else:
                 raise MethodInputException('There must be some errors.')

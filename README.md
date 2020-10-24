@@ -24,11 +24,11 @@
 
  Try:
 
-    pip install -r requestments.txt [-i https://pypi.tuna.tsinghua.edu.cn/simple/] 
+    pip install -r requestments.txt
 
  IF ERROR, try:
 
-    pip install -r requirements.txt [-i https://pypi.tuna.tsinghua.edu.cn/simple/] --ignore-installed
+    pip install -r requirements.txt --ignore-installed
 
 
 ### Use.
@@ -63,6 +63,10 @@ Under this version, these tools are provided.
 ### 1.image crop supported.(single and multiple crops,rectangle and polygon support. See [here](./convertmask/utils/optional/crop.py))
 
 ![image1](./backup/testCrop.jpg)
+
+### 2.image resize supported (auto labeled). See [here](./convertmask/utils/optional/resize.py) and the test script is [here](./test_scripts/test_resize.py)
+
+![image1](./backup/resize.png)
 
 
 ## 2020.10.23

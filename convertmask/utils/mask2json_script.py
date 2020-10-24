@@ -8,10 +8,12 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 10:55:15
 '''
 
-from . import getMultiShapes
 import glob
 import os
+
 from tqdm import tqdm
+
+from . import getMultiShapes
 from .methods.logger import logger
 
 

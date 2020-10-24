@@ -7,12 +7,13 @@ Date: 2020-10-19 11:31:35
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:36:22
 '''
-#为GS图像增加径向畸变
-import numpy as np
-import cv2
 import math
 #读取图片
 import random
+
+import cv2
+#为GS图像增加径向畸变
+import numpy as np
 
 img = cv2.imread(
     "D:\\testALg\\mask2json\\mask2json\\static\\multi_objs.jpg",

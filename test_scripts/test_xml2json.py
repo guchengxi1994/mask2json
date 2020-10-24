@@ -8,10 +8,13 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:49:30
 '''
 import sys
+
 sys.path.append('..')
 import os
 
-from convertmask.utils.xml2json.xml2json import getPolygon, x2jConvert, x2jConvert_pascal
+from convertmask.utils.xml2json.xml2json import (getPolygon, x2jConvert,
+                                                 x2jConvert_pascal)
+
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
 
 if __name__ == "__main__":

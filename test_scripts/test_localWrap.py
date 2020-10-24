@@ -7,10 +7,11 @@ Date: 2020-10-23 11:03:38
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-23 13:44:42
 '''
-from math import sqrt
-from PIL import Image
 import operator
+from math import sqrt
+
 import numpy as np
+from PIL import Image
 
 
 def warp(x, y, r, center: tuple = None, mouse: tuple = None):

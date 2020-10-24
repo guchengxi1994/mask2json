@@ -8,14 +8,17 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:31:57
 '''
 import sys
+
 sys.path.append('..')
 import json
 import os
 import os.path as osp
 import warnings
+
 import numpy as np
 import PIL.Image
 import yaml
+
 # from labelme import utils
 try:
     from labelme.utils import draw_label
@@ -25,7 +28,7 @@ except:
 if isInstalled:
     import labelme.utils as lUtils  # solve conflict
 else:
-    from convertmask.labelme_sub import utils as  lUtils
+    from convertmask.labelme_sub import utils as lUtils
 
 
 def main():

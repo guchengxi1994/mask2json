@@ -8,6 +8,7 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-10 15:44:40
 '''
 import sys
+
 sys.path.append("..")
 from convertmask.utils.img2xml import processor_singleObj
 

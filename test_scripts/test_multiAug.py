@@ -8,10 +8,12 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-21 16:18:09
 '''
 import sys
+
 sys.path.append('..')
 import os
+
 # from convertmask.utils.imgAug import imgFlip, imgNoise, imgRotation, imgTranslation, aug_labelme, aug_labelimg
-from convertmask.utils.imgAug_script import imgAug_withLabels, imgAug_LabelImg
+from convertmask.utils.imgAug_script import imgAug_LabelImg, imgAug_withLabels
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
 # print(BASE_DIR)

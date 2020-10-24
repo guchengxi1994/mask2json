@@ -58,6 +58,12 @@ Under this version, these tools are provided.
 
 # CHANGE LOGS
 
+## 2020.10.24
+
+### 1.image crop supported.(single and multiple crops,rectangle and polygon support. See [here](./convertmask/utils/optional/crop.py))
+
+![image1](./backup/testCrop.jpg)
+
 
 ## 2020.10.23
 

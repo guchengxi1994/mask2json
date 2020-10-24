@@ -8,8 +8,10 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:46:31
 '''
 import sys
+
 sys.path.append("..")
 import os
+
 from convertmask.utils.getMultiShapes import getMultiObjs_voc as gvoc
 
 # BASE_DIR = os.path.abspath(os.curdir) +os.sep + 'static'

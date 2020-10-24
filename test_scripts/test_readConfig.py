@@ -8,6 +8,7 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 11:07:54
 '''
 import sys
+
 sys.path.append('..')
 
 import convertmask.utils.methods.configUtils as ccfg

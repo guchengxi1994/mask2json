@@ -8,9 +8,11 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:49:55
 '''
 import sys
+
 sys.path.append("..")
-from convertmask.utils.xml2yolo.xml2yolo import x2yConvert
 import os
+
+from convertmask.utils.xml2yolo.xml2yolo import x2yConvert
 
 BASE_DIR = os.path.abspath(os.path.dirname(
     os.getcwd())) + os.sep + 'static' + os.sep + 'test_xmls'

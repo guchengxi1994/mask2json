@@ -7,10 +7,11 @@ Date: 2020-08-24 08:54:29
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 10:56:43
 '''
-import xml.etree.ElementTree as ET
-import os
-from convertmask.utils.methods.logger import logger
 import glob
+import os
+import xml.etree.ElementTree as ET
+
+from convertmask.utils.methods.logger import logger
 from tqdm import tqdm
 
 

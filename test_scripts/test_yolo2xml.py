@@ -8,8 +8,10 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:50:33
 '''
 import sys
+
 sys.path.append('..')
 import os
+
 from convertmask.utils.yolo2xml.yolo2xml import *
 
 BASE_DIR = os.path.abspath(os.path.dirname(

@@ -8,11 +8,15 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-23 09:40:03
 '''
 import sys
+
 sys.path.append("..")
-from convertmask.utils.imgAug import imgFlip, imgNoise, imgRotation, imgTranslation, aug_labelme, aug_labelimg, imgZoom
 import os
-from skimage import io
+
 from convertmask.utils.getMultiShapes import getMultiShapes
+from convertmask.utils.imgAug import (aug_labelimg, aug_labelme, imgFlip,
+                                      imgNoise, imgRotation, imgTranslation,
+                                      imgZoom)
+from skimage import io
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
 # print(BASE_DIR)

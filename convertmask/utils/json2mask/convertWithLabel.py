@@ -8,18 +8,18 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-21 14:57:44
 '''
 
-from convertmask.utils.methods.logger import logger
-from convertmask.utils.xml2mask.x2m import labels2yaml
+import io
 import json
 import os
-import yaml
-import cv2
-import io
 import traceback
-import PIL
-from convertmask.labelme_sub import utils as lUtils
 
+import cv2
 import numpy as np
+import PIL
+import yaml
+from convertmask.labelme_sub import utils as lUtils
+from convertmask.utils.methods.logger import logger
+from convertmask.utils.xml2mask.x2m import labels2yaml
 from tqdm import tqdm
 
 

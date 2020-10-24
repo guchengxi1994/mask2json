@@ -8,9 +8,10 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-12 14:10:19
 '''
 
-from convertmask.utils.methods.logger import logger
 import os
+
 import _io
+from convertmask.utils.methods.logger import logger
 
 
 class FullLoader():

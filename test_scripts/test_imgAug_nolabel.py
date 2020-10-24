@@ -8,10 +8,13 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:40:05
 '''
 import sys
+
 sys.path.append("..")
 import os
 
-from convertmask.utils.imgAug_nolabel import imgFlip, imgNoise, imgRotation, imgTranslation, aug_labelme
+from convertmask.utils.imgAug_nolabel import (aug_labelme, imgFlip, imgNoise,
+                                              imgRotation, imgTranslation)
+
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
 
 imgPath = BASE_DIR + os.sep + 'multi_objs.jpg'

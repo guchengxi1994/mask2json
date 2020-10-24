@@ -11,30 +11,32 @@ LastEditTime: 2020-10-23 13:20:18
 '''
 
 import sys
+
 sys.path.append('..')
-# import warnings
-from skimage import io
-import skimage.util.noise as snoise
-from skimage import morphology
-import cv2
-import os
-from .json2mask.convert import processor
-from .json2mask.convertWithLabel import processor as processorWithLabel
-from .getMultiShapes import getMultiShapes
-from .methods.img2base64 import imgEncode
-from .methods import rmQ, entity
-import traceback
-from .methods.entity import *
-import numpy as np
-import shutil
 import json
-from .methods.logger import logger
+import os
 import random
-from convertmask.utils.xml2json.xml2json import x2jConvert_pascal
-from convertmask.utils.json2xml.json2xml import j2xConvert
-from scipy import ndimage
+import shutil
+import traceback
 
 import convertmask.utils.methods.configUtils as ccfg
+import cv2
+import numpy as np
+import skimage.util.noise as snoise
+from convertmask.utils.json2xml.json2xml import j2xConvert
+from convertmask.utils.xml2json.xml2json import x2jConvert_pascal
+from scipy import ndimage
+# import warnings
+from skimage import io, morphology
+
+from .getMultiShapes import getMultiShapes
+from .json2mask.convert import processor
+from .json2mask.convertWithLabel import processor as processorWithLabel
+from .methods import entity, rmQ
+from .methods.entity import *
+from .methods.img2base64 import imgEncode
+from .methods.logger import logger
+
 LOGFlag = ccfg.getConfigParam(ccfg.cfp, 'log', 'show')
 del ccfg
 

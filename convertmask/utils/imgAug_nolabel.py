@@ -8,16 +8,19 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-22 14:36:44
 '''
 import sys
+
 sys.path.append('..')
-from skimage import io
-import skimage.util.noise as snoise
-import cv2
-from .methods.entity import *
-import numpy as np
-from .methods.logger import logger
-import random
 import os
+import random
+
+import cv2
+import numpy as np
+import skimage.util.noise as snoise
 from convertmask.utils.imgAug import _getZoomedImg
+from skimage import io
+
+from .methods.entity import *
+from .methods.logger import logger
 
 
 def imgZoom(oriImg, size, flag=True):

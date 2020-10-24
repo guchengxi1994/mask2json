@@ -7,19 +7,22 @@ Date: 2020-09-24 09:03:04
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-16 10:22:28
 '''
-import xml.etree.ElementTree as ET
-from convertmask.utils.methods.img2base64 import imgEncode
-from convertmask.utils.methods.logger import logger
-import traceback
 import json
 import os
+import traceback
+import xml.etree.ElementTree as ET
+
+from convertmask.utils.methods.img2base64 import imgEncode
+from convertmask.utils.methods.logger import logger
 from skimage import io
+
 # import numpy as np
 # import cv2
 try:
-    from labelme import __version__  as labelmeVersion
+    from labelme import __version__ as labelmeVersion
 except:
     from convertmask.labelme_sub import __version__ as labelmeVersion
+
     # __version__ = '4.2.9'
 
 

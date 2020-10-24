@@ -7,11 +7,12 @@
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-10 15:45:56
 '''
-# import json
-import xmltodict
+import os
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parse, parseString
-import os
+
+# import json
+import xmltodict
 
 # from lxml.etree import Element, SubElement, tostring
 # from xml.etree.ElementTree import fromstring, ElementTree

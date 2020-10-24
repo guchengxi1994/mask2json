@@ -7,19 +7,21 @@ Date: 2020-10-21 19:10:40
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-23 10:38:08
 '''
+import math
+import os
+import random
+import shutil
+import xml.etree.ElementTree as ET
+
+import cv2
+import numpy as np
+from convertmask.utils.imgAug_nolabel import imgNoise
+from convertmask.utils.methods.entity import Ori_Pro
 # from matplotlib.pyplot import flag
 # from numpy.lib.function_base import angle
 from convertmask.utils.methods.logger import logger
-from convertmask.utils.imgAug_nolabel import imgNoise
-import cv2
-import math
-import numpy as np
-import os
 from skimage import io
-import shutil
-from convertmask.utils.methods.entity import Ori_Pro
-import random
-import xml.etree.ElementTree as ET
+
 """
 if flag == True, then images and xmls will be saved. Better just for test.
 """

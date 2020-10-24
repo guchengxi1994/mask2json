@@ -8,19 +8,25 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-23 09:39:00
 '''
 import sys
+
 sys.path.append('..')
+import difflib
 import os
-from convertmask import BaseParser, __appname__, __support_methods__, __support_methods_simplified__
-from convertmask.utils.methods.logger import logger
-from convertmask.utils.imgAug_script import imgAug_withLabels, imgAug_withoutLabels, imgAug_LabelImg
+
+import convertmask.utils.methods.configUtils as ccfg
+from convertmask import (BaseParser, __appname__, __support_methods__,
+                         __support_methods_simplified__)
+from convertmask.utils.imgAug_script import (imgAug_LabelImg,
+                                             imgAug_withLabels,
+                                             imgAug_withoutLabels)
+from convertmask.utils.json2mask.convert import processor
 from convertmask.utils.json2xml.json2xml import j2xConvert
 from convertmask.utils.mask2json_script import getJsons, getXmls
-from convertmask.utils.json2mask.convert import processor
+from convertmask.utils.methods.logger import logger
 from convertmask.utils.xml2json.xml2json import x2jConvert, x2jConvert_pascal
-from convertmask.utils.yolo2xml.yolo2xml import y2xConvert
 from convertmask.utils.xml2yolo.xml2yolo import x2yConvert
-import difflib
-import convertmask.utils.methods.configUtils as ccfg
+from convertmask.utils.yolo2xml.yolo2xml import y2xConvert
+
 ccfg.setConfigParam(ccfg.cfp, 'log', 'show', 'True')
 
 supported_simplified_methods = __support_methods_simplified__.values()

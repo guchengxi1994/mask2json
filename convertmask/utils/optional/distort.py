@@ -7,14 +7,15 @@ Date: 2020-10-23 13:18:56
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-23 13:49:44
 '''
-from math import sqrt
-from PIL import Image
 import operator
-import numpy as np
 import os
 import random
-from skimage import io
+from math import sqrt
+
+import numpy as np
 from convertmask.utils.methods.logger import logger
+from PIL import Image
+from skimage import io
 
 
 def _div(t: list, v):

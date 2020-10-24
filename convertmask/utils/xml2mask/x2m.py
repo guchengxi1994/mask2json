@@ -7,16 +7,16 @@ Date: 2020-09-03 07:58:48
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-21 13:56:33
 '''
-import yaml
-
-import xml.etree.ElementTree as ET
-import os
 import glob
-from tqdm import tqdm
+import os
+import xml.etree.ElementTree as ET
+
+import numpy as np
+import yaml
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.xml2yolo.xml2yolo import readLabels
-import numpy as np
 from skimage import io
+from tqdm import tqdm
 
 
 def yaml2dict(filepath):

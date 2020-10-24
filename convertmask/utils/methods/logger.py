@@ -10,7 +10,6 @@ LastEditTime: 2020-10-15 08:33:46
 import logging
 
 import termcolor
-
 from convertmask import __appname__
 
 COLORS = {

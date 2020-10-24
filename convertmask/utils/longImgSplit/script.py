@@ -7,12 +7,15 @@ Date: 2020-09-03 11:41:14
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-10 15:43:27
 '''
-from .splitImg import splitImg_dengbili, reshape_dengbili
-from convertmask.utils.xml2mask import x2m
-from skimage import io
+import os
+
 from convertmask.utils.getMultiShapes import getMultiObjs_voc_withYaml
 from convertmask.utils.methods.logger import logger
-import os
+from convertmask.utils.xml2mask import x2m
+from skimage import io
+
+from .splitImg import reshape_dengbili, splitImg_dengbili
+
 # import json
 # from convertmask.utils.json2xml.json2xml import j2xConvert
 # import glob

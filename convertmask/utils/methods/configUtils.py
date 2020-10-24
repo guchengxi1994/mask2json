@@ -7,14 +7,17 @@ Date: 2020-10-20 10:01:52
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 11:04:52
 '''
+import configparser
+
 from convertmask.utils.methods.logger import logger
 
-import configparser
 cfp = configparser.ConfigParser()
 
-import convertmask as U
 # print(U.__file__)
 import os
+
+import convertmask as U
+
 BASE_DIR = os.path.abspath(os.path.split(U.__file__)[0])
 config_ROOT = BASE_DIR + os.sep  + 'config.ini'
 cfp.read(config_ROOT)

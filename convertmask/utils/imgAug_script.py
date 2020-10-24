@@ -7,15 +7,15 @@ Date: 2020-08-21 10:05:08
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-23 09:34:27
 '''
-from .methods.logger import logger
-from . import imgAug
-from . import imgAug_nolabel
-from . import imgAug_xmls
 import glob
 import os
-from tqdm import tqdm
 from multiprocessing import Pool
+
 from convertmask import __CPUS__
+from tqdm import tqdm
+
+from . import imgAug, imgAug_nolabel, imgAug_xmls
+from .methods.logger import logger
 
 
 def proc_xml(img, imgPath, xmlpath, number):

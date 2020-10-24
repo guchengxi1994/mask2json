@@ -24,18 +24,19 @@ options:
 '''
 import os
 import sys
-sys.path.append('..')
 
-from convertmask.utils.methods.logger import logger
-from convertmask.utils.cpFile import fileExist
-from convertmask import __version__
-from convertmask.utils.imgAug_script import imgAug_withLabels,imgAug_withoutLabels
-from convertmask.utils.json2xml.json2xml import j2xConvert
-from convertmask.utils.mask2json_script import getJsons,getXmls
-from convertmask.utils.json2mask.convert import processor
+sys.path.append('..')
 
 from docopt import docopt
 
+from convertmask import __version__
+from convertmask.utils.cpFile import fileExist
+from convertmask.utils.imgAug_script import (imgAug_withLabels,
+                                             imgAug_withoutLabels)
+from convertmask.utils.json2mask.convert import processor
+from convertmask.utils.json2xml.json2xml import j2xConvert
+from convertmask.utils.mask2json_script import getJsons, getXmls
+from convertmask.utils.methods.logger import logger
 
 if not fileExist():
     logger.warning("connot find draw.py in labelme folder,which may cause some errors on labelme 4.2.9 (and maybe later). You can add it follow this step:https://github.com/guchengxi1994/mask2json#how-to-use")

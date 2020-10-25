@@ -35,23 +35,23 @@
 
 Under this version, these tools are provided.
 
-#### 1.[augmentation](./backup/docs/augment.md)
+#### 1.[augmentation](./static/docs/augment.md)
 
-#### 2.[img2xml](./backup/docs/img2xml.md)
+#### 2.[img2xml](./static/docs/img2xml.md)
 
-#### 3.[json2mask](./backup/docs/json2mask.md)
+#### 3.[json2mask](./static/docs/json2mask.md)
 
-#### 4.[json2xml](./backup/docs/json2xml.md)
+#### 4.[json2xml](./static/docs/json2xml.md)
 
-#### 5.[longImgSplit](./backup/docs/longImgSplit.md)
+#### 5.[longImgSplit](./static/docs/longImgSplit.md)
 
-#### 6.[xml2json](./backup/docs/xml2json.md)
+#### 6.[xml2json](./static/docs/xml2json.md)
 
-#### 7.[xml2mask](./backup/docs/xml2mask.md)
+#### 7.[xml2mask](./static/docs/xml2mask.md)
 
-#### 8.[xml2yolo](./backup/docs/xml2yolo.md)
+#### 8.[xml2yolo](./static/docs/xml2yolo.md)
 
-#### 9.[yolo2xml](./backup/docs/yolo2xml.md)
+#### 9.[yolo2xml](./static/docs/yolo2xml.md)
 
 
 
@@ -78,7 +78,7 @@ Under this version, these tools are provided.
 
 ### 2.image resize supported (auto labeled). See [here](./convertmask/utils/auglib/optional/resize.py) and the test script is [here](./test_scripts/test_resize.py)
 
-![image1](./backup/resize.png)
+![image1](./backup/resize1.png)
 
 
 ## 2020.10.23

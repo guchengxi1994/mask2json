@@ -30,7 +30,7 @@ sys.path.append('..')
 from docopt import docopt
 
 from convertmask import __version__
-from convertmask.utils.cpFile import fileExist
+from convertmask.utils.backup.cpFile import fileExist
 from convertmask.utils.imgAug_script import (imgAug_withLabels,
                                              imgAug_withoutLabels)
 from convertmask.utils.json2mask.convert import processor

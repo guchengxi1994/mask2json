@@ -13,8 +13,8 @@ import os
 
 from tqdm import tqdm
 
-from . import getMultiShapes
-from .methods.logger import logger
+from convertmask.utils.methods import getMultiShapes
+from convertmask.utils.methods.logger import logger
 
 
 def getJsons(imgPath, maskPath, savePath, yamlPath=''):

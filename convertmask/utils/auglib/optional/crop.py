@@ -12,7 +12,7 @@ import random
 import cv2
 import numpy as np
 import skimage.util.noise as snoise
-from convertmask.utils.optional.generatePolygon import (generatePolygon,
+from convertmask.utils.auglib.optional.generatePolygon import (generatePolygon,
                                                         generateRectangle)
 
 

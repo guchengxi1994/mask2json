@@ -16,11 +16,10 @@ import random
 import cv2
 import numpy as np
 import skimage.util.noise as snoise
-from convertmask.utils.imgAug import _getZoomedImg
+from convertmask.utils.auglib.imgAug import _getZoomedImg
+from convertmask.utils.methods.entity import *
+from convertmask.utils.methods.logger import logger
 from skimage import io
-
-from .methods.entity import *
-from .methods.logger import logger
 
 
 def imgZoom(oriImg, size, flag=True):

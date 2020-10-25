@@ -15,7 +15,9 @@
 /convertmask/utils/json2xml/__pycache__
 /convertmask/utils/json2mask/__pycache__
 /convertmask/utils/longImgSplit/__pycache__
-/convertmask/utils/optional/__pycache__
+/convertmask/utils/auglib/optional/__pycache__
+/convertmask/utils/auglib/__pycache__
+/convertmask/utils/backup/__pycache__
 /static/testAug
 /static/augimgs_
 /static/test_xmls/labels_.txt

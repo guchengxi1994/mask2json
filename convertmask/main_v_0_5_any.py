@@ -346,9 +346,9 @@ def script():
                 inputFilePath = params[0]
                 inputJsonPath = params[1]
                 if not args['labelImg']:
-                    x2jConvert(inputFilePath, inputJsonPath, number)
+                    x2jConvert(inputFilePath, inputJsonPath)
                 else:
-                    x2jConvert_pascal(inputFilePath, inputJsonPath, number)
+                    x2jConvert_pascal(inputFilePath, inputJsonPath)
                 print('Done!')
             else:
                 raise MethodInputException('Too much input parameters')

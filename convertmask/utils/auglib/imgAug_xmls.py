@@ -15,7 +15,7 @@ import xml.etree.ElementTree as ET
 
 import cv2
 import numpy as np
-from convertmask.utils.imgAug_nolabel import imgNoise
+from convertmask.utils.auglib.imgAug_nolabel import imgNoise
 from convertmask.utils.methods.entity import Ori_Pro
 # from matplotlib.pyplot import flag
 # from numpy.lib.function_base import angle

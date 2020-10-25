@@ -12,10 +12,9 @@ import os
 from multiprocessing import Pool
 
 from convertmask import __CPUS__
+from convertmask.utils.auglib import imgAug, imgAug_nolabel, imgAug_xmls
+from convertmask.utils.methods.logger import logger
 from tqdm import tqdm
-
-from . import imgAug, imgAug_nolabel, imgAug_xmls
-from .methods.logger import logger
 
 
 def proc_xml(img, imgPath, xmlpath, number):

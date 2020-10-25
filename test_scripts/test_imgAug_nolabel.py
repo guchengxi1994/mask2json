@@ -12,7 +12,7 @@ import sys
 sys.path.append("..")
 import os
 
-from convertmask.utils.imgAug_nolabel import (aug_labelme, imgFlip, imgNoise,
+from convertmask.utils.auglib.imgAug_nolabel import (aug, imgFlip, imgNoise,
                                               imgRotation, imgTranslation)
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'

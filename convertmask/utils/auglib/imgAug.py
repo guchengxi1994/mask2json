@@ -23,19 +23,19 @@ import convertmask.utils.methods.configUtils as ccfg
 import cv2
 import numpy as np
 import skimage.util.noise as snoise
+from convertmask.utils.json2mask.convert import processor
+from convertmask.utils.json2mask.convertWithLabel import \
+    processor as processorWithLabel
 from convertmask.utils.json2xml.json2xml import j2xConvert
+from convertmask.utils.methods import entity, rmQ
+from convertmask.utils.methods.entity import *
+from convertmask.utils.methods.getMultiShapes import getMultiShapes
+from convertmask.utils.methods.img2base64 import imgEncode
+from convertmask.utils.methods.logger import logger
 from convertmask.utils.xml2json.xml2json import x2jConvert_pascal
 from scipy import ndimage
 # import warnings
 from skimage import io, morphology
-
-from .getMultiShapes import getMultiShapes
-from .json2mask.convert import processor
-from .json2mask.convertWithLabel import processor as processorWithLabel
-from .methods import entity, rmQ
-from .methods.entity import *
-from .methods.img2base64 import imgEncode
-from .methods.logger import logger
 
 LOGFlag = ccfg.getConfigParam(ccfg.cfp, 'log', 'show')
 del ccfg

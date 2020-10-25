@@ -4,7 +4,7 @@ sys.path.append("..")
 import os
 
 from skimage import io
-from convertmask.utils.optional.resize import resize_img,resizeScript
+from convertmask.utils.auglib.optional.resize import resize_img,resizeScript
 
 if __name__ == "__main__":
     BASE_DIR = os.path.abspath(os.path.dirname(

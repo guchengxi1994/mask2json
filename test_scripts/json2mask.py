@@ -19,6 +19,7 @@ import numpy as np
 import PIL.Image
 import yaml
 
+isInstalled = True
 # from labelme import utils
 try:
     from labelme.utils import draw_label
@@ -75,8 +76,8 @@ def singleFile(filePath):
     if os.path.isfile(filePath) and filePath.endswith('.json'):
         data = json.load(open(filePath))
         img = lUtils.img_b64_to_arr(data['imageData'])
-        lbl, lbl_names = lUtils.labelme_shapes_to_label(img.shape,
-                                                       data['shapes'])
+        lbl, lbl_names = lUtils.labelme_shapes_to_label(
+            img.shape, data['shapes'])
         # lbl[lbl>0] = 255
         # print(lbl)
 

@@ -15,7 +15,7 @@ def resize_img(img: np.ndarray, heightFactor=1, widthFactor=1):
     return np.array(resizedImg * 255).astype(np.uint8)
 
 
-# def resize_xml(img: np.ndarray, box: tuple, heightFactor=1, widthFactor=1):
+# def resize_xml(xmlpath:str, heightFactor=1, widthFactor=1):
 #     pass
 
 
@@ -58,8 +58,8 @@ def resizeScript(img, xmlpath: str, heightFactor=1, widthFactor=1):
 
         x, y, w, h = bb[0], bb[1], bb[2], bb[3]
         # print(x, y, w, h)
-        w = w 
-        h = h 
+        # w = w 
+        # h = h 
         bbox = y2xVert((resizeImgShape[1],resizeImgShape[0]), x, y, w, h)
         # print(bbox)
         # print('===========================')

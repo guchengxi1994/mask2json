@@ -35,36 +35,48 @@
 
 Under this version, these tools are provided.
 
-#### 1.[augmentation](./static/docs/augment.md)
+#### 1.[augmentation](./backup/docs/augment.md)
 
-#### 2.[img2xml](./static/docs/img2xml.md)
+#### 2.[img2xml](./backup/docs/img2xml.md)
 
-#### 3.[json2mask](./static/docs/json2mask.md)
+#### 3.[json2mask](./backup/docs/json2mask.md)
 
-#### 4.[json2xml](./static/docs/json2xml.md)
+#### 4.[json2xml](./backup/docs/json2xml.md)
 
-#### 5.[longImgSplit](./static/docs/longImgSplit.md)
+#### 5.[longImgSplit](./backup/docs/longImgSplit.md)
 
-#### 6.[xml2json](./static/docs/xml2json.md)
+#### 6.[xml2json](./backup/docs/xml2json.md)
 
-#### 7.[xml2mask](./static/docs/xml2mask.md)
+#### 7.[xml2mask](./backup/docs/xml2mask.md)
 
-#### 8.[xml2yolo](./static/docs/xml2yolo.md)
+#### 8.[xml2yolo](./backup/docs/xml2yolo.md)
 
-#### 9.[yolo2xml](./static/docs/yolo2xml.md)
+#### 9.[yolo2xml](./backup/docs/yolo2xml.md)
 
 
 
 
 # CHANGE LOGS
 
+
+## 2020.10.25
+
+### 1. bump to 0.5.3
+
+### 2. code structure change
+
+### 3. mosiac(yolov4) augumentation supported(auto labeled for labelImg,for labelme will be updated as fast as i can). Script can be found [here](./test_scripts/test_mosiac.py)
+
+![image1](./backup/mosiac.png)
+
+
 ## 2020.10.24
 
-### 1.image crop supported.(single and multiple crops,rectangle and polygon support. See [here](./convertmask/utils/optional/crop.py))
+### 1.image crop supported.(single and multiple crops,rectangle and polygon support. See [here](./convertmask/utils/auglib/optional/crop.py))
 
 ![image1](./backup/testCrop.jpg)
 
-### 2.image resize supported (auto labeled). See [here](./convertmask/utils/optional/resize.py) and the test script is [here](./test_scripts/test_resize.py)
+### 2.image resize supported (auto labeled). See [here](./convertmask/utils/auglib/optional/resize.py) and the test script is [here](./test_scripts/test_resize.py)
 
 ![image1](./backup/resize.png)
 
@@ -75,7 +87,7 @@ Under this version, these tools are provided.
 
 ![image1](./backup/multi_objs_distort.jpg)
 
-see [here](./convertmask/utils/optional/distort.py) or [test-script](./test_scripts/test_localWrap.py) for details.
+see [here](./convertmask/utils/auglib/optional/distort.py) or [test-script](./test_scripts/test_localWrap.py) for details.
 
 
 ## 2020.10.13
@@ -215,7 +227,7 @@ auto_labeled image
 
 ## 5. do something more interesting
 
-## 6. re-write main [script](./convertmask/m2j_m.py)
+## 6. ~~re-write main [script](./convertmask/main_v_0_3_any.py)~~ (2020.10)
 
 ## 7. solve PyYmal installation error(currently write a [script](./convertmask/utils/methods/yamlUtils.py) by myself. maybe failure in the end.)
 
@@ -232,7 +244,7 @@ auto_labeled image
 
 if you test the [json2mask.py](./test_scripts/json2mask.py) script, you should change the path first and make sure the file is valid(maybe i have deleted :) )
 
-Also, this script is just a reverse of mask2json, for a more COOOOOL method, see [here](./convertmask/utils/convert.py) , try convert.processor
+Also, this script is just a reverse of mask2json, for a more COOOOOL method, see [here](./convertmask/utils/json2mask/convert.py) , try convert.processor
 
 
 

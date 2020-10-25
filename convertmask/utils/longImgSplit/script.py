@@ -9,7 +9,7 @@ LastEditTime: 2020-10-10 15:43:27
 '''
 import os
 
-from convertmask.utils.getMultiShapes import getMultiObjs_voc_withYaml
+from convertmask.utils.methods.getMultiShapes import getMultiObjs_voc_withYaml
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.xml2mask import x2m
 from skimage import io

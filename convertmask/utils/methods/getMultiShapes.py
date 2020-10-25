@@ -24,13 +24,12 @@ import cv2
 import numpy as np
 import skimage.io as io
 import yaml
-
-from .img2xml.processor_multiObj import img2xml_multiobj
-from .methods import rmQ
-from .methods.getShape import *
-from .methods.img2base64 import imgEncode
+from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
+from convertmask.utils.methods import rmQ
+from convertmask.utils.methods.getShape import *
+from convertmask.utils.methods.img2base64 import imgEncode
 # import warnings
-from .methods.logger import logger
+from convertmask.utils.methods.logger import logger
 
 
 def rs(st:str):

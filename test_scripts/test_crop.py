@@ -12,10 +12,10 @@ import sys
 sys.path.append("..")
 import os
 
-from convertmask.utils.optional.crop import (multiPolygonCrop,
+from convertmask.utils.auglib.optional.crop import (multiPolygonCrop,
                                              multiRectanleCrop, polygonCrop,
                                              rectangleCrop)
-from convertmask.utils.optional.generatePolygon import (generatePolygon,
+from convertmask.utils.auglib.optional.generatePolygon import (generatePolygon,
                                                         generateRectangle)
 from skimage import io
 

@@ -16,7 +16,7 @@ import glob
 import json
 import os
 
-from convertmask.utils import getMultiShapes
+from convertmask.utils.methods import getMultiShapes
 from convertmask.utils.methods import getShape, img2base64, rmQ
 
 

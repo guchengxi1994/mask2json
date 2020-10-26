@@ -8,8 +8,9 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-10 15:48:38
 '''
 import os
-from labelme import utils
 import shutil
+
+from labelme import utils
 
 pa = utils.__file__
 father_path = os.path.abspath(os.path.dirname(pa) + os.path.sep + ".")

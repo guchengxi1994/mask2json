@@ -90,4 +90,4 @@
 
 ### 2.For labelImg(images and xmls).
 
-Just same as 'For labelme(images and jsons)'. For more detailed information,see [here](../../convertmask/utils/imgAug_xmls.py)
+Just same as 'For labelme(images and jsons)'. For more detailed information,see [here](../../convertmask/utils/auglib/imgAug_xmls.py)

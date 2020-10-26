@@ -7,14 +7,15 @@ Date: 2020-10-12 15:47:58
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 10:56:11
 '''
-import xml.etree.ElementTree as ET
+import glob
 import os
+import xml.etree.ElementTree as ET
+
+from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.xml2yolo.xml2yolo import readLabels
-from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
-import glob
-from tqdm import tqdm
 from skimage import io
+from tqdm import tqdm
 
 
 def y2xConvert(txtPath, imgPath, labelPath):

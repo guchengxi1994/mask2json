@@ -8,10 +8,11 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-10 15:47:13
 '''
 import base64
-import _io
-import numpy as np
 # import cv2
 import io
+
+import _io
+import numpy as np
 import PIL
 
 

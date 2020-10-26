@@ -8,10 +8,11 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-10 15:43:15
 '''
 
-from skimage import io
+import math
+
 import cv2
 import numpy as np
-import math
+from skimage import io
 
 
 def reshape_dengbili(img, imgname=None, bias=648):

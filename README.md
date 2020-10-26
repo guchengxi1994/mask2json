@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-10-23 09:50:55
+ * @LastEditTime: 2020-10-23 13:54:07
 --> 
 
 
@@ -24,11 +24,11 @@
 
  Try:
 
-    pip install -r requestments.txt [-i https://pypi.tuna.tsinghua.edu.cn/simple/] 
+    pip install -r requestments.txt
 
  IF ERROR, try:
 
-    pip install -r requirements.txt [-i https://pypi.tuna.tsinghua.edu.cn/simple/] --ignore-installed
+    pip install -r requirements.txt --ignore-installed
 
 
 ### Use.
@@ -58,6 +58,38 @@ Under this version, these tools are provided.
 
 # CHANGE LOGS
 
+
+## 2020.10.25
+
+### 1. bump to 0.5.3
+
+### 2. code structure change
+
+### 3. mosiac(yolov4) augumentation supported(auto labeled for labelImg,for labelme will be updated as fast as i can). Script can be found [here](./test_scripts/test_mosiac.py)
+
+![image1](./backup/mosiac.png)
+
+
+## 2020.10.24
+
+### 1.image crop supported.(single and multiple crops,rectangle and polygon support. See [here](./convertmask/utils/auglib/optional/crop.py))
+
+![image1](./backup/testCrop.jpg)
+
+### 2.image resize supported (auto labeled). See [here](./convertmask/utils/auglib/optional/resize.py) and the test script is [here](./test_scripts/test_resize.py)
+
+![image1](./backup/resize1.png)
+
+
+## 2020.10.23
+
+### 1.image distortion supported.
+
+![image1](./backup/multi_objs_distort.jpg)
+
+see [here](./convertmask/utils/auglib/optional/distort.py) or [test-script](./test_scripts/test_localWrap.py) for details.
+
+
 ## 2020.10.13
 
 ### 1.image augumentation support convert yolo txts to xmls(pascal). See [here](./test_scripts/test_yolo2xml.py)
@@ -83,7 +115,7 @@ script [here](./test_scripts/test_xml2json.py)
 
 ## 2020.8.24
 
-### support convert xml files to yolo files. see [here](./test_scripts/test_xml2yolo.py)
+### 1.support convert xml files to yolo files. see [here](./test_scripts/test_xml2yolo.py)
 
 examples:
 
@@ -195,7 +227,7 @@ auto_labeled image
 
 ## 5. do something more interesting
 
-## 6. re-write main [script](./convertmask/m2j_m.py)
+## 6. ~~re-write main [script](./convertmask/main_v_0_3_any.py)~~ (2020.10)
 
 ## 7. solve PyYmal installation error(currently write a [script](./convertmask/utils/methods/yamlUtils.py) by myself. maybe failure in the end.)
 
@@ -212,7 +244,7 @@ auto_labeled image
 
 if you test the [json2mask.py](./test_scripts/json2mask.py) script, you should change the path first and make sure the file is valid(maybe i have deleted :) )
 
-Also, this script is just a reverse of mask2json, for a more COOOOOL method, see [here](./convertmask/utils/convert.py) , try convert.processor
+Also, this script is just a reverse of mask2json, for a more COOOOOL method, see [here](./convertmask/utils/json2mask/convert.py) , try convert.processor
 
 
 

@@ -5,15 +5,14 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-23 15:40:56
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-23 15:49:47
+LastEditTime: 2020-10-26 10:51:25
 '''
-import random
 
 import cv2
 import numpy as np
 import skimage.util.noise as snoise
-from convertmask.utils.auglib.optional.generatePolygon import (generatePolygon,
-                                                        generateRectangle)
+from convertmask.utils.auglib.optional.generatePolygon import (
+    generatePolygon, generateRectangle)
 
 
 def rectangleCrop(img: np.ndarray, startPoint: tuple = None, noise=False):
@@ -68,14 +67,16 @@ def multiRectanleCrop(img: np.ndarray, number: int = 1, noise=False):
     return img * mask
 
 
-def multiPolygonCrop(img: np.ndarray, number: int = 1, noise=False):
+def multiPolygonCrop(img: np.ndarray,
+                     number: int = 1,
+                     noise=False,
+                     convexHull=False):
     imgShape = img.shape
-    mask = np.zeros((imgShape[0],imgShape[1]), dtype=np.uint8)
+    mask = np.zeros((imgShape[0], imgShape[1]), dtype=np.uint8)
     for _ in range(number):
-        mask += generatePolygon(imgShape)
+        mask += generatePolygon(imgShape, convexHull=convexHull)
     mask[mask != 255] = 1
     mask[mask == 255] = 0
-
 
     if noise:
         noisedMask = np.ones(imgShape) * 255

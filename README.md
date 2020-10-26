@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-10-23 13:54:07
+ * @LastEditTime: 2020-10-26 11:43:51
 --> 
 
 
@@ -67,25 +67,25 @@ Under this version, these tools are provided.
 
 ### 3. mosiac(yolov4) augumentation supported(auto labeled for labelImg,for labelme will be updated as fast as i can). Script can be found [here](./test_scripts/test_mosiac.py)
 
-![image1](./backup/mosiac.png)
+![img-mosiac](./backup/mosiac.png)
 
 
 ## 2020.10.24
 
 ### 1.image crop supported.(single and multiple crops,rectangle and polygon support. See [here](./convertmask/utils/auglib/optional/crop.py))
 
-![image1](./backup/testCrop.jpg)
+![img-crop](./backup/testCrop.jpg)
 
 ### 2.image resize supported (auto labeled). See [here](./convertmask/utils/auglib/optional/resize.py) and the test script is [here](./test_scripts/test_resize.py)
 
-![image1](./backup/resize1.png)
+![img-resize](./backup/resize1.png)
 
 
 ## 2020.10.23
 
 ### 1.image distortion supported.
 
-![image1](./backup/multi_objs_distort.jpg)
+![img-distort](./backup/multi_objs_distort.jpg)
 
 see [here](./convertmask/utils/auglib/optional/distort.py) or [test-script](./test_scripts/test_localWrap.py) for details.
 
@@ -109,7 +109,7 @@ examples:
 
 script [here](./test_scripts/test_xml2json.py)
 
-![gif1](./backup/xml2json.gif)
+![xml2json](./backup/xml2json.gif)
 
 
 
@@ -120,22 +120,22 @@ script [here](./test_scripts/test_xml2json.py)
 examples:
 
 
-![gif1](./backup/xml2yolo.gif)
+![xml2yolo](./backup/xml2yolo.gif)
 
 
 ## 2020.8.19
 
 ### 1. image translation supported.
 
-![img1](./backup/translation.png)
+![img-translation](./backup/translation.png)
 
 combination of every augmentation method.
 
-![img1](./backup/combine.png)
+![img-combination](./backup/combine.png)
 
 ### 2. besides, a simple way convert json file(labelme) to xml file(labelImg) is provided. see [here](./test_scripts/test_json2xml.py)
 
-![img1](./backup/json2xml.png)
+![json2xml](./backup/json2xml.png)
 
 
 ## 2020.8.17
@@ -148,19 +148,19 @@ here are some examples:
 
 ### flip
 
-![img1](./backup/flip_h.png)
+![img-flip-h](./backup/flip_h.png)
 
-![img1](./backup/flip_v.png)
+![img-flip-v](./backup/flip_v.png)
 
-![img1](./backup/flip_v_h.png)
+![img-flip-v-h](./backup/flip_v_h.png)
 
 ### noise
 
-![img1](./backup/noise.png)
+![img-noise](./backup/noise.png)
 
 ### rotation
 
-![img1](./backup/rotation.png)
+![img-rotation](./backup/rotation.png)
 
 
 ## 2020.8.14
@@ -174,7 +174,7 @@ here are some examples:
 
 eg:
 
-![img1](./backup/auto_mask2xml.png)
+![mask2xml](./backup/auto_mask2xml.png)
 
 
 ## 2020.7.13
@@ -197,21 +197,21 @@ try [test.py](./test_scripts/test.py) !
 
 manually_labeled image
 
-![img1](./backup/manually_labeled_multi_objs.png)
+![manually_labeled_multi_objs](./backup/manually_labeled_multi_objs.png)
 
 auto_labeled image
 
-![img1](./backup/auto_labeled_multi_objs.png)
+![auto_labeled_multi_objs](./backup/auto_labeled_multi_objs.png)
 
 #### 1.2 multiple objects in same classes
 
 manually_labeled image
 
-![img1](./backup/manually_labeled_multi_objs_samelabel.png)
+![manually_labeled_multi_objs_samelabel](./backup/manually_labeled_multi_objs_samelabel.png)
 
 auto_labeled image
 
-![img1](./backup/auto_labeled_labeled_multi_objs_samelabel.png)
+![auto_labeled_labeled_multi_objs_samelabel](./backup/auto_labeled_labeled_multi_objs_samelabel.png)
 
 
 
@@ -240,7 +240,7 @@ auto_labeled image
 1. [issue:json2mask has no output](https://github.com/guchengxi1994/mask2json/issues/3)
 
 
-![gif2](./backup/json2mask.gif)
+![json2mask](./backup/json2mask.gif)
 
 if you test the [json2mask.py](./test_scripts/json2mask.py) script, you should change the path first and make sure the file is valid(maybe i have deleted :) )
 

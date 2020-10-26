@@ -8,8 +8,9 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:44:02
 '''
 import sys
+
 sys.path.append("..")
-from convertmask.utils import getMultiShapes
+from convertmask.utils.methods import getMultiShapes
 
 if __name__ == "__main__":
     getMultiShapes.test()

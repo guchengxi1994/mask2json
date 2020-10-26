@@ -8,10 +8,13 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:46:54
 '''
 import sys
+
 sys.path.append('..')
 import os
-from convertmask.utils.methods.yamlUtils import *
+
 import yaml
+from convertmask.utils.methods.yamlUtils import *
+
 print(yaml.__version__)
 del yaml
 

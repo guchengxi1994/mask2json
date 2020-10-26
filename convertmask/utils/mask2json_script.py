@@ -8,11 +8,13 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 10:55:15
 '''
 
-from . import getMultiShapes
 import glob
 import os
+
 from tqdm import tqdm
-from .methods.logger import logger
+
+from convertmask.utils.methods import getMultiShapes
+from convertmask.utils.methods.logger import logger
 
 
 def getJsons(imgPath, maskPath, savePath, yamlPath=''):

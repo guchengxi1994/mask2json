@@ -8,11 +8,13 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:47:32
 '''
 import sys
+
 sys.path.append("..")
-import os
 import glob
+import os
 
 from convertmask.utils.longImgSplit import script as sc
+
 save_dir = os.path.abspath(os.path.dirname(
     os.getcwd())) + os.sep + 'static' + os.sep + "testXmlSplit" + os.sep
 

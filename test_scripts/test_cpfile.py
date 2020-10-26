@@ -9,6 +9,7 @@ LastEditTime: 2020-10-20 09:35:54
 '''
 import os
 import shutil
+
 FLAG = True
 try:
     from labelme import utils

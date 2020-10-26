@@ -8,14 +8,18 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:31:57
 '''
 import sys
+
 sys.path.append('..')
 import json
 import os
 import os.path as osp
 import warnings
+
 import numpy as np
 import PIL.Image
 import yaml
+
+isInstalled = True
 # from labelme import utils
 try:
     from labelme.utils import draw_label
@@ -25,7 +29,7 @@ except:
 if isInstalled:
     import labelme.utils as lUtils  # solve conflict
 else:
-    from convertmask.labelme_sub import utils as  lUtils
+    from convertmask.labelme_sub import utils as lUtils
 
 
 def main():
@@ -72,8 +76,8 @@ def singleFile(filePath):
     if os.path.isfile(filePath) and filePath.endswith('.json'):
         data = json.load(open(filePath))
         img = lUtils.img_b64_to_arr(data['imageData'])
-        lbl, lbl_names = lUtils.labelme_shapes_to_label(img.shape,
-                                                       data['shapes'])
+        lbl, lbl_names = lUtils.labelme_shapes_to_label(
+            img.shape, data['shapes'])
         # lbl[lbl>0] = 255
         # print(lbl)
 

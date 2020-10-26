@@ -7,34 +7,36 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-22 15:29:16
+LastEditTime: 2020-10-23 13:20:18
 '''
 
 import sys
+
 sys.path.append('..')
-# import warnings
-from skimage import io
-import skimage.util.noise as snoise
-from skimage import morphology
-import cv2
-import os
-from .json2mask.convert import processor
-from .json2mask.convertWithLabel import processor as processorWithLabel
-from .getMultiShapes import getMultiShapes
-from .methods.img2base64 import imgEncode
-from .methods import rmQ, entity
-import traceback
-from .methods.entity import *
-import numpy as np
-import shutil
 import json
-from .methods.logger import logger
+import os
 import random
-from convertmask.utils.xml2json.xml2json import x2jConvert_pascal
-from convertmask.utils.json2xml.json2xml import j2xConvert
-from scipy import ndimage
+import shutil
+import traceback
 
 import convertmask.utils.methods.configUtils as ccfg
+import cv2
+import numpy as np
+import skimage.util.noise as snoise
+from convertmask.utils.json2mask.convert import processor
+from convertmask.utils.json2mask.convertWithLabel import \
+    processor as processorWithLabel
+from convertmask.utils.json2xml.json2xml import j2xConvert
+from convertmask.utils.methods import entity, rmQ
+from convertmask.utils.methods.entity import *
+from convertmask.utils.methods.getMultiShapes import getMultiShapes
+from convertmask.utils.methods.img2base64 import imgEncode
+from convertmask.utils.methods.logger import logger
+from convertmask.utils.xml2json.xml2json import x2jConvert_pascal
+from scipy import ndimage
+# import warnings
+from skimage import io, morphology
+
 LOGFlag = ccfg.getConfigParam(ccfg.cfp, 'log', 'show')
 del ccfg
 
@@ -100,10 +102,6 @@ def _splitImg(maskImg):
 
                 del tmp, closing
     return maskImgs
-
-
-def imgDistort(oriImg: str, oriLabel: str, flag=True):
-    pass
 
 
 def imgZoom(oriImg: str,

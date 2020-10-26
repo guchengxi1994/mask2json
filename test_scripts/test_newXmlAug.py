@@ -8,9 +8,11 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-22 11:19:05
 '''
 import sys
+
 sys.path.append('..')
 import os
-from convertmask.utils.imgAug_xmls import aug_labelimg
+
+from convertmask.utils.auglib.imgAug_xmls import aug_labelimg
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
 

@@ -8,10 +8,11 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-21 19:29:59
 '''
 import json
+import os
+
+import numpy as np
 from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
 from convertmask.utils.methods.logger import logger
-import os
-import numpy as np
 
 
 def j2xConvert(jsonFilePath: str):

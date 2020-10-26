@@ -9,8 +9,10 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-21 19:09:01
 '''
 import sys
+
 sys.path.append("..")
 import os
+
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd()))
 
 import convertmask.main_v_0_5_any as mainScript

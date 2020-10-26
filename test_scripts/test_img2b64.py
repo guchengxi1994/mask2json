@@ -8,11 +8,14 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:38:54
 '''
 import sys
+
 sys.path.append('..')
-import os
-from skimage import io
-from convertmask.utils.methods.img2base64 import imgEncode
 import json
+import os
+
+from convertmask.utils.methods.img2base64 import imgEncode
+from skimage import io
+
 try:
     from labelme import __version__
 except:

@@ -9,6 +9,7 @@ LastEditTime: 2020-10-21 15:06:03
 '''
 import os
 import sys
+
 sys.path.append("..")
 from convertmask.utils.json2xml.json2xml import j2xConvert
 

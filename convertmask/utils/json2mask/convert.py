@@ -27,13 +27,14 @@ except:
 if isInstalled:
     import labelme.utils as lUtils  # solve conflict
 else:
-    from convertmask.labelme_sub import utils as  lUtils
+    from convertmask.labelme_sub import utils as lUtils
 
 # import cv2
 import numpy as np
+from tqdm import tqdm
+
 # from skimage import img_as_ubyte
 
-from tqdm import tqdm
 
 
 """

@@ -7,16 +7,17 @@
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-20 09:34:55
 '''
-import cv2
 import sys
+
+import cv2
+
 sys.path.append('..')
-from convertmask.utils.methods import getShape
-from convertmask.utils.methods import img2base64
-from convertmask.utils.methods import rmQ
-from convertmask.utils import getMultiShapes
+import glob
 import json
 import os
-import glob
+
+from convertmask.utils.methods import getMultiShapes
+from convertmask.utils.methods import getShape, img2base64, rmQ
 
 
 def test():

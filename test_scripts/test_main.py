@@ -6,7 +6,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-16 11:06:01
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 19:09:01
+LastEditTime: 2020-10-27 09:28:15
 '''
 import sys
 
@@ -38,8 +38,8 @@ if __name__ == "__main__":
 
     logger.info('4.mask2json')
     oriImgPath = BASE_DIR + '/static/multi_objs.jpg'
-    label_img = BASE_DIR + '/multi_objs_json/label.png'
-    labelPath = BASE_DIR + '/multi_objs_json/info.yaml'
+    label_img = BASE_DIR + '/static/multi_objs_json/label.png'
+    labelPath = BASE_DIR + '/static/multi_objs_json/info.yaml'
 
     code = 'python {} mask2json -i {}  {}  {}'.format(mainScriptPath,
                                                       oriImgPath, label_img,
@@ -49,7 +49,7 @@ if __name__ == "__main__":
 
     logger.info('5.mask2xml')
     oriImgPath = BASE_DIR + '/static/multi_objs.jpg'
-    label_img = BASE_DIR + '/multi_objs_json/label.png'
+    label_img = BASE_DIR + '/static/multi_objs_json/label.png'
 
     code = 'python {} mask2xml -i {}  {} '.format(mainScriptPath, oriImgPath,
                                                   label_img)

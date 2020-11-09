@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:24:12
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 09:34:55
+LastEditTime: 2020-11-09 13:58:09
 '''
 import sys
 
@@ -84,6 +84,15 @@ def getJsons(imgPath, maskPath, savePath, yamlPath=''):
 
 
 if __name__ == "__main__":
-    # test()
+    """
+    # folder test
     getJsons('D:\\getWeldPics\\test5_reshape', 'D:\\getWeldPics\\masks',
              'D:\\getWeldPics\\jsons', 'D:\getWeldPics\info.yaml')
+    """
+    imgPath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_test.jpg'
+    maskPath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_json\\label.png'
+    savePath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_json\\1109\\'
+    yamlPath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_json\\info.yaml'
+    # getMultiShapes.getMultiShapes(imgPath, maskPath, savePath, yamlPath)  # with yaml
+
+    getMultiShapes.getMultiShapes(imgPath, maskPath, savePath)  # without yaml

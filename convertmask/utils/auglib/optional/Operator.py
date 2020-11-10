@@ -5,10 +5,11 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-26 10:34:55
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-26 11:33:57
+LastEditTime: 2020-11-10 11:29:03
 '''
 import random
 
+import numpy as np
 from convertmask.utils.auglib.optional import (crop, distort, inpaint, mosaic,
                                                perspective, resize)
 from convertmask.utils.methods.logger import logger
@@ -16,7 +17,7 @@ from convertmask.utils.methods.logger import logger
 
 class CropOperator(object):
     def __init__(self,
-                 img,
+                 img=None,
                  startPoint: tuple = None,
                  rect_or_poly: str = 'rect',
                  noise: bool = True,
@@ -29,39 +30,84 @@ class CropOperator(object):
         self.convexHull = convexHull
         self.cropNumber = cropNumber
 
-    def _getCroppedImg(self):
-        if self.rect_or_poly == 'rect':
-            return crop.multiRectanleCrop(self.img, self.cropNumber,
-                                          self.noise)
+    def setImgs(self, imgs):
+        self.img = imgs
 
-        elif self.rect_or_poly == 'poly':
-            return crop.multiPolygonCrop(self.img, self.cropNumber, self.noise,
-                                         self.convexHull)
+    def do(self):
+        if self.img is not None:
+            if isinstance(self.img, str) or isinstance(self.img, np.ndarray):
+                if self.rect_or_poly == 'rect':
+                    return crop.multiRectanleCrop(self.img, self.cropNumber,
+                                                  self.noise)
+
+                elif self.rect_or_poly == 'poly':
+                    return crop.multiPolygonCrop(self.img, self.cropNumber,
+                                                 self.noise, self.convexHull)
+            else:
+                res = []
+                for i in self.img:
+                    if self.rect_or_poly == 'rect':
+                        res.append(
+                            crop.multiRectanleCrop(i, self.cropNumber,
+                                                   self.noise))
+
+                    elif self.rect_or_poly == 'poly':
+                        res.append(
+                            crop.multiPolygonCrop(i, self.cropNumber,
+                                                  self.noise, self.convexHull))
+
+                return res
+        else:
+            logger.error('Images are not found!')
 
 
 class DistortOperator(object):
-    def __init__(self, img):
+    def __init__(self, img=None):
         self.img = img
 
-    def _getDistortImg(self):
-        return distort.imgDistort(self.img, flag=False)
+    def setImgs(self, imgs):
+        self.img = imgs
+
+    def do(self):
+        if self.img is not None:
+            if isinstance(self.img, str) or isinstance(self.img, np.ndarray):
+                return distort.imgDistort(self.img, flag=False)
+            else:
+                res = []
+                for i in self.img:
+                    res.append(distort.imgDistort(i, flag=False))
+                return res
+        else:
+            logger.error('Images are not found!')
 
 
 class InpaintOperator(object):
     def __init__(self,
-                 img,
+                 img=None,
                  rect_or_poly: str = 'rect',
                  startPoint: tuple = None):
         self.img = img
         self.rect_or_poly = rect_or_poly
         self.startPoint = startPoint
 
-    def _getInpaintImg(self):
-        if self.rect_or_poly == 'rect':
-            return inpaint.rectangleInpaint(self.img, self.startPoint)
+    def setImgs(self, imgs):
+        self.img = imgs
 
-        elif self.rect_or_poly == 'poly':
-            return inpaint.polygonInpaint(self.img, self.startPoint)
+    def do(self):
+        if self.img is not None:
+            if isinstance(self.img, str) or isinstance(self.img, np.ndarray):
+                if self.rect_or_poly == 'rect':
+                    return inpaint.rectangleInpaint(self.img, self.startPoint)
+
+                elif self.rect_or_poly == 'poly':
+                    return inpaint.polygonInpaint(self.img, self.startPoint)
+            else:
+                res = []
+                for i in self.img:
+                    res.append(inpaint.polygonInpaint(i, self.startPoint))
+                return res
+        else:
+            logger.error('Images are not found!')
 
 
 class MosiacOperator(object):
@@ -102,17 +148,29 @@ class MosiacOperator(object):
 
 
 class PerspectiveOperator(object):
-    def __init__(self, img, factor=0.5):
+    def __init__(self, img=None, factor=0.5):
         self.img = img
         self.factor = factor
 
-    def _getPerImg(self):
-        return perspective.persTrans(self.img, self.factor)
+    def setImgs(self, imgs):
+        self.img = imgs
+
+    def do(self):
+        if self.img is not None:
+            if isinstance(self.img, str) or isinstance(self.img, np.ndarray):
+                return perspective.persTrans(self.img, self.factor)
+            else:
+                res = []
+                for i in self.img:
+                    res.append(perspective.persTrans(i, self.factor))
+                return res
+        else:
+            logger.error('Images are not found!')
 
 
 class ResizeOperator(object):
     def __init__(self,
-                 img,
+                 img=None,
                  heightFactor: float = 1.0,
                  widthFactor: float = 1.0,
                  getXmls: bool = False,
@@ -123,11 +181,25 @@ class ResizeOperator(object):
         self.widthFactor = widthFactor
         self.xml = xmlpath
 
-    def _getResizeImg(self):
-        if not self.getXmls:
-            return resize.resize_img(self.img, self.heightFactor,
-                                     self.widthFactor)
+    def setImgs(self, imgs):
+        self.img = imgs
 
+    def do(self):
+        if self.img is not None:
+            if not self.getXmls:
+                if isinstance(self.img, str) or isinstance(
+                        self.img, np.ndarray):
+                    return resize.resize_img(self.img, self.heightFactor,
+                                             self.widthFactor)
+                else:
+                    res = []
+                    for i in self.img:
+                        res.append(
+                            resize.resize_img(i, self.heightFactor,
+                                              self.widthFactor))
+                    return res
+            else:
+                return resize.resizeScript(self.img, self.xml,
+                                           self.heightFactor, self.widthFactor)
         else:
-            return resize.resizeScript(self.img, self.xml, self.heightFactor,
-                                       self.widthFactor)
+            logger.error('Images are not found!')

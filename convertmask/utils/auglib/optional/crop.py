@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-23 15:40:56
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-26 10:51:25
+LastEditTime: 2020-11-10 12:16:57
 '''
 
 import cv2
@@ -13,6 +13,7 @@ import numpy as np
 import skimage.util.noise as snoise
 from convertmask.utils.auglib.optional.generatePolygon import (
     generatePolygon, generateRectangle)
+from skimage import io
 
 
 def rectangleCrop(img: np.ndarray, startPoint: tuple = None, noise=False):
@@ -51,6 +52,8 @@ def polygonCrop(img: np.ndarray,
 
 
 def multiRectanleCrop(img: np.ndarray, number: int = 1, noise=False):
+    if isinstance(img,str):
+        img = io.imread(img)
     imgShape = img.shape
     mask = np.zeros(imgShape, dtype=np.uint8)
     for _ in range(number):

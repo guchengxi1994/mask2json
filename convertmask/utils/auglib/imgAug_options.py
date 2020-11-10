@@ -5,9 +5,10 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-26 10:14:35
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-10 11:45:41
+LastEditTime: 2020-11-10 15:57:02
 '''
 import gc
+import os
 
 from convertmask.utils.auglib.optional.Operator import (CropOperator,
                                                         DistortOperator,
@@ -15,17 +16,51 @@ from convertmask.utils.auglib.optional.Operator import (CropOperator,
                                                         PerspectiveOperator,
                                                         ResizeOperator)
 from convertmask.utils.methods.logger import logger
+from skimage import io
 
 
 class MainOptionalOperator(object):
-    def __init__(self, img_or_path) -> None:
+    def __init__(self,
+                 img_or_path,
+                 saveFile: bool = False,
+                 saveDir: str = '') -> None:
         self.imgs = img_or_path
         self.defaults = ['crop', 'distort', 'inpaint', 'perspective', 'resize']
         self.augs = []
         self.operations = []
+        self.saveFile = saveFile
+        self.saveDir = saveDir
 
     def _help(self):
-        print('========= HELP INFORMATION =========')
+        print('=========== HELP  INFORMATION ===========')
+        print("""
+            Augumentation library optional operations. Including:
+            1. crop
+            2. distort
+            3. inpaint
+            4. perspective
+            5. resize
+            
+            NOTE : These opearions are not suitable for augmenting labels. 
+
+            for 'crop', parameters list should includes 
+            MainOptionalOperator.setCropAttributes(rect_or_poly='rect',noise=True,number=2) # or 'poly',False, number less than 4 
+
+            for 'distort', parameters list should includes 
+            MainOptionalOperator.setDisortAttributes()
+
+            for 'inpaint', parameters list should includes 
+            MainOptionalOperator.setInpaintAttributes(rect_or_poly='poly')  # or 'rect'
+
+            for 'perspective',parameters list should includes
+            MainOptionalOperator.setPerspectiveAttributes(factor=0.8)  # float whatever you want
+
+            for 'resize', parameters list should includes
+            MainOptionalOperator.setResizeAttributes(height=0.8,width=0.9)
+
+            if you dont like these methods, JUST ignore.
+        """)
+        print('========= END OF HELP INFORMATION =========')
 
     def addAugs(self, method: str):
         self.augs.append(method)
@@ -78,4 +113,25 @@ class MainOptionalOperator(object):
             pimgs = i.do()
             gc.collect()
 
-        return pimgs
+        if not self.saveFile:
+            return pimgs
+        else:
+            if not os.path.exists(self.saveDir) and self.saveDir != '':
+                os.mkdir(self.saveDir)
+            else:
+                logger.error("Provided savedir is not valid")
+                return
+            if type(self.imgs) is not list:
+                if type(self.imgs) is str:
+                    filename = os.path.split(self.imgs)[1]
+                else:
+                    filename = 'test.jpg'
+                io.imsave(self.saveDir + os.sep + filename, pimgs)
+            else:
+                for i in range(len(self.imgs)):
+                    if isinstance(self.augs[i], str):
+                        filename = os.path.split(i)[1]
+                    else:
+                        filename = 'test{}.jpg'.format(i)
+                    io.imsave(self.saveDir + os.sep + filename, pimgs[i])
+            logger.info("Done! See {}.".format(self.saveDir))

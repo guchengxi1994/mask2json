@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-10 10:51:46
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-10 11:44:02
+LastEditTime: 2020-11-10 15:49:55
 '''
 import sys
 
@@ -21,6 +21,8 @@ imgPath = BASE_DIR + os.sep + 'multi_objs_test.jpg'
 
 if __name__ == "__main__":
     m = MainOptionalOperator(imgPath)
+
+    m._help()
 
     m.setCropAttributes(rect_or_poly='rect',noise=True,number=2)
     m.setDisortAttributes()

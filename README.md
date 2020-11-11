@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-11-10 12:26:31
+ * @LastEditTime: 2020-11-11 08:43:23
 --> 
 
 
@@ -60,7 +60,7 @@ Under this version, these tools are provided.
 
 ## 2020.11.10
 
-### 1. object-oriented rewrite augumentation optional module. See [here](./convertmask/utils/auglib/imgAug_options.py). Test script can be found [here](./test_scripts/test_optionalOperation.py)
+### 1. object-oriented rewrite augumentation optional module. See [here](./convertmask/utils/auglib/optionsOperatorWithoutLabel.py). Test script can be found [here](./test_scripts/test_optionalOperation.py)
 
 
 ## 2020.10.25

@@ -5,14 +5,14 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-10 10:51:46
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-10 15:49:55
+LastEditTime: 2020-11-11 08:44:23
 '''
 import sys
 
 sys.path.append("..")
 
 import os
-from convertmask.utils.auglib.imgAug_options import MainOptionalOperator 
+from convertmask.utils.auglib.optionsOperatorWithoutLabel import MainOptionalOperator 
 from skimage import io
 
 

@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-26 10:14:35
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-10 15:57:02
+LastEditTime: 2020-11-11 09:14:24
 '''
 import gc
 import os
@@ -32,6 +32,7 @@ class MainOptionalOperator(object):
         self.saveDir = saveDir
 
     def _help(self):
+        print('=====Optional Operation Introduction=====')
         print('=========== HELP  INFORMATION ===========')
         print("""
             Augumentation library optional operations. Including:

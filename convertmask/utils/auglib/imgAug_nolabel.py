@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-27 09:22:22
+LastEditTime: 2020-11-11 09:17:48
 '''
 import sys
 
@@ -17,8 +17,7 @@ import cv2
 import numpy as np
 import skimage.util.noise as snoise
 from convertmask.utils.auglib.imgAug import _getZoomedImg
-from convertmask.utils.auglib.imgAug_options import aug as aug_opts
-from convertmask.utils.methods.entity import *
+from convertmask.utils.methods.entity import Ori_Pro, do_nothing
 from convertmask.utils.methods.logger import logger
 from skimage import io
 
@@ -116,8 +115,9 @@ def imgFlip(oriImg: str, flag=True, flip_list=[1, 0, -1]):
         return d
 
 
-def imgNoise(oriImg: str, flag=True):
-    noise_type = ['gaussian', 'poisson', 's&p', 'speckle']
+def imgNoise(oriImg: str, flag=True,noise_type:list=[]):
+    if len(noise_type) == 0:
+        noise_type = ['gaussian', 'poisson', 's&p', 'speckle']
     l = np.random.randint(2, size=len(noise_type)).tolist()
     p = list(zip(noise_type, l))
 
@@ -320,22 +320,22 @@ def aug(filepath, augs=['noise', 'rotation', 'trans', 'flip', 'zoom'], num=0):
         logger.info("see here {}".format(parent_path + os.sep + 'augimgs_'))
 
 
-class NoLabelOperator(object):
-    def __init__(self,
-                 img,
-                 augs: list = ['noise', 'rotation', 'trans', 'flip', 'zoom'],
-                 options: bool = False,
-                 angle:tuple=(-45,45),
-                 zoomFactor:float=1.0,
-                 transDistance:tuple=(0,0)):
-        self.img = img
-        self.augs = augs
-        self.options = options
-        self.angle = angle
-        self.zoomFactor = zoomFactor
-        self.transDistance = transDistance
+# class NoLabelOperator(object):
+#     def __init__(self,
+#                  img,
+#                  augs: list = ['noise', 'rotation', 'trans', 'flip', 'zoom'],
+#                  options: bool = False,
+#                  angle:tuple=(-45,45),
+#                  zoomFactor:float=1.0,
+#                  transDistance:tuple=(0,0)):
+#         self.img = img
+#         self.augs = augs
+#         self.options = options
+#         self.angle = angle
+#         self.zoomFactor = zoomFactor
+#         self.transDistance = transDistance
 
-    def _getAugImg(self):
-        if self.options:
-            pass
+#     def _getAugImg(self):
+#         if self.options:
+#             pass
         

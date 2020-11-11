@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-21 19:10:40
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-23 10:38:08
+LastEditTime: 2020-11-11 11:11:48
 '''
 import math
 import os
@@ -151,6 +151,9 @@ def zoom_img(src, zoomfactor):
             hDis - hDisHalf,
             cv2.BORDER_CONSTANT,
         )
+    else:
+        logger.warning('zoomfactor is 1')
+        res = src
     return res
 
 

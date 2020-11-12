@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-11 08:34:07
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-11 10:52:28
+LastEditTime: 2020-11-12 10:50:59
 '''
 import gc
 import os
@@ -172,7 +172,7 @@ class HisteqOperator(object):
     ...
 
 
-class MainOperatorWithoutLabel(object):
+class MainOperatorWithoutLabel(OptionalOperator):
     def __init__(self,
                  img_or_path,
                  saveFile: bool = False,
@@ -187,6 +187,39 @@ class MainOperatorWithoutLabel(object):
 
     def addAugs(self, method: str):
         self.augs.append(method)
+    
+    def _help(self):
+        print('========  Operation Introduction  =======')
+        print('=========== HELP  INFORMATION ===========')
+        print("""
+            Augumentation library operations. Including:
+            1. zoom
+            2. noise
+            3. rotation
+            4. translation
+            5. resize
+
+            for 'zoom', parameters list should includes 
+            MainOperatorWithoutLabel.setZoomAttributes(size=a float) 
+
+            for 'noise', parameters list should includes 
+            MainOperatorWithoutLabel.setNoiseAttributes(noiseType=a list)
+
+            for 'rotation', parameters list should includes 
+            MainOperatorWithoutLabel.setRotationOperator(angle=a float,scale=a float)  
+
+            for 'translation',parameters list should includes
+            MainOperatorWithoutLabel.setTranslationOperation(th=an int,tv=an int)  
+
+            for 'flip', parameters list should includes
+            MainOperatorWithoutLabel.setFlip()
+
+            if you dont like these methods, JUST ignore.
+        """)
+        print('========= END OF HELP INFORMATION =========')
+        print()
+        print()
+        super()._help()
 
     def setOptional(self, val: bool):
         assert type(
@@ -197,18 +230,25 @@ class MainOperatorWithoutLabel(object):
             self.optional = val
 
     def setZoomAttributes(self, **kwargs):
+        """Input: size(float, zoom factor)
+        """
         if 'zoom' not in self.augs:
             self.augs.append('zoom')
         size = kwargs.get('size', 1.0)
         self.operations.insert(0, ZoomOperator(None, size))
 
     def setNoiseAttributes(self, **kwargs):
+        """Input: noiseType (list, noise type)
+        """
         if 'noise' not in self.augs:
             self.augs.append('noise')
         noiseType = kwargs.get('noiseType', [])
         self.operations.insert(0, NoiseOperator(None, noiseType))
 
     def setRotationOperator(self, **kwargs):
+        """Input: 1.angle (float)
+                  2.scale (float)
+        """
         if 'rotation' not in self.augs:
             self.augs.append('rotation')
         angle = kwargs.get('angle', 30)
@@ -216,6 +256,9 @@ class MainOperatorWithoutLabel(object):
         self.operations.insert(0, RotationOperator(None, angle, scale))
 
     def setTranslationOperation(self, **kwargs):
+        """Input: 1.th (int)
+                  2.tv (int)
+        """
         if 'translation' not in self.augs:
             self.augs.append('translation')
         th = kwargs.get('th', 0)
@@ -228,17 +271,17 @@ class MainOperatorWithoutLabel(object):
         self.operations.append(FlipOperator(None))
 
     def do(self):
+        # print(len(self.operations))    
         if len(self.augs) == 0:
             logger.info('None methods founds')
             return
 
         pimgs = self.imgs
-        # print(pimgs)
         for i in self.operations:
             i.setImgs(pimgs)
             pimgs = i.do()
             gc.collect()
-
+        
         if not self.saveFile:
             return pimgs
         else:
@@ -247,17 +290,27 @@ class MainOperatorWithoutLabel(object):
             else:
                 logger.error("Provided savedir is not valid")
                 return
-            # if type(self.imgs) is not list:
-            #     if type(self.imgs) is str:
-            #         filename = os.path.split(self.imgs)[1]
-            #     else:
-            #         filename = 'test.jpg'
-            #     io.imsave(self.saveDir + os.sep + filename, pimgs)
-            # else:
-            #     for i in range(len(self.imgs)):
-            #         if isinstance(self.augs[i], str):
-            #             filename = os.path.split(i)[1]
-            #         else:
-            #             filename = 'test{}.jpg'.format(i)
-            #         io.imsave(self.saveDir + os.sep + filename, pimgs[i])
+            if type(self.imgs) is not list:
+                if type(self.imgs) is str:
+                    filename = os.path.split(self.imgs)[1]
+                else:
+                    filename = 'test.jpg'
+                if isinstance(pimgs,np.ndarray):
+                    io.imsave(self.saveDir + os.sep + filename, pimgs)
+                else:
+                    for i in range(0,len(pimgs)):
+                        filename = str(i) + filename
+                        io.imsave(self.saveDir + os.sep + filename, pimgs[i])
+            else:
+                for i in range(len(self.imgs)):
+                    if isinstance(self.augs[i], str):
+                        filename = os.path.split(i)[1]
+                    else:
+                        filename = 'test{}.jpg'.format(i)
+                    if isinstance(pimgs[i],np.ndarray):
+                        io.imsave(self.saveDir + os.sep + filename, pimgs[i])
+                    else:
+                        for j in range(0,len(pimgs[i])):
+                            filename = str(j) + filename
+                            io.imsave(self.saveDir + os.sep + filename, pimgs[i][j])
             logger.info("Done! See {}.".format(self.saveDir))

@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-26 10:14:35
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-11 09:14:24
+LastEditTime: 2020-11-12 10:25:07
 '''
 import gc
 import os
@@ -67,40 +67,53 @@ class MainOptionalOperator(object):
         self.augs.append(method)
 
     def setCropAttributes(self, **kwargs):
+        """Input : 1.rect_or_poly (str,'rect' or 'poly'(short for polygon),crop type),
+                   2.noise (bool, use random noise to replace cropped region)
+                   3.number (int, crop number)
+                   4.convex (bool, short for convexHull)
+        """
         if 'crop' not in self.augs:
             self.augs.append('crop')
         rect_or_poly = kwargs.get('rect_or_poly', 'rect')
         noise = kwargs.get('noise', True)
         cropNumber = kwargs.get('number', 1)
         convexHull = kwargs.get('convex', False)
-        self.operations.append(
+        self.operations.insert(0,
             CropOperator(None, None, rect_or_poly, noise, convexHull,
                          cropNumber))
 
     def setDisortAttributes(self):
         if 'distort' not in self.augs:
             self.augs.append('distort')
-        self.operations.append(DistortOperator(None))
+        self.operations.insert(0,DistortOperator(None))
 
     def setInpaintAttributes(self, **kwargs):
+        """Input 1.rect_or_poly (str,'rect' or 'poly'(short for polygon),shape type)
+                 2.start (tuple, position of inpaint shape)
+        """
         if 'inpaint' not in self.augs:
             self.augs.append('inpaint')
         rect_or_poly = kwargs.get('rect_or_poly', 'rect')
         startPoint = kwargs.get('start', None)
-        self.operations.append(InpaintOperator(None, rect_or_poly, startPoint))
+        self.operations.insert(0,InpaintOperator(None, rect_or_poly, startPoint))
 
     def setPerspectiveAttributes(self, **kwargs):
+        """Input: 1. factor (float)
+        """
         if 'perspective' not in self.augs:
             self.augs.append('perspective')
         factor = kwargs.get('factor', 0.5)
-        self.operations.append(PerspectiveOperator(None, factor))
+        self.operations.insert(0,PerspectiveOperator(None, factor))
 
     def setResizeAttributes(self, **kwargs):
+        """Input : 1.height (float)
+                   2.width (factor)
+        """
         if 'resize' not in self.augs:
             self.augs.append('resize')
         heightFactor = kwargs.get('height', 1.0)
         widthFactor = kwargs.get('width', 1.0)
-        self.operations.append(ResizeOperator(None, heightFactor, widthFactor))
+        self.operations.insert(0,ResizeOperator(None, heightFactor, widthFactor))
 
     def do(self):
         if len(self.augs) == 0:

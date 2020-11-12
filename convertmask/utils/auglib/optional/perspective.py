@@ -5,14 +5,18 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-26 08:31:13
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-26 09:54:24
+LastEditTime: 2020-11-12 10:29:36
 '''
 import cv2
 import numpy as np
 import random
 
+import skimage
+
 
 def persTrans(img: np.ndarray, factor=0.5):
+    if isinstance(img,str):
+        img = skimage.io.imread(img)
     h, w = img.shape[:2]
     hRandom1 = random.randint(0, int(factor * h))
     wRandom1 = random.randint(0, int(factor * w))

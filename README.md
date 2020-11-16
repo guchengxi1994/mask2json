@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-11-11 08:43:23
+ * @LastEditTime: 2020-11-16 11:07:48
 --> 
 
 
@@ -57,6 +57,10 @@ Under this version, these tools are provided.
 
 
 # CHANGE LOGS
+
+## 2020.11.16
+
+### 1.support converting widerface annotations to xmls. see [here](./test_scripts/test_convertWiderface.py)
 
 ## 2020.11.10
 

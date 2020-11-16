@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-16 08:34:52
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-16 11:04:33
+LastEditTime: 2020-11-16 14:13:16
 '''
 import os
 import sys
@@ -13,22 +13,31 @@ import sys
 sys.path.append('..')
 
 from multiprocessing import Pool
+from skimage import io
 
 from convertmask import __CPUS__
 from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
+from convertmask.utils.methods.logger import logger
 from tqdm import tqdm
 
 filepath = 'D:\\facedetect\\dump\\wider_face_split\\wider_face_train_bbx_gt.txt'
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd()))
 
 
-def writeXml(imgname, objlist, savepath, folder, name):
+def writeXml(imgname, objlist, savepath, folder, name,oriImgPath=''):
     # imgname = lines[start].split('/')[-1]
     xmlname = imgname.replace('.jpg', '.xml').replace('\n', '')
     tmpPath = savepath + xmlname
     path = imgname
-    width = 0
-    height = 0
+    if oriImgPath == '':
+        logger.warning('Origin image needed!')
+        width = 0
+        height = 0
+    else:
+        oriImg = io.imread(oriImgPath+os.sep+imgname)
+        width = oriImg.shape[1]
+        height = oriImg.shape[0]
+        del oriImg
     objs = []
     # objlist = lines[start + 2:end]
     for ob in objlist:
@@ -54,6 +63,7 @@ def writeXml(imgname, objlist, savepath, folder, name):
             objs.append(obj)
     img2xml_multiobj(tmpPath, tmpPath, folder, imgname, path, width, height,
                      objs)
+    # gc.collect()
 
 
 def readTxt(filepath: str, savepath='', mProcess=False):

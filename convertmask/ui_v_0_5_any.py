@@ -1,11 +1,11 @@
 '''
 lanhuage: python
-Descripttion: 
+Descripttion: deprecated
 version: beta
 Author: xiaoshuyui
 Date: 2020-10-30 08:29:24
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-18 13:30:02
+LastEditTime: 2020-11-18 15:43:43
 '''
 import os
 import sys

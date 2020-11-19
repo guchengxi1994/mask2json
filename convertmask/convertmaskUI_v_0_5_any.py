@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-18 15:30:45
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-18 16:21:35
+LastEditTime: 2020-11-19 10:42:38
 '''
 
 import os
@@ -13,7 +13,6 @@ import sys
 
 sys.path.append('..')
 
-import glob
 import webbrowser
 
 from PyQt5 import QtCore, QtGui, QtWidgets
@@ -24,7 +23,10 @@ from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog,
                              QMessageBox, qApp)
 from skimage import io
 
-from convertmask import __appname__, __support_methods__, __version__
+from convertmask import (__appname__, __support_anno_types__,
+                         __support_classfiles_types__, __support_img_types__,
+                         __support_methods__, __version__)
+from convertmask.UI.utils.getAllTypeFiles import getFiles
 
 BASE_DIR = os.path.abspath(os.curdir)
 
@@ -69,7 +71,8 @@ class MainWindow(QMainWindow):
         self.imglist = []
         self.annolist = []
 
-        openFileAction = QAction('Open File...', self)
+        openFileAction = QAction('Open Image File...', self)
+        openClassInfoFileAction = QAction('Open Class Information File...', self)
         openImageFolderAction = QAction('Open Image Folder...', self)
         openAnnotationFolderAction = QAction('Open Annotation Folder...', self)
         exitAction = QAction('Exit', self)
@@ -77,6 +80,7 @@ class MainWindow(QMainWindow):
         openFileAction.setShortcut('Ctrl+O')
         openImageFolderAction.setShortcut('Ctrl+K')
         openAnnotationFolderAction.setShortcut('Ctrl+L')
+        openClassInfoFileAction.setShortcut('Ctrl+J')
 
         self.statusBar()
         menubar = self.menuBar()  #menuBar()方法创建了一个菜单栏
@@ -86,11 +90,21 @@ class MainWindow(QMainWindow):
         fileMenu.addAction(openFileAction)
         fileMenu.addAction(openImageFolderAction)
         fileMenu.addAction(openAnnotationFolderAction)
+        fileMenu.addAction(openClassInfoFileAction)
         fileMenu.addAction(exitAction)
+        # do actions
         exitAction.triggered.connect(qApp.quit)
-        openFileAction.triggered.connect(self.openFile)
-        openImageFolderAction.triggered.connect(self.openFolder)
-        openAnnotationFolderAction.triggered.connect(self.openFolder)
+        openFileAction.triggered.connect(self.openImgFile)
+        openImageFolderAction.triggered.connect(self.openImgFolder)
+        openAnnotationFolderAction.triggered.connect(self.openAnnoFolder)
+        openClassInfoFileAction.triggered.connect(self.openClassInfo)
+
+        # test menu
+        testAction = QAction('Test ...',self)
+        testMenu = menubar.addMenu('Test')
+        testMenu.addAction(testAction)
+        testAction.setShortcut('Ctrl+T')
+        testAction.triggered.connect(self._test)
 
         # help menu
         helpMenu = menubar.addMenu('Help')
@@ -99,6 +113,8 @@ class MainWindow(QMainWindow):
         helpDetails.triggered.connect(self.showHelpInformation)
         aboutDetails = QAction('About', self)
         helpMenu.addAction(aboutDetails)
+
+        self.slm = QStringListModel()
 
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -109,22 +125,58 @@ class MainWindow(QMainWindow):
         self.do_2.setText(_translate("MainWindow", "DO!"))
 
         self.comboBox.addItems(__support_methods__)
+        self.imglistView.clicked.connect(self.clickImg)
+        self.labellistView.clicked.connect(self.clickAnno)
+    
+    def _test(self):
+        # pass
+        from convertmask.UI.components.augForm import AugForm
+        d = AugForm(name=1,sex=2)
+        d.exec_()
 
-    def openFile(self):
+
+    def openImgFile(self):
         fileName, _ = QFileDialog.getOpenFileName(
             self, "select file", os.getcwd(),
-            "Image Files(*.png *.jpg *.jpeg *.bmp)")
-        slm = QStringListModel()
+            "Image Files({})".format(' '.join(__support_img_types__)))
+        # slm = QStringListModel()
         qlist = [fileName]
-        slm.setStringList(qlist)
+        self.slm.setStringList(qlist)
         self.imglist = qlist
-        self.imglistView.setModel(slm)
-        self.imglistView.clicked.connect(self.clickImg)
+        self.imglistView.setModel(self.slm)
+    
+    def openClassInfo(self):
+        fileName, _ = QFileDialog.getOpenFileName(
+            self, "select file", os.getcwd(),
+            "Class Information Files({})".format(' '.join(__support_classfiles_types__)))
+        with open(fileName,'r',encoding='utf-8',errors='ignore') as f:
+            txt = f.readlines()
+        # self.textBrowser.
+        for i in txt:
+            self.textBrowser.append(i.replace('\n','')) 
 
-    def openFolder(self):
+    def openImgFolder(self):
         dir_path = QFileDialog.getExistingDirectory(self, "select folder",
                                                     os.getcwd())
-        print(dir_path)
+        # print(dir_path)
+        res = getFiles(dir_path, __support_img_types__)
+        # print(res)
+        # slm = QStringListModel()
+        qlist = res
+        self.slm.setStringList(qlist)
+        self.imglist = qlist
+        self.imglistView.setModel(self.slm)
+
+    def openAnnoFolder(self):
+        dir_path = QFileDialog.getExistingDirectory(self, "select folder",
+                                                    os.getcwd())
+        res = getFiles(dir_path, __support_anno_types__)
+        # print(res)
+        # slm = QStringListModel()
+        qlist = res
+        self.slm.setStringList(qlist)
+        self.annolist = qlist
+        self.labellistView.setModel(self.slm)
 
     def showHelpInformation(self):
         url = 'https://github.com/guchengxi1994/mask2json/tree/test'
@@ -142,6 +194,15 @@ class MainWindow(QMainWindow):
         self.scene = QGraphicsScene()  #创建场景
         self.scene.addItem(self.item)
         self.graphicsView.setScene(self.scene)  #将场景添加至视图
+    
+    def clickAnno(self,qModelIndex):
+        self.textBrowser.clear()
+        annoPath = self.annolist[qModelIndex.row()]
+        with open(annoPath,'r',encoding='utf-8',errors='ignore') as f:
+            txt = f.readlines()
+        # self.textBrowser.
+        for i in txt:
+            self.textBrowser.append(i.replace('\n',''))      
 
 
 if __name__ == "__main__":

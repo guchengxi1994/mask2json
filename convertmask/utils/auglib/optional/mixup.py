@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-18 10:07:24
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-18 10:27:13
+LastEditTime: 2020-11-20 13:49:30
 '''
 import cv2
 import numpy as np
@@ -22,6 +22,6 @@ def mixup(img1,img2,factor:float=0.5):
         img2 = io.imread(img2)
 
     imgShape1 = img1.shape 
-    img2 = cv2.resize(img2,(imgShape1[0],imgShape1[1]),interpolation=cv2.INTER_CUBIC)
+    img2 = cv2.resize(img2,(imgShape1[1],imgShape1[0]),interpolation=cv2.INTER_CUBIC)
     
     return np.array(factor*img1 + (1-factor)*img2,dtype=np.uint8)

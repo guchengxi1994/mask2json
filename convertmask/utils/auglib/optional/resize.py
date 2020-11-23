@@ -1,3 +1,12 @@
+'''
+lanhuage: python
+Descripttion: 
+version: beta
+Author: xiaoshuyui
+Date: 2020-10-26 08:31:13
+LastEditors: xiaoshuyui
+LastEditTime: 2020-11-20 14:12:40
+'''
 import os
 import xml.etree.ElementTree as ET
 
@@ -9,6 +18,8 @@ from convertmask.utils.yolo2xml.yolo2xml import convert as y2xVert
 
 
 def resize_img(img: np.ndarray, heightFactor=1, widthFactor=1):
+    if isinstance(img,str):
+        img = skimage.io.imread(img)
     imgShape = img.shape
     resizedImg = skimage.transform.resize(
         img, (int(heightFactor * imgShape[0]), int(widthFactor * imgShape[1])))
@@ -19,7 +30,7 @@ def resize_img(img: np.ndarray, heightFactor=1, widthFactor=1):
 #     pass
 
 
-def resizeScript(img, xmlpath: str, heightFactor=1, widthFactor=1):
+def resizeScript(img, xmlpath: str, heightFactor=1, widthFactor=1,flag=True):
     if isinstance(img, str) and os.path.exists(img):
         oriImg = skimage.io.imread(img)
     elif isinstance(img, np.ndarray):
@@ -68,7 +79,9 @@ def resizeScript(img, xmlpath: str, heightFactor=1, widthFactor=1):
         xmlbox.find('xmax').text = str(int(bbox[1]))
         xmlbox.find('ymax').text = str(int(bbox[3]))
 
-    tree.write(savePath)
-    in_file.close()
-
-    return resizeImg, savePath
+    if flag:  # save file
+        tree.write(savePath)
+        in_file.close()
+        return resizeImg, savePath
+    else:
+        return tree

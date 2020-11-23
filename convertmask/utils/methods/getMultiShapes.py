@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 15:24:50
+LastEditTime: 2020-10-30 08:32:06
 '''
 try:
     from labelme import __version__ as labelme_version
@@ -140,11 +140,11 @@ def test():
     # label_img = io.imread('D:\\testALg\\mask2json\\mask2json\\multi_objs_sameclass_json\\label.png')
 
     oriImgPath = BASE_DIR + '/static/multi_objs.jpg'
-    label_img = io.imread(BASE_DIR + '/multi_objs_json/label.png')
+    label_img = io.imread(BASE_DIR + '/static/multi_objs_json/label.png')
 
     labelShape = label_img.shape
 
-    labels = readYmal(BASE_DIR + '/multi_objs_json/info.yaml')
+    labels = readYmal(BASE_DIR + '/static/multi_objs_json/info.yaml')
     shapes = []
     obj = dict()
     obj['version'] = labelme_version

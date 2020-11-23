@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-22 14:36:44
+LastEditTime: 2020-11-11 09:17:48
 '''
 import sys
 
@@ -17,7 +17,7 @@ import cv2
 import numpy as np
 import skimage.util.noise as snoise
 from convertmask.utils.auglib.imgAug import _getZoomedImg
-from convertmask.utils.methods.entity import *
+from convertmask.utils.methods.entity import Ori_Pro, do_nothing
 from convertmask.utils.methods.logger import logger
 from skimage import io
 
@@ -64,8 +64,8 @@ def imgZoom(oriImg, size, flag=True):
         fileName = tmp.split(os.sep)[-1]
 
         io.imsave(
-            parent_path + os.sep + 'augimgs_' + os.sep + fileName + '_zoom.jpg',
-            resOri)
+            parent_path + os.sep + 'augimgs_' + os.sep + fileName +
+            '_zoom.jpg', resOri)
 
     else:
         d = dict()
@@ -115,8 +115,9 @@ def imgFlip(oriImg: str, flag=True, flip_list=[1, 0, -1]):
         return d
 
 
-def imgNoise(oriImg: str, flag=True):
-    noise_type = ['gaussian', 'poisson', 's&p', 'speckle']
+def imgNoise(oriImg: str, flag=True,noise_type:list=[]):
+    if len(noise_type) == 0:
+        noise_type = ['gaussian', 'poisson', 's&p', 'speckle']
     l = np.random.randint(2, size=len(noise_type)).tolist()
     p = list(zip(noise_type, l))
 
@@ -193,7 +194,7 @@ def imgRotation(oriImg: str, angle=30, scale=1, flag=True):
         return d
 
 
-def imgTranslation(oriImg: str, flag=True,th:int=0,tv:int=0):
+def imgTranslation(oriImg: str, flag=True, th: int = 0, tv: int = 0):
     if isinstance(oriImg, str):
         if os.path.exists(oriImg):
             img = io.imread(oriImg)
@@ -231,7 +232,7 @@ def imgTranslation(oriImg: str, flag=True,th:int=0,tv:int=0):
         return d
 
 
-def aug(filepath, augs=['noise', 'rotation', 'trans', 'flip','zoom'], num=0):
+def aug(filepath, augs=['noise', 'rotation', 'trans', 'flip', 'zoom'], num=0):
     # augs = ['noise','rotation','trans','flip']
 
     l = np.random.randint(2, size=len(augs))
@@ -265,15 +266,14 @@ def aug(filepath, augs=['noise', 'rotation', 'trans', 'flip','zoom'], num=0):
                 img = tmp.oriImg
 
                 del t, tmp
-            
+
             elif i[0] == 'zoom':
                 zoomFactor = random.uniform(0.8, 1.8)
-                z = imgZoom(img,zoomFactor,flag=False)
+                z = imgZoom(img, zoomFactor, flag=False)
                 tmp = z['zoom']
                 img = tmp.oriImg
 
-                del z,tmp
-
+                del z, tmp
 
             elif i[0] == 'flip':
                 imgList = []
@@ -291,7 +291,6 @@ def aug(filepath, augs=['noise', 'rotation', 'trans', 'flip','zoom'], num=0):
                 img = imgList
 
                 del tmp, f, imgList
-
 
     parent_path = os.path.dirname(filepath)
 
@@ -319,3 +318,24 @@ def aug(filepath, augs=['noise', 'rotation', 'trans', 'flip','zoom'], num=0):
 
         logger.info("Done!")
         logger.info("see here {}".format(parent_path + os.sep + 'augimgs_'))
+
+
+# class NoLabelOperator(object):
+#     def __init__(self,
+#                  img,
+#                  augs: list = ['noise', 'rotation', 'trans', 'flip', 'zoom'],
+#                  options: bool = False,
+#                  angle:tuple=(-45,45),
+#                  zoomFactor:float=1.0,
+#                  transDistance:tuple=(0,0)):
+#         self.img = img
+#         self.augs = augs
+#         self.options = options
+#         self.angle = angle
+#         self.zoomFactor = zoomFactor
+#         self.transDistance = transDistance
+
+#     def _getAugImg(self):
+#         if self.options:
+#             pass
+        

@@ -25,7 +25,6 @@ def getBoxes(front: int, root1: Element, root2: Element, root3: Element,
     root2_ = copy.deepcopy(root2)
     root3_ = copy.deepcopy(root3)
     root4_ = copy.deepcopy(root4)
-    # print(front)
 
     if front == 1:
         # 1
@@ -37,7 +36,6 @@ def getBoxes(front: int, root1: Element, root2: Element, root3: Element,
             ymin = float(box.find('ymin').text)
             xmax = float(box.find('xmax').text)
             ymax = float(box.find('ymax').text)
-            # print(imgShape[1] * (1 - widthFactor))
 
             # if ymin >= heightFactor * imgShape[0] or xmax <= imgShape[1] * (
             #         1 - widthFactor):
@@ -115,7 +113,7 @@ def getBoxes(front: int, root1: Element, root2: Element, root3: Element,
             ymin = float(box.find('ymin').text)
             xmax = float(box.find('xmax').text)
             ymax = float(box.find('ymax').text)
-            # print(xmin,ymin,xmax,ymax)
+
             if ymin >= (1 - heightFactor
                         ) * imgShape[0] or xmin >= widthFactor * imgShape[1]:
 
@@ -194,7 +192,7 @@ def getBoxes(front: int, root1: Element, root2: Element, root3: Element,
             ymin = float(box.find('ymin').text)
             xmax = float(box.find('xmax').text)
             ymax = float(box.find('ymax').text)
-            # print(xmin,ymin,xmax,ymax)
+
             if ymin >= heightFactor * imgShape[0] or xmin >= (
                     1 - widthFactor) * imgShape[1]:
 
@@ -221,7 +219,6 @@ def getBoxes(front: int, root1: Element, root2: Element, root3: Element,
             ymin = float(box.find('ymin').text)
             xmax = float(box.find('xmax').text)
             ymax = float(box.find('ymax').text)
-            # print(imgShape[1] * (1 - widthFactor))
 
             # if ymin >= heightFactor * imgShape[0] or xmax <= imgShape[1] * (
             #         1 - widthFactor):
@@ -277,7 +274,7 @@ def getBoxes(front: int, root1: Element, root2: Element, root3: Element,
             ymin = float(box.find('ymin').text)
             xmax = float(box.find('xmax').text)
             ymax = float(box.find('ymax').text)
-            # print(xmin,ymin,xmax,ymax)
+
             if ymin >= heightFactor * imgShape[
                     0] or xmin >= widthFactor * imgShape[1]:
 
@@ -304,7 +301,6 @@ def getBoxes(front: int, root1: Element, root2: Element, root3: Element,
             ymin = float(box.find('ymin').text)
             xmax = float(box.find('xmax').text)
             ymax = float(box.find('ymax').text)
-            # print(imgShape[1] * (1 - widthFactor))
 
             # if ymin >= heightFactor * imgShape[0] or xmax <= imgShape[1] * (
             #         1 - widthFactor):
@@ -368,7 +364,6 @@ def getMeanSize(imgs: list):
 
 
 def getName(xmls: list):
-    # print(str(i))
     s = str(datetime.datetime.now())
     for i in xmls:
         s += i
@@ -437,8 +432,7 @@ def mosiacScript(imgs: list, xmls: list, savePath: str, flag=False):
                  float(xmlbox.find('xmax').text),
                  float(xmlbox.find('ymin').text),
                  float(xmlbox.find('ymax').text))
-            # print('===========================')
-            # print(b)
+
             bb = x2yVert((mWidth, mHeight), b)
             x, y, w, h = bb[0], bb[1], bb[2], bb[3]
             if idx == 0:
@@ -466,11 +460,6 @@ def mosiacScript(imgs: list, xmls: list, savePath: str, flag=False):
                 bbox[2] = bbox[2] + int(heightFactor * imgshape[0])
                 bbox[1] = bbox[1] + int(widthFactor * imgshape[1])
                 bbox[3] = bbox[3] + int(heightFactor * imgshape[0])
-
-            # print(x, y, w, h)
-            # w = w
-            # h = h
-            # bbox = y2xVert((imgshape[1],imgshape[0]), x, y, w, h)
 
             tmp = dict()
             tmp['xmin'] = str(int(bbox[0]))
@@ -566,24 +555,17 @@ def mosiac_img_no_reshape(imgs: list, heightFactor=0.5, widthFactor=0.5):
     img4 = cv2.resize(img4, (imgShape1[1], imgShape1[0]),
                       interpolation=cv2.INTER_CUBIC)
 
-    # print(np.max(img1))
-    # print(np.max(img2))
-
     if heightFactor < 0.5:
         heightFactor = 1 - heightFactor
 
     if widthFactor < 0.5:
         widthFactor = 1 - widthFactor
 
-    # if heightFactor < 0.5:
-    #     maskImg = np.zeros((int(imgShape1[0] / (1 - heightFactor)),
-    #                         int(imgShape1[1] / (1 - widthFactor)), 3))
-    # else:
     maskImg = np.zeros(
         (int(imgShape1[0] / heightFactor), int(imgShape1[1] / widthFactor), 3))
 
-    # front = random.randint(0, 3)
-    front = 2
+    front = random.randint(0, 3)
+
     maskShape = maskImg.shape
     res = []
 
@@ -619,7 +601,6 @@ def mosiac_img_no_reshape(imgs: list, heightFactor=0.5, widthFactor=0.5):
                 maskShape[1] - imgShape1[1]:] = img4
         res = [4, 1, 2, 3]
 
-    # print(res)
     return maskImg.astype(np.uint8), res, heightFactor, widthFactor
 
 
@@ -634,16 +615,13 @@ def mosiacScript_no_reshape(imgs: list, xmls: list, savePath: str, flag=False):
         return
 
     imgname = getName(xmls)
-    # imgname = 'test1123'
     folder = savePath
     mosiacImg, res, _, _ = mosiac_img_no_reshape(imgs, heightFactor,
                                                  widthFactor)
     front = res[0]
-    # print(front)
-    # print(heightFactor_,widthFactor_)
+
     heightFactor = min(heightFactor, 1 - heightFactor)
     widthFactor = min(widthFactor, 1 - widthFactor)
-    # print(heightFactor, widthFactor)
 
     tree1 = ET.parse(xmls[0])
     tree2 = resizeScript(img2,
@@ -713,19 +691,15 @@ def mosiacScript_no_reshape(imgs: list, xmls: list, savePath: str, flag=False):
                               widthFactor=widthFactor)
 
     for box in r1.iter('object'):
-        # print(box)
         boxes.append(box)
 
     for box in r2.iter('object'):
-        # print(box)
         boxes.append(box)
 
     for box in r3.iter('object'):
-        # print(box)
         boxes.append(box)
 
     for box in r4.iter('object'):
-        # print(box)
         boxes.append(box)
     # print(len(boxes))
     imgshape = mosiacImg.shape

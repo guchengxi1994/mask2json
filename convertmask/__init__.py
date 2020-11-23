@@ -5,8 +5,19 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:51:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 13:22:18
+LastEditTime: 2020-11-19 09:46:23
 '''
+
+__support_img_types__ = ['*.jpg','*.jpeg','*.bmp','*.png']
+
+__support_anno_types__ = ['*.txt','*.json','*.xml']
+
+__support_classfiles_types__ = ['*.txt','*.yaml']
+
+__support_aug_methods__ = ['flip','noise','rotation','translation','zoom']
+
+__support_aug_optional_methods__ = ['crop','distort','inpaint','perspective','resize']
+
 __version__ = '0.5.3'
 __appname__ = 'convertmask'
 __support_methods__ = [

@@ -19,6 +19,8 @@ script:
   - python test_img2b64.py
   - python test_multiAug.py
   - python test_main.py
+  - python test_optionalOperation.py
+  - python test_operatorWithoutLabel.py
 
 notifications:
   on_success: always

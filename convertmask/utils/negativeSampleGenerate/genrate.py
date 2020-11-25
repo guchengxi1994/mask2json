@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-25 11:06:00
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-25 15:05:15
+LastEditTime: 2020-11-25 15:35:03
 '''
 import glob
 import os
@@ -130,7 +130,7 @@ def go_single(labelpath, imgpath, negativeNumbers, iou, negativeClassName,
                 o['xmax'] = xmax
                 o['ymax'] = ymax
 
-                if xmax - xmin > minBoxWidth and ymax - ymin > minBoxHeight:
+                if xmax - xmin > 0.5 * minBoxWidth and ymax - ymin > 0.5 * minBoxHeight:
                     resTree = appendObj(resTree, name, o)
                 break
 
@@ -173,7 +173,8 @@ class NegativeSampleGenerater(object):
                 savePath = self.saveFilePath + os.sep + filename
 
             go_single(self.label_or_path, self.img_or_path,
-                      self.negativeNumbers, self.iou, self.negativeClassName)
+                      self.negativeNumbers, self.iou, self.negativeClassName,
+                      savePath)
 
         else:
             xmls = glob.glob(self.label_or_path + os.sep + '*.xml')

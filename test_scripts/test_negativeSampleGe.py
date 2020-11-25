@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-25 13:43:36
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-25 15:00:50
+LastEditTime: 2020-11-25 15:35:57
 '''
 import sys
 
@@ -22,6 +22,14 @@ if __name__ == "__main__":
         'D:\\facedetect\\dump\\WIDER_train\\imgs\\',
         'D:\\facedetect\\dump\\xmls_\\',
         'notAface',
-        saveFilePath='D:\\facedetect\\dump\\genXmls\\')
+        saveFilePath='D:\\facedetect\\dump\\genXmls\\',
+        multiProcesses=True)
+
+    # n = NegativeSampleGenerater(
+    #     'D:\\facedetect\\dump\\WIDER_train\\imgs\\0_Parade_marchingband_1_5.jpg',
+    #     'D:\\facedetect\\dump\\xmls_\\0_Parade_marchingband_1_5.xml',
+    #     'notAface',
+    #     saveFilePath='D:\\facedetect\\dump\\genXmls\\',
+    #     multiProcesses=False)
     
     n.go()

@@ -5,11 +5,11 @@
 @Author: xiaoshuyui
 @Date: 2020-04-22 17:07:28
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:45:56
+LastEditTime: 2020-11-25 11:10:48
 '''
 import os
 import xml.etree.ElementTree as ET
-from xml.dom.minidom import parse, parseString
+from xml.dom.minidom import parse
 
 # import json
 import xmltodict
@@ -166,12 +166,9 @@ def img2xml_multiobj(tmpPath: str, aimPath: str, folder: str, filename: str,
 
     """
     annotation = {}
-    # annotation['folder'] = "HBXZ"
     annotation['folder'] = folder
     annotation['filename'] = filename
-    # annotation['filename'] = "xxx.jpg"
     annotation['path'] = path
-    # annotation['path'] = "xxxx\\xxxxx\\xxx.jpg"
 
     source = {}
     source['database'] = "Unknown"
@@ -180,8 +177,6 @@ def img2xml_multiobj(tmpPath: str, aimPath: str, folder: str, filename: str,
 
     size = {}
     size['width'] = width
-    # size['width'] = 903
-    # size['height'] = 1722
     size['height'] = height
     size['depth'] = 1
 
@@ -216,11 +211,8 @@ def img2xml_multiobj(tmpPath: str, aimPath: str, folder: str, filename: str,
         domTree = ET.parse(tmpPath)
         root = domTree.getroot()
         root = prettyXml(root, '\t', '\n')
-        # ET.dump(root)
         tree = ET.ElementTree(root)
         tree.write(tmpPath)
-        # with open(tmpPath, 'w') as f:
-        #     domTree.writexml(f, addindent='  ', encoding='utf-8')
 
 
 # if __name__ == "__main__":

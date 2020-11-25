@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 07:58:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 13:56:33
+LastEditTime: 2020-11-25 11:35:28
 '''
 import glob
 import os
@@ -62,7 +62,7 @@ def labels2yaml(labels: list, savePath='', savefile=True):
     return data
 
 
-def generateMask(xmlPath, parent_path='', label_masks=None):
+def generateMask(xmlPath, parent_path='', label_masks=None,flag=True):
     # classSet = set(labels)
     if parent_path == '':
         parent_path = os.path.dirname(xmlPath)
@@ -114,19 +114,18 @@ def generateMask(xmlPath, parent_path='', label_masks=None):
             label_masks['label_names'] = generateClass
             mask_img[b[2]:b[3], b[0]:b[1]] = 1
             label_masks['label_names'] = generateClass
-
-    if not os.path.exists(parent_path + os.sep + 'mask_'):
-        os.makedirs(parent_path + os.sep + 'mask_')
-
-    io.imsave(parent_path + os.sep + 'mask_' + os.sep + fileName + '.jpg',
-              mask_img)
-
-    # io.imsave(parent_path+os.sep+'mask_'+os.sep+fileName+'.jpg',np.array(mask_img/np.max(mask_img)*255,dtype=np.uint8))
-
-    print('process finished. see {}'.format(parent_path + os.sep + 'mask_' +
-                                            os.sep + fileName + '.jpg'))
-
-    return label_masks, parent_path + os.sep + 'mask_' + os.sep + fileName + '.jpg'
+    
+    if flag:
+        if not os.path.exists(parent_path + os.sep + 'mask_'):
+            os.makedirs(parent_path + os.sep + 'mask_')
+        io.imsave(parent_path + os.sep + 'mask_' + os.sep + fileName + '.jpg',
+                mask_img)
+        # io.imsave(parent_path+os.sep+'mask_'+os.sep+fileName+'.jpg',np.array(mask_img/np.max(mask_img)*255,dtype=np.uint8))
+        print('process finished. see {}'.format(parent_path + os.sep + 'mask_' +
+                                                os.sep + fileName + '.jpg'))
+        return label_masks, parent_path + os.sep + 'mask_' + os.sep + fileName + '.jpg'
+    else:
+        return label_masks
 
 
 def x2mConvert(xmlpath, labelPath='', yamlPath=''):
@@ -138,7 +137,6 @@ def x2mConvert(xmlpath, labelPath='', yamlPath=''):
         if not os.path.exists(labelPath):
             logger.info('label file not exists!')
             flagL = False
-
         else:
             labels = readLabels(labelPath)
             label_masks = labels2yaml(labels, savefile=False)

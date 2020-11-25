@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-11-18 13:35:52
+ * @LastEditTime: 2020-11-25 15:11:23
 --> 
 <h1 align="center">
   <img src="convertmask/UI/statics/look.png"><br/>convertmask
@@ -59,6 +59,16 @@ Under this version, these tools are provided.
 
 
 # CHANGE LOGS
+
+## 2020.11.25
+
+### 1. negative sample AUTOMATICLY randomly generate. I am not sure if it is helpful to my face detection cnn.
+
+![img-negative](./backup/negative.png)
+
+### 2. rewrite [mosaic.py](./convertmask/utils/auglib/optional/mosaic.py)(without resize the origin images). See [here](./test_scripts/test_mosiac.py).
+
+![img-mosiac](./backup/mosiac2.png)
 
 ## 2020.11.16
 

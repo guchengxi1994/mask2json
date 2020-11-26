@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-25 11:06:00
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-25 15:35:03
+LastEditTime: 2020-11-26 11:21:16
 '''
 import glob
 import os
@@ -63,6 +63,53 @@ def appendObj(tree, name: str, bndbox: dict):
     return tree
 
 
+def isCross(x, point):
+    # pass
+    pxmin = point[0][0]
+    pymin = point[0][1]
+    pxmax = point[1][0]
+    pymax = point[1][1]
+
+    xxmin = x[0][0]
+    xymin = x[0][1]
+    xxmax = x[1][0]
+    xymax = x[1][1]
+
+    return (pxmin > xxmin and pymin > xymin and pxmin < xxmax and pymin < xymax
+            ) or (pxmax > xxmin and pymax > xymin and pxmax < xxmax
+                  and pymax < xymax) or (
+                      pxmin > xxmin and pymax > xymin and pxmin < xxmax
+                      and pymax < xymax) or (
+                          pxmax > xxmin and pymin > xymin and pxmax < xxmax
+                          and pymin < xymax) or (
+                              pxmin < xxmin and pymin < xymin
+                              and pxmin > xxmax and pymin > xymax) or (
+                                  pxmax < xxmin and pymax < xymin
+                                  and pxmax > xxmax and pymax > xymax) or (
+                                      pxmin < xxmin and pymax < xymin
+                                      and pxmin > xxmax and pymax > xymax) or (
+                                          pxmax < xxmin and pymin < xymin
+                                          and pxmax > xxmax and pymin > xymax)
+
+
+def isIouSatisfied(iou: float, ff: list, boxHeights: list, boxWidths: list,
+                   area: int):
+    flag = True
+    for i in range(0, len(ff)):
+        if area / (boxHeights[ff[i]] * boxWidths[ff[i]]) > iou:
+            flag = False
+            # print(ff[i])
+            # print(area)
+            # print((boxHeights[ff[i]] * boxWidths[ff[i]]))
+            # print('xxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+        # else:
+        #     print(ff[i])
+        #     print(area)
+        #     print((boxHeights[ff[i]] * boxWidths[ff[i]]))
+        #     print('===========================')
+    return flag
+
+
 def go_single(labelpath, imgpath, negativeNumbers, iou, negativeClassName,
               savePath):
     tree = ET.parse(open(labelpath))
@@ -81,6 +128,8 @@ def go_single(labelpath, imgpath, negativeNumbers, iou, negativeClassName,
     boxHeights = []
     boxWidths = []
 
+    points = []
+
     # convertmask.utils.xml2mask is not sultable for here
     mask_img = np.zeros((imgheight, imgwidth)).astype(np.uint8)
     for obj in root.iter('object'):
@@ -91,6 +140,7 @@ def go_single(labelpath, imgpath, negativeNumbers, iou, negativeClassName,
         boxHeights.append(b[3] - b[2])
         boxWidths.append(b[1] - b[0])
         mask_img[b[2]:b[3], b[0]:b[1]] = 1
+        points.append([(b[0], b[2]), (b[1], b[3])])
 
     # generate negative samples
     maxBoxHeight = max(boxHeights)
@@ -98,6 +148,8 @@ def go_single(labelpath, imgpath, negativeNumbers, iou, negativeClassName,
 
     maxBoxWidth = max(boxWidths)
     minBoxWidth = max(boxWidths)
+
+    # rate = max(maxBoxWidth/minBoxWidth,maxBoxHeight/minBoxHeight)
 
     for _ in range(0, negativeNumbers):
         for _ in range(0, 5):
@@ -111,7 +163,41 @@ def go_single(labelpath, imgpath, negativeNumbers, iou, negativeClassName,
 
             resTmpMask = tmpMask * mask_img
 
-            if np.sum(resTmpMask) / (randomWidth * randomHeight) <= iou:
+            point = [(startPoint[1], startPoint[0]),
+                     (startPoint[1] + randomWidth,
+                      startPoint[0] + randomHeight)]
+
+            # f = len(
+            #     list(
+            #         filter(
+            #             lambda x:
+            #             (point[0][0] >= x[0][0] + 0.5*(x[1][0]-x[0][0]) and point[0][1] >= x[0][1] + 0.5*(x[1][1]-x[0][1]) and
+            #              point[1][0] >= x[1][0] and point[1][1] >= x[1][1]) or
+            #             (point[0][0] <= x[0][0] and point[0][1] <= x[0][1] and
+            #              point[1][0] <= x[1][0] - 0.5*(x[1][0]-x[0][0]) and point[1][1] <= x[1][1] - 0.5*(x[1][1]-x[0][1])) or
+            #             (point[0][0] >= x[0][0] and point[0][1] >= x[0][1] and
+            #              point[1][0] <= x[1][0] and point[1][1] <= x[1][1]) or
+            #             (point[0][0] <= x[0][0] and point[0][1] <= x[0][1] and
+            #              point[1][0] >= x[1][0] and point[1][1] >= x[1][1]),
+            #             points))) == 1
+
+            ff = list(index for (index, x) in enumerate(points)
+                      if np.sum(resTmpMask) > 0 and isCross(x, point))
+
+            if len(ff)>0:
+                print(ff)
+            f = isIouSatisfied(iou, ff, boxHeights, boxWidths,
+                               np.sum(resTmpMask))
+
+            # f = len(
+            #     list(
+            #         filter(
+            #             lambda x:
+            #             (point[0][0] <= x[0][0] and point[0][1] <= x[0][1] and
+            #              point[1][0] >= x[1][0] and point[1][1] >= x[1][1]),
+            #             points))) < 1
+
+            if np.sum(resTmpMask) == 0 or f:
                 mask_img[startPoint[0]:startPoint[0] + randomHeight,
                          startPoint[1]:startPoint[1] + randomWidth] = 1
 
@@ -132,6 +218,7 @@ def go_single(labelpath, imgpath, negativeNumbers, iou, negativeClassName,
 
                 if xmax - xmin > 0.5 * minBoxWidth and ymax - ymin > 0.5 * minBoxHeight:
                     resTree = appendObj(resTree, name, o)
+                    # points.append(point)
                 break
 
     with open(savePath, 'w') as f:

@@ -7,7 +7,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-23 13:20:18
+LastEditTime: 2020-12-24 09:09:51
 '''
 
 import sys
@@ -76,6 +76,8 @@ def _getZoomedImg(img, size):
                                  hDis - hDisHalf,
                                  cv2.BORDER_CONSTANT,
                                  value=[0, 0, 0])
+    else:
+        res = img
     return res
 
 

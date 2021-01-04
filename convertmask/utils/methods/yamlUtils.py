@@ -5,9 +5,10 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-12 08:42:02
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-12 14:10:19
+LastEditTime: 2021-01-04 13:57:00
 '''
 
+from convertmask import deprecated
 import os
 
 import _io
@@ -36,6 +37,7 @@ class Section():
         return str(self.index) + ":" + str(self.__class__)
 
 
+@deprecated()
 def readYamlFile(filepath: str, encoding='utf-8'):
     if not os.path.exists(filepath):
         logger.error('file not found')
@@ -49,6 +51,7 @@ def readYamlFile(filepath: str, encoding='utf-8'):
     return lis
 
 
+@deprecated()
 def getSection(li: list):
     # try:
     #     tmp = iter(li)
@@ -84,7 +87,7 @@ def getSection(li: list):
         else:
             res = x.replace('\n', '')
             if ' ' in x:
-                if not x.strip(' ').startswith('#'): 
+                if not x.strip(' ').startswith('#'):
                     section.append(res)
             else:
                 if res.endswith(':'):
@@ -99,6 +102,7 @@ def getSection(li: list):
     return sections, secNameNum, secNum
 
 
+@deprecated()
 def load(stream, Loader=None):
     if isinstance(stream, str):
         lis = readYamlFile(stream)

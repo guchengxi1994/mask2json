@@ -5,13 +5,14 @@
 @Author: xiaoshuyui
 @Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-30 08:32:06
+LastEditTime: 2021-01-04 13:54:42
 '''
 try:
     from labelme import __version__ as labelme_version
 except:
     labelme_version = '4.2.9'
 
+from convertmask import deprecated
 import sys
 
 sys.path.append("..")
@@ -129,7 +130,7 @@ def getMultiObjs_voc(oriImgPath, labelPath, savePath):
     img2xml_multiobj(saveXmlPath, saveXmlPath, "TEST", fileName, imgPath,
                      imgWidth, imgHeight, objs)
 
-
+@deprecated('This is a test script')
 def test():
     # BASE_DIR = os.path.abspath(os.curdir)
     BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd()))

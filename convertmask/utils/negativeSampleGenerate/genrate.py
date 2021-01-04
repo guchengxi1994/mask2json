@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-25 11:06:00
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-26 11:21:16
+LastEditTime: 2021-01-04 13:57:48
 '''
 import glob
 import os
@@ -15,7 +15,7 @@ from multiprocessing import Pool
 from xml.dom.minidom import parse
 
 import numpy as np
-from convertmask import __CPUS__
+from convertmask import __CPUS__, deprecated
 from convertmask.utils.methods.logger import logger
 from skimage import io
 from tqdm import tqdm
@@ -244,6 +244,7 @@ class NegativeSampleGenerater(object):
         self.saveFilePath = saveFilePath
         self.multiProcesses = multiProcesses
 
+    @deprecated()
     def go(self, **kwargs):
         if not os.path.exists(self.img_or_path) or not os.path.exists(
                 self.label_or_path):

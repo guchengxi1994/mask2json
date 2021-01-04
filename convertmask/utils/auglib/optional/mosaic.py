@@ -1,3 +1,4 @@
+from convertmask import deprecated
 import copy
 import datetime
 import os
@@ -483,7 +484,7 @@ def mosiacScript(imgs: list, xmls: list, savePath: str, flag=False):
     if flag:
         skimage.io.imsave(filepath, mosiacImg)
 
-
+@deprecated()
 def mosiac_img(imgs: list, heightFactor=0.5, widthFactor=0.5):
     if not type(imgs) is list:
         logger.error('Input must be a list!')

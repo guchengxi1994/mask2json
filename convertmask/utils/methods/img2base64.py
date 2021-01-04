@@ -5,9 +5,10 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:25:31
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:47:13
+LastEditTime: 2021-01-04 13:55:56
 '''
 import base64
+from convertmask import deprecated
 # import cv2
 import io
 
@@ -16,6 +17,7 @@ import numpy as np
 import PIL
 
 
+@deprecated()
 def imgEncode(img_or_path):
     if isinstance(img_or_path, np.ndarray):
         """

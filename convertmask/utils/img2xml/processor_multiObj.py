@@ -1,11 +1,11 @@
 '''
-@lanhuage: python
-@Descripttion:  https://blog.csdn.net/qq_33196814/article/details/99992771
-@version: beta
-@Author: xiaoshuyui
-@Date: 2020-04-22 17:07:28
+lanhuage: python
+Descripttion:  https://blog.csdn.net/qq_33196814/article/details/99992771
+version: beta
+Author: xiaoshuyui
+Date: 2020-04-22 17:07:28
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-25 11:10:48
+LastEditTime: 2021-01-05 10:18:49
 '''
 import os
 import xml.etree.ElementTree as ET

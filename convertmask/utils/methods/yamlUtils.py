@@ -5,13 +5,13 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-12 08:42:02
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-04 13:57:00
+LastEditTime: 2021-01-05 13:37:15
 '''
 
-from convertmask import deprecated
+from convertmask import baseDecorate
 import os
 
-import _io
+import io
 from convertmask.utils.methods.logger import logger
 
 
@@ -37,7 +37,7 @@ class Section():
         return str(self.index) + ":" + str(self.__class__)
 
 
-@deprecated()
+@baseDecorate()
 def readYamlFile(filepath: str, encoding='utf-8'):
     if not os.path.exists(filepath):
         logger.error('file not found')
@@ -51,7 +51,7 @@ def readYamlFile(filepath: str, encoding='utf-8'):
     return lis
 
 
-@deprecated()
+@baseDecorate()
 def getSection(li: list):
     # try:
     #     tmp = iter(li)
@@ -102,11 +102,11 @@ def getSection(li: list):
     return sections, secNameNum, secNum
 
 
-@deprecated()
+@baseDecorate()
 def load(stream, Loader=None):
     if isinstance(stream, str):
         lis = readYamlFile(stream)
-    elif isinstance(stream, _io.TextIOWrapper):
+    elif isinstance(stream, io.TextIOWrapper):
         lis = stream.readlines()
     else:
         logger.error('input parameter error.')

@@ -5,14 +5,14 @@ version: beta
 Author: xiaoshuyui
 Date: 2021-01-04 11:25:08
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-04 13:46:52
+LastEditTime: 2021-01-05 10:16:06
 '''
 import sys
 sys.path.append("..")
 
-from convertmask import deprecated
+from convertmask import baseDecorate
 
-@deprecated()
+@baseDecorate()
 def test():
     print('this is a test script')
 

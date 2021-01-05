@@ -1,11 +1,11 @@
 '''
-@lanhuage: python
-@Descripttion: 
-@version: beta
-@Author: xiaoshuyui
-@Date: 2020-07-10 10:33:39
+lanhuage: python
+Descripttion: 
+version: beta
+Author: xiaoshuyui
+Date: 2020-07-10 10:33:39
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 10:55:15
+LastEditTime: 2021-01-05 10:21:49
 '''
 
 import glob

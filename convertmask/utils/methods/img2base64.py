@@ -5,19 +5,18 @@
 @Author: xiaoshuyui
 @Date: 2020-06-09 16:25:31
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-04 13:55:56
+LastEditTime: 2021-01-05 13:36:31
 '''
 import base64
-from convertmask import deprecated
+from convertmask import baseDecorate
 # import cv2
 import io
 
-import _io
 import numpy as np
 import PIL
 
 
-@deprecated()
+@baseDecorate()
 def imgEncode(img_or_path):
     if isinstance(img_or_path, np.ndarray):
         """
@@ -38,7 +37,7 @@ def imgEncode(img_or_path):
     else:
         if isinstance(img_or_path, str):
             i = open(img_or_path, 'rb')
-        elif isinstance(img_or_path, _io.BufferedReader):
+        elif isinstance(img_or_path, io.BufferedReader):
             i = img_or_path
         else:
             raise TypeError('Input type error!')

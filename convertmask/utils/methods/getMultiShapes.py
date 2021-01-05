@@ -1,18 +1,18 @@
 '''
-@lanhuage: python
-@Descripttion: 
-@version: beta
-@Author: xiaoshuyui
-@Date: 2020-06-12 09:44:19
+lanhuage: python
+Descripttion: 
+version: beta
+Author: xiaoshuyui
+Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-04 13:54:42
+LastEditTime: 2021-01-05 10:19:45
 '''
 try:
     from labelme import __version__ as labelme_version
 except:
     labelme_version = '4.2.9'
 
-from convertmask import deprecated
+from convertmask import baseDecorate
 import sys
 
 sys.path.append("..")
@@ -130,7 +130,7 @@ def getMultiObjs_voc(oriImgPath, labelPath, savePath):
     img2xml_multiobj(saveXmlPath, saveXmlPath, "TEST", fileName, imgPath,
                      imgWidth, imgHeight, objs)
 
-@deprecated('This is a test script')
+@baseDecorate('This is a test script')
 def test():
     # BASE_DIR = os.path.abspath(os.curdir)
     BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd()))

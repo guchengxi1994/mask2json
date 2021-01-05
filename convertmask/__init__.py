@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:51:48
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-04 13:43:56
+LastEditTime: 2021-01-05 10:15:42
 '''
 
 __support_img_types__ = ['*.jpg', '*.jpeg', '*.bmp', '*.png']
@@ -55,7 +55,7 @@ from functools import wraps
 from convertmask.utils.methods.logger import logger
 
 
-def deprecated(message:str=''):
+def baseDecorate(message:str=''):
     def dep_decorator(func):
         @wraps(func)
         def dep(*args, **kwargs):

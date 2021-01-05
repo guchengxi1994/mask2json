@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-04 13:47:27
+LastEditTime: 2021-01-05 10:17:50
 '''
 import sys
 
@@ -20,7 +20,7 @@ from convertmask.utils.auglib.imgAug import _getZoomedImg
 from convertmask.utils.methods.entity import Ori_Pro, do_nothing
 from convertmask.utils.methods.logger import logger
 from skimage import io
-from convertmask import deprecated
+from convertmask import baseDecorate
 
 
 def imgZoom(oriImg, size, flag=True):
@@ -233,7 +233,7 @@ def imgTranslation(oriImg: str, flag=True, th: int = 0, tv: int = 0):
         return d
 
 
-@deprecated()
+@baseDecorate()
 def imgAutopad(oriImg: str, flag=True, size: int = 640):
     if isinstance(oriImg, str):
         if os.path.exists(oriImg):

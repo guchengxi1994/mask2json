@@ -5,11 +5,11 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-18 10:09:21
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-04 13:49:00
+LastEditTime: 2021-01-05 10:16:39
 '''
 
-from convertmask import deprecated
+from convertmask import baseDecorate
 
-@deprecated()
+@baseDecorate()
 def cutout():
     print('please use convertmask.utils.auglib.optional.crop instead')

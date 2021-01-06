@@ -1,15 +1,16 @@
 '''
-@lanhuage: python
-@Descripttion:  (1)get a json file, an origin image \n
+lanhuage: python
+Descripttion:  (1)get a json file, an origin image \n
                 (2)make a convertion \n
                 (3)get corresponding json file and converted image
-@version: beta
-@Author: xiaoshuyui
-@Date: 2020-07-17 15:09:27
+version: beta
+Author: xiaoshuyui
+Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-23 13:20:18
+LastEditTime: 2021-01-05 11:18:45
 '''
 
+from convertmask import baseDecorate
 import sys
 
 sys.path.append('..')
@@ -76,6 +77,8 @@ def _getZoomedImg(img, size):
                                  hDis - hDisHalf,
                                  cv2.BORDER_CONSTANT,
                                  value=[0, 0, 0])
+    else:
+        res = img
     return res
 
 
@@ -778,7 +781,7 @@ def aug_labelme(filepath, jsonpath, augs=None, num=0, yamlFilePath=''):
         print("see here {}".format(parent_path + os.sep + 'jsons_'))
 
 
-# will be redundant in 0.5.3 ,see imgAug_xmls.aug_labelimg for details
+@baseDecorate('will be redundant in 0.5.3 ,see imgAug_xmls.aug_labelimg for details')
 def aug_labelimg(filepath, xmlpath, augs=None, num=0, labelpath=''):
     default_augs = ['noise', 'rotation', 'trans', 'flip', 'zoom']
     if augs is None:

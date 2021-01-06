@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-10 10:09:24
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 15:08:27
+LastEditTime: 2020-11-26 08:48:57
 '''
 from convertmask import __version__
 import os
@@ -39,7 +39,7 @@ setup(
     install_requires=[
         'labelme==4.2.9', 'numpy==1.18.4', 'opencv_python==4.1.0.25',
         'xmltodict==0.12.0', 'matplotlib==3.1.0', 'scikit_image==0.15.0',
-        'Pillow==7.1.2', 'PyYAML==5.3.1', 'scipy==1.5.1', 'docopt==0.6.2',
+        'Pillow==7.1.2', 'PyYAML==5.3.1', 'scipy==1.5.1', 
         'termcolor==1.1.0', 'lxml==4.3.4', 'tqdm==4.32.1'
     ],
     description=

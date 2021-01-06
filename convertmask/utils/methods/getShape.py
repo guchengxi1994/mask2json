@@ -1,11 +1,11 @@
 '''
-@lanhuage: python
-@Descripttion: 
-@version: beta
-@Author: xiaoshuyui
-@Date: 2020-06-09 16:31:45
+lanhuage: python
+Descripttion: 
+version: beta
+Author: xiaoshuyui
+Date: 2020-06-09 16:31:45
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:47:06
+LastEditTime: 2021-01-05 10:20:00
 '''
 import cv2
 import numpy as np

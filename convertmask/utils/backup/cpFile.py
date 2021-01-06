@@ -1,12 +1,13 @@
 '''
-@lanhuage: python
-@Descripttion: 
-@version: beta
-@Author: xiaoshuyui
-@Date: 2020-07-13 16:43:58
+lanhuage: python
+Descripttion: 
+version: beta
+Author: xiaoshuyui
+Date: 2020-07-13 16:43:58
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:48:38
+LastEditTime: 2021-01-05 11:16:24
 '''
+from convertmask import baseDecorate
 import os
 import shutil
 
@@ -19,7 +20,7 @@ BASE_DIR = os.path.abspath(os.curdir)
 drawFile = BASE_DIR + os.sep + 'draw.py'
 # print(drawFile)
 
-
+@baseDecorate()
 def cp():
     # print(drawFile)
     if os.path.exists(father_path + os.sep + 'draw.py'):

@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-11 09:17:48
+LastEditTime: 2021-01-05 10:17:50
 '''
 import sys
 
@@ -20,6 +20,7 @@ from convertmask.utils.auglib.imgAug import _getZoomedImg
 from convertmask.utils.methods.entity import Ori_Pro, do_nothing
 from convertmask.utils.methods.logger import logger
 from skimage import io
+from convertmask import baseDecorate
 
 
 def imgZoom(oriImg, size, flag=True):
@@ -115,7 +116,7 @@ def imgFlip(oriImg: str, flag=True, flip_list=[1, 0, -1]):
         return d
 
 
-def imgNoise(oriImg: str, flag=True,noise_type:list=[]):
+def imgNoise(oriImg: str, flag=True, noise_type: list = []):
     if len(noise_type) == 0:
         noise_type = ['gaussian', 'poisson', 's&p', 'speckle']
     l = np.random.randint(2, size=len(noise_type)).tolist()
@@ -232,6 +233,48 @@ def imgTranslation(oriImg: str, flag=True, th: int = 0, tv: int = 0):
         return d
 
 
+@baseDecorate()
+def imgAutopad(oriImg: str, flag=True, size: int = 640):
+    if isinstance(oriImg, str):
+        if os.path.exists(oriImg):
+            img = io.imread(oriImg)
+        else:
+            raise FileNotFoundError('Original image not found')
+    else:
+        img = oriImg
+
+    f = 1 if img.shape[0] <= img.shape[1] else 0
+    baseSize = img.shape[0] if img.shape[0] > img.shape[1] else img.shape[1]
+
+    factor = size / baseSize
+
+    if f == 1:  # width > height
+        img = cv2.resize(img, (size, int(img.shape[0] / factor)),
+                         interpolation=cv2.INTER_LINEAR)
+    else:  # width < height
+        img = cv2.resize(img, (int(img.shape[1] / factor), size),
+                         interpolation=cv2.INTER_LINEAR)
+
+    height, width = img.shape[0], img.shape[1]
+
+    paddingSize = size - height if f == 1 else size - width
+
+    if paddingSize != 0:
+        if paddingSize % 2 == 0:
+            tmppad = (0.5 * paddingSize, 0.5 * paddingSize)
+        else:
+            tmppad = (int(0.5 * paddingSize), 1 + int(0.5 * paddingSize))
+
+        if f == 1:
+            resImg = np.pad(img, (tmppad, (0, 0)), constant_values=(0, 0))
+        else:
+            resImg = np.pad(img, ((0, 0), tmppad), constant_values=(0, 0))
+    else:
+        resImg = img.copy()
+
+    return resImg
+
+
 def aug(filepath, augs=['noise', 'rotation', 'trans', 'flip', 'zoom'], num=0):
     # augs = ['noise','rotation','trans','flip']
 
@@ -338,4 +381,3 @@ def aug(filepath, augs=['noise', 'rotation', 'trans', 'flip', 'zoom'], num=0):
 #     def _getAugImg(self):
 #         if self.options:
 #             pass
-        

@@ -5,18 +5,20 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:51:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-19 09:46:23
+LastEditTime: 2021-01-05 10:15:42
 '''
 
-__support_img_types__ = ['*.jpg','*.jpeg','*.bmp','*.png']
+__support_img_types__ = ['*.jpg', '*.jpeg', '*.bmp', '*.png']
 
-__support_anno_types__ = ['*.txt','*.json','*.xml']
+__support_anno_types__ = ['*.txt', '*.json', '*.xml']
 
-__support_classfiles_types__ = ['*.txt','*.yaml']
+__support_classfiles_types__ = ['*.txt', '*.yaml']
 
-__support_aug_methods__ = ['flip','noise','rotation','translation','zoom']
+__support_aug_methods__ = ['flip', 'noise', 'rotation', 'translation', 'zoom']
 
-__support_aug_optional_methods__ = ['crop','distort','inpaint','perspective','resize']
+__support_aug_optional_methods__ = [
+    'crop', 'distort', 'inpaint', 'perspective', 'resize'
+]
 
 __version__ = '0.5.3'
 __appname__ = 'convertmask'
@@ -43,11 +45,27 @@ __support_methods_simplified__ = {
 }
 
 import multiprocessing
+
 __CPUS__ = multiprocessing.cpu_count()
 del multiprocessing
 
 import argparse
+from functools import wraps
+
 from convertmask.utils.methods.logger import logger
+
+
+def baseDecorate(message:str=''):
+    def dep_decorator(func):
+        @wraps(func)
+        def dep(*args, **kwargs):
+            if message == '':
+                print(func.__name__ + ' is deprecated under {}.'.format(__version__))
+            else:
+                print(message)
+            return func(*args, **kwargs)
+        return dep
+    return dep_decorator
 
 
 class BaseParser(object):

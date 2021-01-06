@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-16 08:34:52
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-16 14:13:16
+LastEditTime: 2020-11-26 16:13:45
 '''
 import os
 import sys
@@ -21,20 +21,21 @@ from convertmask.utils.methods.logger import logger
 from tqdm import tqdm
 
 filepath = 'D:\\facedetect\\dump\\wider_face_split\\wider_face_train_bbx_gt.txt'
+# filepath = 'D:\\facedetect\\dump\\wider_face_split\\wider_face_val_bbx_gt.txt'
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd()))
 
 
-def writeXml(imgname, objlist, savepath, folder, name,oriImgPath=''):
+def writeXml(imgname, objlist, savepath, folder, oriImgPath=''):
     # imgname = lines[start].split('/')[-1]
     xmlname = imgname.replace('.jpg', '.xml').replace('\n', '')
     tmpPath = savepath + xmlname
     path = imgname
     if oriImgPath == '':
-        logger.warning('Origin image needed!')
+        # logger.warning('Origin image needed!')
         width = 0
         height = 0
     else:
-        oriImg = io.imread(oriImgPath+os.sep+imgname)
+        oriImg = io.imread(oriImgPath + os.sep + imgname)
         width = oriImg.shape[1]
         height = oriImg.shape[0]
         del oriImg
@@ -50,6 +51,16 @@ def writeXml(imgname, objlist, savepath, folder, name,oriImgPath=''):
             h = tmp[3]
             xmax = int(xmin) + int(w)
             ymax = int(ymin) + int(h)
+
+            occlusion = int(tmp[-2])
+            blur = int(tmp[4])
+
+            if blur > 0:
+                name = 'blur'
+            elif occlusion > 0:
+                name = 'occlusion'
+            else:
+                name = 'face'
 
             obj = dict()
             obj['name'] = name
@@ -83,7 +94,7 @@ def readTxt(filepath: str, savepath='', mProcess=False):
         os.mkdir(savepath)
 
     folder = 'face'
-    name = 'face'
+    # name = 'face'
 
     lastImg = lines[ids[-1]]
     imgname = lastImg.split('/')[-1].replace('\n', '')
@@ -103,6 +114,16 @@ def readTxt(filepath: str, savepath='', mProcess=False):
             h = tmp[3]
             xmax = int(xmin) + int(w)
             ymax = int(ymin) + int(h)
+
+            occlusion = int(tmp[-2])
+            blur = int(tmp[4])
+
+            if blur > 1:
+                name = 'blur'
+            elif occlusion > 0:
+                name = 'occlusion'
+            else:
+                name = 'face'
 
             obj = dict()
             obj['name'] = name
@@ -141,6 +162,16 @@ def readTxt(filepath: str, savepath='', mProcess=False):
                     xmax = int(xmin) + int(w)
                     ymax = int(ymin) + int(h)
 
+                    occlusion = int(tmp[-2])
+                    blur = int(tmp[4])
+
+                    if blur > 0:
+                        name = 'blur'
+                    elif occlusion > 0:
+                        name = 'occlusion'
+                    else:
+                        name = 'face'
+
                     obj = dict()
                     obj['name'] = name
                     obj['diffcult'] = 0
@@ -163,7 +194,7 @@ def readTxt(filepath: str, savepath='', mProcess=False):
             imgname = lines[start].split('/')[-1]
             objlist = lines[start + 2:end]
             resultsPool = pool.apply_async(
-                writeXml, (imgname, objlist, savepath, folder, name))
+                writeXml, (imgname, objlist, savepath, folder))
             pool_list.append(resultsPool)
 
         for pr in tqdm(pool_list):
@@ -171,4 +202,6 @@ def readTxt(filepath: str, savepath='', mProcess=False):
 
 
 if __name__ == "__main__":
-    readTxt(filepath, savepath='D:\\facedetect\\dump\\xmls_\\')
+    readTxt(filepath,
+            savepath='D:\\facedetect\\dump\\xmls3face_\\',
+            mProcess=True)

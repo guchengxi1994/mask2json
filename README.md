@@ -5,7 +5,7 @@
  * @Author: xiaoshuyui
  * @Date: 2020-06-09 16:23:03
  * @LastEditors: xiaoshuyui
- * @LastEditTime: 2020-11-25 15:11:23
+ * @LastEditTime: 2021-01-12 16:57:40
 --> 
 <h1 align="center">
   <img src="convertmask/UI/statics/look.png"><br/>convertmask
@@ -252,6 +252,8 @@ auto_labeled image
 ## 7. solve PyYmal installation error(currently write a [script](./convertmask/utils/methods/yamlUtils.py) by myself. maybe failure in the end.)
 
 ## 8. ~~image augmentation zoooom~~ (2020.10.14) 
+
+## 9. yolo txts split train/val dataset automaticly.
 
 
 

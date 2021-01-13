@@ -38,3 +38,5 @@
 /convertmask/UI/utils/__pycache__
 /convertmask/UI/components/__pycache__
 /convertmask/utils/negativeSampleGenerate/__pycache__
+/convertmask/utils/train_val_dataset_split/__pycache__
+/test_scripts/DevLog/*

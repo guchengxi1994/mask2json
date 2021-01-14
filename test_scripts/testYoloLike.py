@@ -13,5 +13,5 @@ sys.path.append('..')
 from convertmask.utils.train_val_dataset_split.yololike import split
 
 if __name__ == "__main__":
-    split('D:\\112\\test\\',
-          'D:\\testALg\\mask2json\\mask2json\\test_scripts\\DevLog')
+    split('D:\\mask2json\\test\\',
+          'D:\\mask2json\\test_scripts\\DevLog')

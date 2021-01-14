@@ -25,7 +25,7 @@ sys.path.append('..')
 from convertmask.utils.train_val_dataset_split.yololike import getInfo, getSum
 
 
-with open('D:\\testALg\\mask2json\\mask2json\\test_scripts\\DevLog\\val.txt') as f:
+with open('D:\\mask2json\\test_scripts\\DevLog\\val.txt') as f:
     res = f.readlines()
 
 
@@ -38,19 +38,19 @@ for ii in res:
     for k in range(0, 42):
         dic[k] = 0
     pr = getInfo(ii.replace('\n',''),dic)
-    print(pr.filename)
-    print(pr.clses)
+    # print(pr.filename)
+    # print(pr.clses)
     RES.append(pr)
 
 # tmp = getSum(RES)
 # print(tmp.clses)
 
-print("&&&"*60)
+# print("&&&"*60)
 
 tmp = RES[0]
 for ii in range(1,len(RES)):
-    print(RES[ii].filename)
-    print(RES[ii].clses)
+    # print(RES[ii].filename)
+    # print(RES[ii].clses)
     tmp = tmp + RES[ii]
 
 print(tmp.clses)

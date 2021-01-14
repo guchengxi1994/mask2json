@@ -21,7 +21,6 @@ import copy
 
 RES = []
 valList = []
-trainList = []
 
 
 class FileCls:
@@ -36,19 +35,14 @@ class FileCls:
         if not isinstance(o, self.__class__):
             return self
         nc = len(self.clses)
-        # print(self.clses)
-        # print(o.clses)
         dic = dict()
         for k in range(0, nc):
             dic[k] = 0
-        c = FileCls('',dic)
+        c = FileCls('', dic)
         for i in range(0, nc):
             sn = self.get(i)
             on = o.get(i)
-
             c.clses[i] = sn + on
-        # print(c.clses)
-        # print('*'*50)
         return c
 
     def __eq__(self, o: object) -> bool:
@@ -76,9 +70,7 @@ def getInfo(filename: str, dic: dict):
 def getSum(res: list):
     if len(res) > 1:
         s = res[0]
-        # print(s.clses)
-        for i in range(1,len(res)):
-            # print(i.clses)
+        for i in range(1, len(res)):
             s = s + res[i]
         return s
     elif len(res) == 1:
@@ -106,36 +98,22 @@ def getMean(s: FileCls, nc: int, times: int = 10):
 
 
 def getTrainValSet(resList: list, r: list):
-    global valList, trainList
-    # print(r)
+    global valList
     restRES = copy.deepcopy(resList)
-    # for i in r:
     i = 0
     while i < len(r):
         if r[i][1] > 0:
             lis = list(filter(lambda x: x.clses.get(r[i][0], 0) > 0, restRES))
-            # print(len(lis))
-            # print(r[i][1])
             thisValList = sample(lis, k=r[i][1])
-            print('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
-            for tt in thisValList:
-                print(tt.filename)
-                print(tt.clses)
             data = getSum(thisValList)
-            print('================================================')
-            # print(data)
-            print(data.clses)
             for j in range(0, len(data.clses)):
-                r[j][1] -= data.clses.get(j,0)
+                r[j][1] -= data.clses.get(j, 0)
 
-            print(r)
-            print('<>'*20)
             thisTrainList = list(set(lis).difference(set(thisValList)))
 
             restRES = list(set(restRES).difference(set(thisValList)))
 
             valList.extend(thisValList)
-            trainList.extend(thisTrainList)
             thisValList.clear()
         i += 1
 
@@ -148,15 +126,12 @@ def split(folder: str, savaFolder: str, nc: int = 42, multiprocesses=True):
         logger.error('Folder is empty, none txt file found!')
         return
 
-    trainFile = open(savaFolder + os.sep + 'train.txt', 'w', encoding='utf-8')
-    trainvalFile = open(savaFolder + os.sep + 'val.txt', 'w', encoding='utf-8')
-
-    
+    trainFile = open(savaFolder + os.sep + 'train.txt', 'w+', encoding='utf-8')
+    trainvalFile = open(savaFolder + os.sep + 'val.txt',
+                        'w+',
+                        encoding='utf-8')
 
     logger.info('======== start analysing ========')
-    # for t in tqdm(txts):
-    #     with open(t,'r') as ft:
-    #         ls = ft.readlines()
     pool = Pool(__CPUS__ - 1)
     pool_list = []
 
@@ -171,45 +146,17 @@ def split(folder: str, savaFolder: str, nc: int = 42, multiprocesses=True):
         res = pr.get()
         RES.append(res)
 
-    # for tt in RES:
-    #     print(tt.filename)
-    #     print(tt.clses)
-    # print("^^^"*20)
-
-    # print(len(RES))
-    # s = RES[0]
-
-    # for i in RES[1:]:
-    #     # print(i.clses)
-    #     s += i
-
-    # print(s.clses)
     tmp = getSum(RES)
-    # print(tmp.clses)
     r = getMean(tmp, nc)
 
-    getTrainValSet(RES,r)
-    global valList,trainList
-    # print(r)
-    # valList = []
-    # trainList = []
-    # # use filter to get filename
-    # for i in r:
-    #     if i[1] > 0:
-    #         lis = list(filter(lambda x: x.clses.get(i[0], 0) > 0, RES))
-
-    #         thisValList = choices(lis, k=i[1])
-    #         data = getSum(thisValList).clses
-
-    #         thisTrainList = list(set(lis).difference(set(thisValList)))
-    #         # print(len(trainList))
-    #         valList.extend(thisValList)
-    #         trainList.extend(thisTrainList)
+    getTrainValSet(RES, r)
+    global valList
 
     for i in list(set(valList)):
         trainvalFile.write(i.filename + '\n')
+    trainList = list(set(RES).difference(set(valList)))
 
-    for i in list(set(trainList)):
+    for i in trainList:
         trainFile.write(i.filename + '\n')
 
     trainvalFile.close()

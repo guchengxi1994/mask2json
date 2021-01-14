@@ -60,6 +60,12 @@ Under this version, these tools are provided.
 
 # CHANGE LOGS
 
+## 2021.1.14
+
+### 1.update spliting yolo-like dataset into train and val datasets AUTOMATICLY.See [testYoloLike.py](./test_scripts/testYoloLike.py). The test dataset can be found in ./test/ , 68 txts totally.
+
+![split-yolo](./backup/splitYolo.gif)
+
 ## 2020.11.25
 
 ### 1. negative sample AUTOMATICLY randomly generate. I am not sure if it is helpful to my face detection cnn.

@@ -5,17 +5,19 @@ version: beta
 Author: xiaoshuyui
 Date: 2021-01-04 11:31:13
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-05 13:34:26
+LastEditTime: 2021-02-01 13:23:47
 '''
-from convertmask import baseDecorate
+import math
 import os
 import xml.etree.ElementTree as ET
 from glob import glob
+from multiprocessing import Pool
+
 import cv2
 import numpy as np
-
 import tqdm
-from convertmask.utils.auglib.optional.resize import resizeScript, resize_img
+from convertmask import __CPUS__, baseDecorate
+from convertmask.utils.auglib.optional.resize import resize_img, resizeScript
 from skimage import io
 
 __defaultSize__ = 648
@@ -48,7 +50,9 @@ def specificPadCutScript(imgpath: str,
     for i in tqdm.tqdm(imgpaths):
         oriImg = io.imread(i)
         imgsize = oriImg.shape
-        j = i.replace(imgpath, xmlpath).replace('.jpg', '.xml')
+        _, ext = os.path.splitext(i)
+        j = i.replace(imgpath, xmlpath).replace(ext, '.xml')
+        # j = i.replace(imgpath, xmlpath).replace('.jpg', '.xml')
         if imgsize[1] >= imgsize[0]:  # 1. img width bigger than img height
             if os.path.exists(j):
                 factor = defaultSize / imgsize[0]
@@ -56,8 +60,9 @@ def specificPadCutScript(imgpath: str,
                                          j,
                                          heightFactor=factor,
                                          widthFactor=factor)
-                in_file = ET.parse(path)
-                tree = ET.parse(in_file)
+                # in_file = ET.parse(path)
+                # tree = ET.parse(in_file)
+                tree = ET.parse(path)
                 root = tree.getroot()
             else:
                 tree = None
@@ -190,8 +195,9 @@ def specificPadCutScript(imgpath: str,
                                          j,
                                          heightFactor=factor,
                                          widthFactor=factor)
-                in_file = ET.parse(path)
-                tree = ET.parse(in_file)
+                # in_file = ET.parse(path)
+                # tree = ET.parse(in_file)
+                tree = ET.parse(path)
                 root = tree.getroot()
             else:
                 tree = None
@@ -331,7 +337,8 @@ def autoPaddingScript(imgpath: str,
     for i in tqdm.tqdm(imgpaths):
         oriImg = io.imread(i)
         imgsize = oriImg.shape
-        j = i.replace(imgpath, xmlpath).replace('.jpg', '.xml')
+        _, ext = os.path.splitext(i)
+        j = i.replace(imgpath, xmlpath).replace(ext, '.xml')
 
         if imgsize[0] > imgsize[1]:  # width<height
             hFactor = defaultSize / imgsize[0]
@@ -344,8 +351,8 @@ def autoPaddingScript(imgpath: str,
                                      j,
                                      heightFactor=hFactor,
                                      widthFactor=wFactor)
-            in_file = ET.parse(path)
-            tree = ET.parse(in_file)
+            # in_file = ET.parse(path)
+            tree = ET.parse(path)
             root = tree.getroot()
         else:
             img = resize_img(oriImg, hFactor, wFactor)
@@ -525,3 +532,79 @@ def autoPaddingScript(imgpath: str,
             size.find('width').text = defaultSize
             size.find('height').text = defaultSize
             tree.write(j)
+
+
+def padImgForSplit(i: str, imgpath, savepath, saveFile):
+    oriImg = io.imread(i)
+    imgsize = oriImg.shape
+
+    flag = imgsize[0] % 2 == 0
+
+    if len(oriImg.shape) == 3:
+        r, g, b = cv2.split(oriImg)
+    else:
+        r, g, b = oriImg, oriImg, oriImg
+
+    if flag:
+        padWidth = int(math.ceil(imgsize[1] / imgsize[0]) * imgsize[0])
+    else:
+        padWidth = int(
+            math.ceil(imgsize[1] / (imgsize[0] + 1)) * (imgsize[0] + 1))
+
+    if imgsize[1] < padWidth:
+        paddingSize = padWidth - imgsize[1]
+        if flag:
+            imgR = np.pad(r, ((0, 0), (0, paddingSize)),
+                          'constant',
+                          constant_values=(255, 255))
+            imgG = np.pad(g, ((0, 0), (0, paddingSize)),
+                          'constant',
+                          constant_values=(255, 255))
+            imgB = np.pad(b, ((0, 0), (0, paddingSize)),
+                          'constant',
+                          constant_values=(255, 255))
+        else:
+            imgR = np.pad(r, ((0, 1), (0, paddingSize)),
+                          'constant',
+                          constant_values=(255, 255))
+            imgG = np.pad(g, ((0, 1), (0, paddingSize)),
+                          'constant',
+                          constant_values=(255, 255))
+            imgB = np.pad(b, ((0, 1), (0, paddingSize)),
+                          'constant',
+                          constant_values=(255, 255))
+
+        imgT = cv2.merge([imgR, imgG, imgB])
+        if saveFile:
+            io.imsave(i.replace(imgpath, savepath), imgT)
+        else:
+            return imgT
+
+
+@baseDecorate(
+    'this method is used to split images to small images after padding.')
+def padForSplitScript(imgpath: str,
+                      savepath: str,
+                      imgExt: list = [
+                          "jpg",
+                      ],
+                      multiprocesses=True,
+                      saveFile=True):
+    imgpaths = []
+    for ext in imgExt:
+        imgpaths.extend(glob(imgpath + '*.{}'.format(ext)))
+
+    if not multiprocesses:
+        for i in tqdm.tqdm(imgpaths):
+            padImgForSplit(i, imgpath, savepath, saveFile)
+    else:
+        pool = Pool(__CPUS__ - 1)
+        pool_list = []
+
+        for i in tqdm.tqdm(imgpaths):
+            resultPool = pool.apply_async(padImgForSplit,
+                                          (i, imgpath, savepath, saveFile))
+            pool_list.append(resultPool)
+
+        for pr in tqdm.tqdm(pool_list):
+            pr.get()

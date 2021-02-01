@@ -7,6 +7,7 @@ scikit_image==0.15.0
 labelme==4.2.9
 opencv_python==4.1.0.25
 matplotlib==3.1.0
-lxml==4.3.4
+lxml>=4.6.2
 Pillow==8.0.0
 PyYAML==5.3.1
+DevTool

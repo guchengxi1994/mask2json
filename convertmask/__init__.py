@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:51:48
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-05 10:15:42
+LastEditTime: 2021-02-01 13:31:35
 '''
 
 __support_img_types__ = ['*.jpg', '*.jpeg', '*.bmp', '*.png']
@@ -52,19 +52,39 @@ del multiprocessing
 import argparse
 from functools import wraps
 
-from convertmask.utils.methods.logger import logger
+# from convertmask.utils.methods.logger import logger
+
+import platform
+
+__current_platform__ = platform.system()
+
+del platform
+
+def do_nothing():
+    pass
 
 
-def baseDecorate(message:str=''):
+class Img_ID(object):
+    def __init__(self, img, ID: float, width: int, height: int):
+        self.img = img
+        self.ID = ID
+        self.width = width
+        self.height = height
+
+
+def baseDecorate(message: str = ''):
     def dep_decorator(func):
         @wraps(func)
         def dep(*args, **kwargs):
             if message == '':
-                print(func.__name__ + ' is deprecated under {}.'.format(__version__))
+                print(func.__name__ +
+                      ' is deprecated under {}.'.format(__version__))
             else:
                 print(message)
             return func(*args, **kwargs)
+
         return dep
+
     return dep_decorator
 
 

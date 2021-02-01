@@ -5,13 +5,14 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 11:31:50
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-10 15:43:15
+LastEditTime: 2021-02-01 13:15:27
 '''
 
 import math
 
 import cv2
 import numpy as np
+from convertmask import Img_ID, baseDecorate
 from skimage import io
 
 
@@ -62,3 +63,23 @@ def splitImg_dengbili(img, imgName='', bias=1000, savePath='', savefile=True):
             io.imsave(savePath + '_%s_%s.jpg' % (imgName, str(i)), img1)
 
     return imgList
+
+
+def splitImg_cover(img):
+    imgList = []
+    subImgList = []
+    imgShape = img.shape
+    times = int(imgShape[1] / imgShape[0])
+
+    for i in range(0, int(times)):
+        img1 = img[:, i * imgShape[0]:(i + 1) * imgShape[0]]
+        imgList.append(Img_ID(img1, i + 1, imgShape[0], imgShape[0]))
+
+        if i + 1.5 < times:
+            imgCover = img[:,
+                           int((i + 0.5) * imgShape[0]):int((i + 1.5) *
+                                                            imgShape[0])]
+            subImgList.append(
+                Img_ID(imgCover, i + 1.5, imgShape[0], imgShape[0]))
+
+    return imgList, subImgList

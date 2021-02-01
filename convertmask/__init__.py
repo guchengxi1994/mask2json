@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:51:48
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-13 13:55:08
+LastEditTime: 2021-02-01 13:31:35
 '''
 
 __support_img_types__ = ['*.jpg', '*.jpeg', '*.bmp', '*.png']
@@ -59,6 +59,17 @@ import platform
 __current_platform__ = platform.system()
 
 del platform
+
+def do_nothing():
+    pass
+
+
+class Img_ID(object):
+    def __init__(self, img, ID: float, width: int, height: int):
+        self.img = img
+        self.ID = ID
+        self.width = width
+        self.height = height
 
 
 def baseDecorate(message: str = ''):

@@ -7,7 +7,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-07-17 15:09:27
 LastEditors: xiaoshuyui
-LastEditTime: 2021-02-19 17:05:42
+LastEditTime: 2021-02-19 17:11:30
 '''
 
 from convertmask import baseDecorate
@@ -28,7 +28,7 @@ from convertmask.utils.json2mask.convert import processor
 from convertmask.utils.json2mask.convertWithLabel import \
     processor as processorWithLabel
 from convertmask.utils.json2xml.json2xml import j2xConvert
-from convertmask.utils.methods import entity, rmQ
+from convertmask.utils.methods import rmQ
 # from convertmask.utils.methods.entity import *
 from convertmask import do_nothing,Ori_Pro,Img_clasId
 from convertmask.utils.methods.getMultiShapes import getMultiShapes
@@ -200,7 +200,7 @@ def imgZoom(oriImg: str,
             with open(saveJsonPath, 'w') as f:
                 f.write(zoomedMask_j)
             logger.info('Done! See {} .'.format(
-                saveJsonPath)) if LOGFlag == 'True' else entity.do_nothing()
+                saveJsonPath)) if LOGFlag == 'True' else do_nothing()
         else:
             pass
 

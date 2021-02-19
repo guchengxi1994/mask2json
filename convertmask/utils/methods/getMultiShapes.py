@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-06-12 09:44:19
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-05 10:19:45
+LastEditTime: 2021-02-19 16:45:57
 '''
 try:
     from labelme import __version__ as labelme_version
@@ -220,12 +220,6 @@ def getMultiShapes(oriImgPath,
                     )   \n
 
     """
-    # print('-==================')
-    # print(oriImgPath)
-    # print(labelPath)
-    # print(savePath)
-    # print(labelYamlPath)
-    # print('-==================')
     if isinstance(labelPath, str):
         if os.path.exists(labelPath):
             label_img = io.imread(labelPath)
@@ -397,13 +391,7 @@ def getMultiObjs_voc_withYaml(oriImgPath, labelPath, yamlPath=''):
 
         del ma
 
-        # print(objs)
-    # print("............................")
-
     img2xml_multiobj(saveXmlPath, saveXmlPath, "TEST", fileName, imgPath,
                      imgWidth, imgHeight, objs)
     objs.clear()
 
-
-# if __name__ == "__main__":
-#     test()

@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:51:48
 LastEditors: xiaoshuyui
-LastEditTime: 2021-02-01 13:31:35
+LastEditTime: 2021-02-19 17:03:17
 '''
 
 __support_img_types__ = ['*.jpg', '*.jpeg', '*.bmp', '*.png']
@@ -60,6 +60,7 @@ __current_platform__ = platform.system()
 
 del platform
 
+
 def do_nothing():
     pass
 
@@ -70,6 +71,18 @@ class Img_ID(object):
         self.ID = ID
         self.width = width
         self.height = height
+
+
+class Img_clasId(object):
+    def __init__(self, img, clasId: int):
+        self.img = img
+        self.clasId = clasId
+
+
+class Ori_Pro(object):
+    def __init__(self, oriImg, processedImg):
+        self.oriImg = oriImg
+        self.processedImg = processedImg
 
 
 def baseDecorate(message: str = ''):

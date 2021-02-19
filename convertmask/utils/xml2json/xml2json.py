@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-24 09:03:04
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-16 10:22:28
+LastEditTime: 2021-02-19 16:40:13
 '''
 import json
 import os
@@ -27,7 +27,9 @@ except:
 
 
 def x2jConvert(xmlpath, originImgPath, flag=True):
-    # pass
+    """this function is used to convert xml files (labelimg) to jsons (labelme)
+
+    """
     if not os.path.exists(xmlpath) or not os.path.exists(originImgPath):
         logger.error('file not exist')
         return

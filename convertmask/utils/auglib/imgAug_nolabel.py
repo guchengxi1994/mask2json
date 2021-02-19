@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-21 08:27:05
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-05 10:17:50
+LastEditTime: 2021-02-19 17:04:15
 '''
 import sys
 
@@ -17,7 +17,9 @@ import cv2
 import numpy as np
 import skimage.util.noise as snoise
 from convertmask.utils.auglib.imgAug import _getZoomedImg
-from convertmask.utils.methods.entity import Ori_Pro, do_nothing
+# from convertmask.utils.methods.entity import Ori_Pro, do_nothing
+from convertmask import do_nothing,Ori_Pro
+
 from convertmask.utils.methods.logger import logger
 from skimage import io
 from convertmask import baseDecorate

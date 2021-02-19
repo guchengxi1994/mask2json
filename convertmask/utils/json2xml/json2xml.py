@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-19 11:27:38
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 19:29:59
+LastEditTime: 2021-02-19 16:48:43
 '''
 import json
 import os
@@ -16,6 +16,9 @@ from convertmask.utils.methods.logger import logger
 
 
 def j2xConvert(jsonFilePath: str):
+    """this function is used to convert jsons(labelme) to xmls(labelImg)
+
+    """
     with open(jsonFilePath, 'r', encoding='utf-8') as f:
         jsonObj = json.load(f)
         if isinstance(jsonObj, str):

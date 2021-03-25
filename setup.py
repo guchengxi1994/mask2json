@@ -39,7 +39,7 @@ setup(
     install_requires=[
         'labelme==4.2.9', 'numpy==1.18.4', 'opencv_python==4.1.0.25',
         'xmltodict==0.12.0', 'matplotlib==3.1.0', 'scikit_image==0.15.0',
-        'Pillow==7.1.2', 'PyYAML==5.3.1', 'scipy==1.5.1', 
+        'Pillow==7.1.2', 'PyYAML==5.4', 'scipy==1.5.1', 
         'termcolor==1.1.0', 'lxml>=4.6.2', 'tqdm==4.32.1'
     ],
     description=

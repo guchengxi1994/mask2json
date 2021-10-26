@@ -89,10 +89,10 @@ if __name__ == "__main__":
     getJsons('D:\\getWeldPics\\test5_reshape', 'D:\\getWeldPics\\masks',
              'D:\\getWeldPics\\jsons', 'D:\getWeldPics\info.yaml')
     """
-    imgPath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_test.jpg'
-    maskPath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_json\\label.png'
-    savePath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_json\\1109\\'
-    yamlPath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_json\\info.yaml'
-    # getMultiShapes.getMultiShapes(imgPath, maskPath, savePath, yamlPath)  # with yaml
+    imgPath = 'D:\\github_repo\\mask2json\\static\\multi_objs_test.jpg'
+    maskPath = 'D:\\github_repo\\mask2json\\static\\multi_objs_json\\label.png'
+    savePath = 'D:\\github_repo\\mask2json\\static\\multi_objs_json\\1025\\'
+    yamlPath = 'D:\\github_repo\\mask2json\\static\\multi_objs_json\\info.yaml'
+    getMultiShapes.getMultiShapes(imgPath, maskPath, savePath, yamlPath)  # with yaml
 
-    getMultiShapes.getMultiShapes(imgPath, maskPath, savePath)  # without yaml
+    # getMultiShapes.getMultiShapes(imgPath, maskPath, savePath)  # without yaml

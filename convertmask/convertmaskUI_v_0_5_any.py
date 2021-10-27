@@ -21,15 +21,16 @@ from PyQt5.QtCore import QStringListModel
 from PyQt5.QtGui import QIcon, QImage, QPixmap
 from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog,
                              QGraphicsPixmapItem, QGraphicsScene, QHBoxLayout,
-                             QMainWindow, QMessageBox, QVBoxLayout, QWidget,
-                             qApp)
+                             QLabel, QMainWindow, QMessageBox, QVBoxLayout,
+                             QWidget, qApp)
 from skimage import io
 
-from convertmask import (__appname__, __support_anno_types__,
-                         __support_classfiles_types__, __support_img_types__,
-                         __support_methods__, __version__)
+from convertmask import (__appname__, __reserved_methods__,
+                         __support_anno_types__, __support_classfiles_types__,
+                         __support_img_types__, __support_methods__,
+                         __version__)
+from convertmask.UI.utils import __UI_NAME__, __UI_VERSION__
 from convertmask.UI.utils.getAllTypeFiles import getFiles
-from convertmask.UI.utils import __UI_VERSION__, __UI_NAME__
 
 BASE_DIR = os.path.abspath(os.curdir)
 
@@ -48,8 +49,17 @@ class MainWindow(QMainWindow):
         self.centralwidget.setObjectName("centralwidget")
         self.graphicsView = QtWidgets.QGraphicsView()
         self.graphicsView.setObjectName("graphicsView")
+
+        self.subGraphicsView = QtWidgets.QGraphicsView()
+        self.subGraphicsView.setObjectName("subGraphicsView")
+
         self.imglistView = QtWidgets.QListView()
         self.imglistView.setObjectName("imglistView")
+
+        self.subImgListView = QtWidgets.QListView(
+        )  # augmentation, mask imgs list
+        self.subImgListView.setObjectName("subImgListView")
+
         self.labellistView = QtWidgets.QListView()
         self.labellistView.setObjectName("labellistView")
 
@@ -80,18 +90,50 @@ class MainWindow(QMainWindow):
         self.leftSideButtonGroup.addWidget(self.do_2)
 
         self.rightWidgetGroup = QVBoxLayout()
-        self.rightWidgetGroup.addWidget(self.imglistView)
-        self.rightWidgetGroup.addWidget(self.labellistView)
+
+        __oriImgLayout = QVBoxLayout()
+        __oriImgLayout.addWidget(QLabel("origin images"))
+        __oriImgLayout.addWidget(self.imglistView)
+        imgListViewLayout = QHBoxLayout()
+        imgListViewLayout.addLayout(__oriImgLayout)
+
+        __subImgLayout = QVBoxLayout()
+        __subImgLayout.addWidget(QLabel("mask/augmented images"))
+        __subImgLayout.addWidget(self.subImgListView)
+        imgListViewLayout.addLayout(__subImgLayout)
+
+        self.rightWidgetGroup.addLayout(imgListViewLayout)
+
+        __annoListLayout = QVBoxLayout()
+        __annoListLayout.addWidget(QLabel("annotation list"))
+        __annoListLayout.addWidget(self.labellistView)
+
+        self.rightWidgetGroup.addLayout(__annoListLayout)
 
         browserLayout = QHBoxLayout()
-        browserLayout.addWidget(self.textBrowser)
-        browserLayout.addWidget(self.textClassBrowser)
+
+        __textLayout = QVBoxLayout()
+        __textLayout.addWidget(QLabel("annotation"))
+        __textLayout.addWidget(self.textBrowser)
+
+        __textClassLayout = QVBoxLayout()
+        __textClassLayout.addWidget(QLabel("classes"))
+        __textClassLayout.addWidget(self.textClassBrowser)
+
+        browserLayout.addLayout(__textLayout)
+        browserLayout.addLayout(__textClassLayout)
 
         # self.rightWidgetGroup.addWidget(self.textBrowser)
         self.rightWidgetGroup.addLayout(browserLayout)
 
+        __imgViewLayout = QVBoxLayout()
+        __imgViewLayout.addWidget(QLabel("origin image"))
+        __imgViewLayout.addWidget(self.graphicsView)
+        __imgViewLayout.addWidget(QLabel("mask/augmented image"))
+        __imgViewLayout.addWidget(self.subGraphicsView)
+
         self.mainLayout.addLayout(self.leftSideButtonGroup)
-        self.mainLayout.addWidget(self.graphicsView)
+        self.mainLayout.addLayout(__imgViewLayout)
         self.mainLayout.addLayout(self.rightWidgetGroup)
 
         self.centralwidget.setLayout(self.mainLayout)
@@ -129,6 +171,12 @@ class MainWindow(QMainWindow):
         openAnnotationFolderAction.triggered.connect(self.openAnnoFolder)
         openClassInfoFileAction.triggered.connect(self.openClassInfo)
 
+        # change
+        changeAction = QAction('Change mask/augmented image folder', self)
+        changeMenu = menubar.addMenu("Change")
+        changeMenu.addAction(changeAction)
+        changeMenu.triggered.connect(self.__changeMaskFolder)
+
         # test menu
         testAction = QAction('Test ...', self)
         testMenu = menubar.addMenu('Test')
@@ -144,7 +192,10 @@ class MainWindow(QMainWindow):
         aboutDetails = QAction('About', self)
         helpMenu.addAction(aboutDetails)
 
+        # ori image
         self.slm = QStringListModel()
+        # mask image
+        self.subSlm = QStringListModel()
 
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -157,8 +208,31 @@ class MainWindow(QMainWindow):
         self.comboBox.addItems(__support_methods__)
         self.imglistView.clicked.connect(self.clickImg)
         self.labellistView.clicked.connect(self.clickAnno)
+        self.subImgListView.clicked.connect(self.clickSubImgList)
 
         self.__labelPath = ""
+        self.__subImgList = []
+        self.__subImgFolder = ''
+        self.comboBox.currentIndexChanged.connect(self.__indexChangedAction)
+
+
+    def __indexChangedAction(self):
+        # print(self.comboBox.currentText())
+        if self.comboBox.currentText() == "augmentation":
+            from convertmask.UI.components.augForm import AugForm
+            d = AugForm()
+            d.exec_()
+            print(d.chosenMethod.text())
+
+
+    def getMaskImgPath(self, imgpath: str) -> str:
+        try:
+            _fp, _ = os.path.split(imgpath)
+            __tmp = imgpath.replace(_fp, self.__subImgFolder).split(".")[0]
+            __file = list(filter(lambda x: __tmp in x, self.__subImgList))[0]
+            return __file
+        except:
+            return ""
 
     def __execAction(self):
         # print(self.comboBox.currentText())
@@ -168,12 +242,14 @@ class MainWindow(QMainWindow):
         # print(self.textClassBrowser.toPlainText()=="")
         if self.textClassBrowser.toPlainText() == "":
             self.openClassInfo()
-        print(self.__labelPath)
         if self.comboBox.currentText() == "mask2json":
+            a = self.getMaskImgPath(self.imglist[self.__currentImgIndex])
+            if a == "":
+                return
             from convertmask.utils.methods import getMultiShapes
             _j = getMultiShapes.getMultiShapes(
                 self.imglist[self.__currentImgIndex],
-                self.imglist[self.__currentImgIndex],
+                a,
                 os.getcwd(),
                 self.__labelPath,
                 flag=True)
@@ -218,28 +294,62 @@ class MainWindow(QMainWindow):
             self, "select file", os.getcwd(),
             "Class Information Files({})".format(
                 ' '.join(__support_classfiles_types__)))
-        self.__labelPath = fileName
-        with open(fileName, 'r', encoding='utf-8', errors='ignore') as f:
-            txt = f.readlines()
-        # self.textBrowser.
-        for i in txt:
-            self.textClassBrowser.append(i.replace('\n', ''))
+
+        if os.path.exists(fileName):
+            self.__labelPath = fileName
+            with open(fileName, 'r', encoding='utf-8', errors='ignore') as f:
+                txt = f.readlines()
+            # self.textBrowser.
+            for i in txt:
+                self.textClassBrowser.append(i.replace('\n', ''))
+
+    def __changeMaskFolder(self):
+        dir_path = QFileDialog.getExistingDirectory(
+            self, "select mask image folder (or just pass)", os.getcwd())
+        self.__subImgFolder = dir_path
+        subRes = getFiles(dir_path, __support_img_types__)
+        qSubList = subRes
+        self.subSlm.setStringList(qSubList)
+        self.__subImgList = qSubList
+        self.subImgListView.setModel(self.subSlm)
 
     def openImgFolder(self):
-        dir_path = QFileDialog.getExistingDirectory(self, "select folder",
-                                                    os.getcwd())
+        dir_path = QFileDialog.getExistingDirectory(
+            self, "select origin image folder", os.getcwd())
         # print(dir_path)
         res = getFiles(dir_path, __support_img_types__)
         # print(res)
         # slm = QStringListModel()
         qlist = res
+        # qSubList = list(filter(lambda x:"_mask"  in x,res))
+        if self.__subImgFolder == "" and self.comboBox.currentText(
+        ) in __reserved_methods__:
+            dir_path = QFileDialog.getExistingDirectory(
+                self, "select mask image folder (or just pass)", os.getcwd())
+            self.__subImgFolder = dir_path
+        subRes = getFiles(dir_path, __support_img_types__)
+        qSubList = subRes
+
         self.slm.setStringList(qlist)
+        self.subSlm.setStringList(qSubList)
         self.imglist = qlist
+        self.__subImgList = qSubList
         self.imglistView.setModel(self.slm)
+        self.subImgListView.setModel(self.subSlm)
         self.__currentImgIndex = 0
         self.imglistView.setCurrentIndex(self.slm.index(
             self.__currentImgIndex))
         self.__updateImage(self.imglist[self.__currentImgIndex])
+        try:
+            _fp, _ = os.path.split(self.imglist[self.__currentImgIndex])
+            __tmp = self.imglist[self.__currentImgIndex].replace(
+                _fp, self.__subImgFolder).split(".")[0]
+            __file = list(filter(lambda x: __tmp in x, self.__subImgList))[0]
+            self.__updateSubImage(__file)
+            index = self.__subImgList.index(__file)
+            self.subImgListView.setCurrentIndex(self.subSlm.index(index))
+        except:
+            self.subGraphicsView.setScene(None)
 
     def openAnnoFolder(self):
         dir_path = QFileDialog.getExistingDirectory(self, "select folder",
@@ -257,12 +367,23 @@ class MainWindow(QMainWindow):
         webbrowser.open(url)
 
     def clickImg(self, qModelIndex):
+        imgpath = self.imglist[qModelIndex.row()]
+        self.__currentImgIndex = qModelIndex.row()
+        self.__updateImage(imgpath)
+        _fp, _ = os.path.split(imgpath)
+        __tmp = imgpath.replace(_fp, self.__subImgFolder).split(".")[0]
+        # print(__tmp)
         try:
-            imgpath = self.imglist[qModelIndex.row()]
-            self.__currentImgIndex = qModelIndex.row()
-            self.__updateImage(imgpath)
+            __file = list(filter(lambda x: __tmp in x, self.__subImgList))[0]
+            self.__updateSubImage(__file)
+            index = self.__subImgList.index(__file)
+            self.subImgListView.setCurrentIndex(self.subSlm.index(index))
         except:
-            traceback.print_exc()
+            self.subGraphicsView.setScene(None)
+
+    def clickSubImgList(self):
+        if self.comboBox.currentText() != "augmentation":
+            return
 
     def __updateImage(self, imgpath: str):
         img = io.imread(imgpath)
@@ -279,6 +400,22 @@ class MainWindow(QMainWindow):
         self.scene = QGraphicsScene()  #创建场景
         self.scene.addItem(self.item)
         self.graphicsView.setScene(self.scene)  #将场景添加至视图
+
+    def __updateSubImage(self, imgpath: str):
+        img = io.imread(imgpath)
+        # print(img.shape)
+        x = img.shape[1]  #获取图像大小
+        y = img.shape[0]
+        if len(img.shape) == 2:
+            import cv2
+            img = cv2.merge([img, img, img])
+        frame = QImage(img, x, y, QImage.Format_RGB888)
+        pix = QPixmap.fromImage(frame)
+        self.item = QGraphicsPixmapItem(pix)  #创建像素图元
+        #self.item.setScale(self.zoomscale)
+        self.scene = QGraphicsScene()  #创建场景
+        self.scene.addItem(self.item)
+        self.subGraphicsView.setScene(self.scene)  #将场景添加至视图
 
     def clickAnno(self, qModelIndex):
         self.textBrowser.clear()

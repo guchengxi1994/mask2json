@@ -8,8 +8,10 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-11-19 10:42:49
 '''
 import copy
+import os
 
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon
 from convertmask import (__support_aug_methods__,
                          __support_aug_optional_methods__)
 from PyQt5.QtWidgets import (QComboBox, QCompleter, QDialog, QHBoxLayout,
@@ -20,8 +22,14 @@ from PyQt5.QtWidgets import (QComboBox, QCompleter, QDialog, QHBoxLayout,
 class AugForm(QDialog):
     def __init__(self,**params) -> None:
         super().__init__()
+        BASE_DIR = os.path.abspath(os.curdir)
         layout = QHBoxLayout(self)
-        print(params) # test
+        # print(params) # test
+        self.setWindowFlags( Qt.WindowCloseButtonHint)
+
+        self.setWindowTitle(params.get("title","Augmentation"))
+        self.setWindowIcon(QIcon(BASE_DIR + os.sep + 'UI' + os.sep + 'statics' + os.sep +
+                  'look.png'))
 
         self.setFixedSize(1100, 200)
 
@@ -36,7 +44,7 @@ class AugForm(QDialog):
         self.optional_methods.setEditable(True)
 
         # layout.addWidget(self.chosenMethod)
-        layout.addWidget(QLabel("Support Methods", self))
+        layout.addWidget(QLabel("Supported Methods", self))
         layout.addWidget(self.methods)
         layout.addItem(
             QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
@@ -45,6 +53,7 @@ class AugForm(QDialog):
 
         self.commit = QPushButton(self)
         self.commit.setText('OK !')
+        self.commit.clicked.connect(self.__commitAction)
         layout.addItem(
             QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
         layout.addWidget(self.commit)
@@ -53,6 +62,9 @@ class AugForm(QDialog):
 
         self.methods.currentTextChanged.connect(self.choseCombobox)
         self.optional_methods.currentTextChanged.connect(self.choseCombobox)
+
+    def __commitAction(self):
+        self.close()
 
     def initCompleter(self):
         tmp = copy.deepcopy(__support_aug_methods__)

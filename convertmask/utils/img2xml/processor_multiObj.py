@@ -5,17 +5,13 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-04-22 17:07:28
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-05 10:18:49
+LastEditTime: 2021-02-19 16:50:40
 '''
 import os
 import xml.etree.ElementTree as ET
 from xml.dom.minidom import parse
 
-# import json
 import xmltodict
-
-# from lxml.etree import Element, SubElement, tostring
-# from xml.etree.ElementTree import fromstring, ElementTree
 
 
 def json_to_xml(json_str):
@@ -213,24 +209,3 @@ def img2xml_multiobj(tmpPath: str, aimPath: str, folder: str, filename: str,
         root = prettyXml(root, '\t', '\n')
         tree = ET.ElementTree(root)
         tree.write(tmpPath)
-
-
-# if __name__ == "__main__":
-
-#     bndbox = {}
-#     # bndbox['xmin'] = 387
-#     # bndbox['ymin'] = 34
-#     # bndbox['xmax'] = 578
-#     # bndbox['ymax'] = 1622
-
-#     bndbox['xmin'] = 1
-#     bndbox['ymin'] = 2
-#     bndbox['xmax'] = 150
-#     bndbox['ymax'] = 150
-
-#     writeXML("D:\DefectDemo\DEMO2\defect\\224-F-76-6-0000.xml",'sadasd',bndbox)
-
-# with open("D:\\getWeld\\insertXML\\test2.xml",'rb') as f:
-# f = open("D:\\getWeld\\insertXML\\test2.xml",'w')
-# f.writelines(img2xml("HBXZ","aa","asas\\aa.xx",12,23,"aaa",123,444,4523,664))
-# f.close()

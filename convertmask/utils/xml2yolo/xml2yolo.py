@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-08-24 08:54:29
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-20 10:56:43
+LastEditTime: 2021-02-19 16:37:04
 '''
 import glob
 import os
@@ -16,6 +16,24 @@ from tqdm import tqdm
 
 
 def x2yConvert(xmlpath, labelPath=''):
+    """ this function is used to convert xmls to yolo txts
+    
+    params:
+    xmlpath : xmls saved folder path
+    labelPath : can be blank, classes information,like
+             '''
+             
+             classname1
+
+             classname2
+
+             classname3
+             
+             ...
+
+             '''
+
+    """
     labels = readLabels(labelPath)
     parent_path = os.path.dirname(xmlpath)
     if not os.path.exists(xmlpath):

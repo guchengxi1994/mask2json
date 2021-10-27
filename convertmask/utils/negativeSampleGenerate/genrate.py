@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-11-25 11:06:00
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-05 10:20:25
+LastEditTime: 2021-02-19 16:43:26
 '''
 import glob
 import os
@@ -98,15 +98,7 @@ def isIouSatisfied(iou: float, ff: list, boxHeights: list, boxWidths: list,
     for i in range(0, len(ff)):
         if area / (boxHeights[ff[i]] * boxWidths[ff[i]]) > iou:
             flag = False
-            # print(ff[i])
-            # print(area)
-            # print((boxHeights[ff[i]] * boxWidths[ff[i]]))
-            # print('xxxxxxxxxxxxxxxxxxxxxxxxxxxx')
-        # else:
-        #     print(ff[i])
-        #     print(area)
-        #     print((boxHeights[ff[i]] * boxWidths[ff[i]]))
-        #     print('===========================')
+
     return flag
 
 

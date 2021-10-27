@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 11:41:14
 LastEditors: xiaoshuyui
-LastEditTime: 2021-02-01 14:33:07
+LastEditTime: 2021-02-19 16:47:41
 '''
 import copy
 import os
@@ -50,7 +50,7 @@ def convertImgSplit(oriImg: str,
                     bias=2000):
     imgName = oriImg.split(os.sep)[-1][:-4]
     logger.warning("there is a issue related to  Image Binarization")
-    # logger.warning("this version is not convenient.it convert mask to json first because i \n have no idea how to modify getMultiShapes.py(getMultiObjs_voc)")
+    
     if mask_or_xml.endswith('xml'):
         _, maskPath = x2m.x2mConvert(mask_or_xml, labelpath, yamlPath)
         maskImg = io.imread(maskPath)

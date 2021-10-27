@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-09-03 07:58:48
 LastEditors: xiaoshuyui
-LastEditTime: 2020-11-25 11:35:28
+LastEditTime: 2021-02-19 16:39:11
 '''
 import glob
 import os
@@ -129,6 +129,9 @@ def generateMask(xmlPath, parent_path='', label_masks=None,flag=True):
 
 
 def x2mConvert(xmlpath, labelPath='', yamlPath=''):
+    """this function is used to convert xml to masks
+
+    """
     flagY = True
     flagL = True
     if not os.path.exists(yamlPath):

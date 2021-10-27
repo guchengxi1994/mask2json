@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2021-01-13 13:42:14
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-14 17:31:22
+LastEditTime: 2021-02-19 16:42:15
 '''
 import glob
 import os
@@ -15,7 +15,6 @@ from convertmask import __CPUS__
 from convertmask.utils.methods.logger import logger
 from tqdm import tqdm
 
-from devtool import logit
 from random import sample
 import copy
 
@@ -118,7 +117,6 @@ def getTrainValSet(resList: list, r: list):
         i += 1
 
 
-@logit()
 def split(folder: str, savaFolder: str, nc: int = 42, multiprocesses=True):
     global RES
     txts = glob.glob(folder + os.sep + "*.txt")

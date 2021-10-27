@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-12 15:47:58
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-04 13:59:03
+LastEditTime: 2021-02-19 14:56:42
 '''
 import glob
 import os
@@ -19,6 +19,25 @@ from tqdm import tqdm
 
 
 def y2xConvert(txtPath, imgPath, labelPath):
+    """ this function is used to convert yolo txts to xml files(in order to change)
+    
+    params:
+    txtPath : yolo txts saved folder path
+    imgPath : images saved folder
+    labelPath : classes information,like
+             '''
+             
+             classname1
+
+             classname2
+
+             classname3
+             
+             ...
+
+             '''
+
+    """
     logger.info('only *.jpg supported right now!')
     labels = readLabels(labelPath)
     if not os.path.exists(txtPath):

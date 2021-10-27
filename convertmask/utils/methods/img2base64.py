@@ -1,11 +1,11 @@
 '''
-@lanhuage: python
-@Descripttion: 
-@version: beta
-@Author: xiaoshuyui
-@Date: 2020-06-09 16:25:31
+lanhuage: python
+Descripttion: 
+version: beta
+Author: xiaoshuyui
+Date: 2020-06-09 16:25:31
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-05 13:36:31
+LastEditTime: 2021-02-19 16:44:38
 '''
 import base64
 from convertmask import baseDecorate

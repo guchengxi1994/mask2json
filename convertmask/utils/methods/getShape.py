@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-06-09 16:31:45
 LastEditors: xiaoshuyui
-LastEditTime: 2021-01-05 10:20:00
+LastEditTime: 2021-02-19 16:45:16
 '''
 import cv2
 import numpy as np
@@ -47,13 +47,6 @@ def getBinary(img_or_path, minConnectedArea=20):
 
     ret, img_bin = cv2.threshold(img_gray, 127, 255, cv2.THRESH_BINARY)
 
-    # kernel = np.ones((5,5),np.uint8)
-    # img_bin = cv2.dilate(img_bin,kernel)
-    # img_bin = cv2.erode(img_bin,kernel)
-
-    # img_bin[img_bin!=0] = 255
-
-    # img_bin = morphology.remove_small_objects(img_bin,3)
     _, labels, stats, centroids = cv2.connectedComponentsWithStats(img_bin)
     # print(stats.shape)
     for index in range(1, stats.shape[0]):
@@ -93,9 +86,6 @@ def getMultiRegion(img, img_bin):
     # print(len(contours))
     regions = []
     if len(contours) >= 1:
-        # region = get_approx(img, contours[0], 0.002)
-        # return region
-        # elif len(contours)>1:
         for i in range(0, len(contours)):
             if i != []:
                 # print(len(contours[i]))

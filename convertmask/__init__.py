@@ -24,13 +24,19 @@ __version__ = '0.5.3'
 __appname__ = 'convertmask'
 __support_methods__ = [
     'mask2json',
-    'mask2xml',
+    'img2xml',
     'json2mask',
     'json2xml',
     'xml2json',
     'yolo2xml',
     'xml2yolo',
+    'xml2mask',
     'augmentation',
+]
+
+__reserved_methods__ = [
+    'mask2json',
+    
 ]
 
 __support_methods_simplified__ = {

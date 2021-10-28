@@ -130,11 +130,19 @@ class MainOptionalOperator(object):
         if not self.saveFile:
             return pimgs
         else:
-            if not os.path.exists(self.saveDir) and self.saveDir != '':
-                os.mkdir(self.saveDir)
-            else:
+            # if not os.path.exists(self.saveDir) and self.saveDir != '':
+            #     os.mkdir(self.saveDir)
+            # else:
+            #     logger.error("Provided savedir is not valid")
+            #     return
+
+            if self.saveDir == "" or self.saveDir is None:
                 logger.error("Provided savedir is not valid")
                 return
+            
+            if not os.path.exists(self.saveDir):
+                os.mkdir(self.saveDir)
+
             if type(self.imgs) is not list:
                 if type(self.imgs) is str:
                     filename = os.path.split(self.imgs)[1]

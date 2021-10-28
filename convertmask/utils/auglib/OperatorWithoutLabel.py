@@ -187,7 +187,7 @@ class MainOperatorWithoutLabel(OptionalOperator):
 
     def addAugs(self, method: str):
         self.augs.append(method)
-    
+
     def _help(self):
         print('========  Operation Introduction  =======')
         print('=========== HELP  INFORMATION ===========')
@@ -197,7 +197,7 @@ class MainOperatorWithoutLabel(OptionalOperator):
             2. noise
             3. rotation
             4. translation
-            5. resize
+            5. flip
 
             for 'zoom', parameters list should includes 
             MainOperatorWithoutLabel.setZoomAttributes(size=a float) 
@@ -228,6 +228,36 @@ class MainOperatorWithoutLabel(OptionalOperator):
             self.__class__)
         if val:
             self.optional = val
+
+    def autoAugment(self):
+        if len(self.augs) == 0:
+            return
+        for i in self.augs:
+            if i == "zoom":
+                _operator = ZoomOperator(None, 1)
+                _operator.setRandomSize(True)
+                self.operations.insert(0, _operator)
+
+            if i == "noise":
+                _operator = NoiseOperator(None, [])
+                _operator.setRandomNoiseType(True)
+                self.operations.insert(0, _operator)
+
+            if i == "rotation":
+                _operator = RotationOperator(None, 30, 1.0)
+                self.operations.insert(0, _operator)
+
+            if i == "translation":
+                _operator = TranslationOperation(None, 0, 0)
+                self.operations.insert(0, _operator)
+
+            if i == "flip":
+                self.operations.append(FlipOperator(None))
+
+        if len(self.operations) == 0:
+            return
+
+        return self.do()
 
     def setZoomAttributes(self, **kwargs):
         """Input: size(float, zoom factor)
@@ -271,7 +301,7 @@ class MainOperatorWithoutLabel(OptionalOperator):
         self.operations.append(FlipOperator(None))
 
     def do(self):
-        # print(len(self.operations))    
+        # print(len(self.operations))
         if len(self.augs) == 0:
             logger.info('None methods founds')
             return
@@ -281,24 +311,31 @@ class MainOperatorWithoutLabel(OptionalOperator):
             i.setImgs(pimgs)
             pimgs = i.do()
             gc.collect()
-        
+
         if not self.saveFile:
             return pimgs
         else:
-            if not os.path.exists(self.saveDir) and self.saveDir != '':
-                os.mkdir(self.saveDir)
-            else:
+            # if not os.path.exists(self.saveDir) and self.saveDir != '':
+            #     os.mkdir(self.saveDir)
+            # else:
+            #     logger.error("Provided savedir is not valid")
+            #     return
+            if self.saveDir == "" or self.saveDir is None:
                 logger.error("Provided savedir is not valid")
                 return
+            
+            if not os.path.exists(self.saveDir):
+                os.mkdir(self.saveDir)
+
             if type(self.imgs) is not list:
                 if type(self.imgs) is str:
                     filename = os.path.split(self.imgs)[1]
                 else:
                     filename = 'test.jpg'
-                if isinstance(pimgs,np.ndarray):
+                if isinstance(pimgs, np.ndarray):
                     io.imsave(self.saveDir + os.sep + filename, pimgs)
                 else:
-                    for i in range(0,len(pimgs)):
+                    for i in range(0, len(pimgs)):
                         filename = str(i) + filename
                         io.imsave(self.saveDir + os.sep + filename, pimgs[i])
             else:
@@ -307,10 +344,11 @@ class MainOperatorWithoutLabel(OptionalOperator):
                         filename = os.path.split(i)[1]
                     else:
                         filename = 'test{}.jpg'.format(i)
-                    if isinstance(pimgs[i],np.ndarray):
+                    if isinstance(pimgs[i], np.ndarray):
                         io.imsave(self.saveDir + os.sep + filename, pimgs[i])
                     else:
-                        for j in range(0,len(pimgs[i])):
+                        for j in range(0, len(pimgs[i])):
                             filename = str(j) + filename
-                            io.imsave(self.saveDir + os.sep + filename, pimgs[i][j])
+                            io.imsave(self.saveDir + os.sep + filename,
+                                      pimgs[i][j])
             logger.info("Done! See {}.".format(self.saveDir))

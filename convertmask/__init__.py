@@ -20,7 +20,7 @@ __support_aug_optional_methods__ = [
     'crop', 'distort', 'inpaint', 'perspective', 'resize'
 ]
 
-__version__ = '0.5.3'
+__version__ = '0.5.4'
 __appname__ = 'convertmask'
 __support_methods__ = [
     'mask2json',

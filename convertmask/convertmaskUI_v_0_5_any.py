@@ -31,6 +31,8 @@ from convertmask import (__appname__, __reserved_methods__,
                          __version__)
 from convertmask.UI.utils import __UI_NAME__, __UI_VERSION__
 from convertmask.UI.utils.getAllTypeFiles import getFiles
+from convertmask.utils.auglib.OperatorWithoutLabel import \
+    MainOperatorWithoutLabel
 
 BASE_DIR = os.path.abspath(os.curdir)
 
@@ -40,7 +42,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.__currentImgIndex = -1
         self.setWindowTitle("{} , UI version : {}".format(
-            __appname__, __UI_VERSION__))
+            __UI_NAME__, __UI_VERSION__))
         self.setMinimumSize(960, 600)
         self.setWindowIcon(
             QIcon(BASE_DIR + os.sep + 'UI' + os.sep + 'statics' + os.sep +
@@ -214,7 +216,7 @@ class MainWindow(QMainWindow):
         self.__subImgList = []
         self.__subImgFolder = ''
         self.comboBox.currentIndexChanged.connect(self.__indexChangedAction)
-
+        self.__augs = ''
 
     def __indexChangedAction(self):
         # print(self.comboBox.currentText())
@@ -223,7 +225,7 @@ class MainWindow(QMainWindow):
             d = AugForm()
             d.exec_()
             print(d.chosenMethod.text())
-
+            self.__augs = d.chosenMethod.text()
 
     def getMaskImgPath(self, imgpath: str) -> str:
         try:
@@ -235,14 +237,12 @@ class MainWindow(QMainWindow):
             return ""
 
     def __execAction(self):
-        # print(self.comboBox.currentText())
         if len(self.imglist) == 0:
             return
         print(self.imglist[self.__currentImgIndex])
-        # print(self.textClassBrowser.toPlainText()=="")
-        if self.textClassBrowser.toPlainText() == "":
-            self.openClassInfo()
         if self.comboBox.currentText() == "mask2json":
+            if self.textClassBrowser.toPlainText() == "":
+                self.openClassInfo()
             a = self.getMaskImgPath(self.imglist[self.__currentImgIndex])
             if a == "":
                 return
@@ -253,8 +253,29 @@ class MainWindow(QMainWindow):
                 os.getcwd(),
                 self.__labelPath,
                 flag=True)
-            # print(_j)
             self.textBrowser.setText(_j)
+
+        if self.comboBox.currentText() == "augmentation":
+            try:
+                _p = BASE_DIR + os.sep + 'test_imgs' + os.sep + "cache"
+                # print(BASE_DIR + os.sep + 'test_imgs' + os.sep + "cache")
+                imgpath = self.imglist[self.__currentImgIndex]
+                _operators = MainOperatorWithoutLabel(imgpath,
+                                                      saveDir=_p,
+                                                      saveFile=True)
+                _operators.augs = self.__augs.split(";")
+                _operators.autoAugment()
+
+                self.__subImgFolder = _p
+                subRes = getFiles(_p, __support_img_types__)
+                qSubList = subRes
+                self.subSlm.setStringList(qSubList)
+                self.__subImgList = qSubList
+                self.subImgListView.setModel(self.subSlm)
+                self.__updateSubImage(self.__subImgList[0])
+
+            except:
+                traceback.print_exc()
 
     def nextAction(self):
         if self.__currentImgIndex == -1 or self.__currentImgIndex + 1 == len(
@@ -283,11 +304,16 @@ class MainWindow(QMainWindow):
         fileName, _ = QFileDialog.getOpenFileName(
             self, "select file", os.getcwd(),
             "Image Files({})".format(' '.join(__support_img_types__)))
-        # slm = QStringListModel()
+        if fileName is None or fileName == "":
+            return
         qlist = [fileName]
         self.slm.setStringList(qlist)
         self.imglist = qlist
+        self.__currentImgIndex = 0
         self.imglistView.setModel(self.slm)
+        self.imglistView.setCurrentIndex(self.slm.index(
+            self.__currentImgIndex))
+        self.__updateImage(self.imglist[self.__currentImgIndex])
 
     def openClassInfo(self):
         fileName, _ = QFileDialog.getOpenFileName(
@@ -381,9 +407,13 @@ class MainWindow(QMainWindow):
         except:
             self.subGraphicsView.setScene(None)
 
-    def clickSubImgList(self):
+    def clickSubImgList(self, qModelIndex):
         if self.comboBox.currentText() != "augmentation":
             return
+        imgpath = self.__subImgList[qModelIndex.row()]
+        self.__updateSubImage(imgpath)
+        index = self.__subImgList.index(imgpath)
+        self.subImgListView.setCurrentIndex(self.subSlm.index(index))
 
     def __updateImage(self, imgpath: str):
         img = io.imread(imgpath)

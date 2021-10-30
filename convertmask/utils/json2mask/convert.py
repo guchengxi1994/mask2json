@@ -12,6 +12,7 @@ import json
 import os
 import os.path as osp
 
+import convertmask
 import PIL.Image
 import yaml
 from convertmask.utils.methods.logger import logger
@@ -23,11 +24,7 @@ try:
 except:
     isInstalled = False
 
-if isInstalled:
-    import labelme.utils as lUtils  # solve conflict
-else:
-    from convertmask.labelme_sub import utils as lUtils
-
+import labelme.utils as lUtils
 import numpy as np
 from tqdm import tqdm
 
@@ -56,7 +53,11 @@ def processor(json_file, encoding="utf-8", flag=False):
                         for l, name in enumerate(lbl_names)
                     ]
 
-                    lbl_viz = lUtils.draw_label(lbl, img, captions)
+                    if isInstalled:
+                        lbl_viz = lUtils.draw_label(lbl, img, captions)
+                    else:
+                        from convertmask.utils.draw import draw_label
+                        lbl_viz =  draw_label(lbl, img, captions)
 
                     ##
                     if np.max(lbl) == 255 or np.max(lbl) == 1:
@@ -118,7 +119,11 @@ def processor(json_file, encoding="utf-8", flag=False):
                             for l, name in enumerate(lbl_names)
                         ]
 
-                        lbl_viz = lUtils.draw_label(lbl, img, captions)
+                        if isInstalled:
+                            lbl_viz = lUtils.draw_label(lbl, img, captions)
+                        else:
+                            from convertmask.utils.draw import draw_label
+                            lbl_viz =  draw_label(lbl, img, captions)
 
                         # lbl[lbl>0] = 255
                         if np.max(lbl) == 255 or np.max(lbl) == 1:

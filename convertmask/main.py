@@ -13,10 +13,10 @@ sys.path.append('..')
 import difflib
 import os
 
-import convertmask.utils.methods.configUtils as ccfg
+import convertmask.utils.methods.config_utils as ccfg
 from convertmask import (BaseParser, __appname__, __support_methods__,
                          __support_methods_simplified__)
-from convertmask.utils.imgAug_script import (imgAug_LabelImg,
+from convertmask.utils.img_augment_script import (imgAug_LabelImg,
                                              imgAug_withLabels,
                                              imgAug_withoutLabels)
 from convertmask.utils.json2mask.convert import processor

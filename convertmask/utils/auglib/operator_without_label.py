@@ -11,10 +11,10 @@ import gc
 import os
 
 import numpy as np
-from convertmask.utils.auglib.imgAug_nolabel import (imgFlip, imgNoise,
+from convertmask.utils.auglib.img_aug_nolabel import (imgFlip, imgNoise,
                                                      imgRotation,
                                                      imgTranslation, imgZoom)
-from convertmask.utils.auglib.optionsOperatorWithoutLabel import \
+from convertmask.utils.auglib.options_operator_without_label import \
     MainOptionalOperator as OptionalOperator
 from convertmask.utils.methods.logger import logger
 from skimage import io

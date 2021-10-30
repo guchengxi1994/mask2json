@@ -21,9 +21,7 @@ from skimage import io
 try:
     from labelme import __version__ as labelmeVersion
 except:
-    from convertmask.labelme_sub import __version__ as labelmeVersion
-
-    # __version__ = '4.2.9'
+    labelmeVersion = '4.2.9'
 
 
 def x2jConvert(xmlpath, originImgPath, flag=True):

@@ -25,9 +25,9 @@ import cv2
 import numpy as np
 import skimage.io as io
 import yaml
-from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
+from convertmask.utils.img2xml.processor_multi_object import img2xml_multiobj
 from convertmask.utils.methods import rmQ
-from convertmask.utils.methods.getShape import *
+from convertmask.utils.methods.get_shape import *
 from convertmask.utils.methods.img2base64 import imgEncode
 # import warnings
 from convertmask.utils.methods.logger import logger

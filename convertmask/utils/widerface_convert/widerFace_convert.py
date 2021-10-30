@@ -13,7 +13,7 @@ from multiprocessing import Pool
 from skimage import io
 
 from convertmask import __CPUS__
-from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
+from convertmask.utils.img2xml.processor_multi_object import img2xml_multiobj
 from convertmask.utils.methods.logger import logger
 from tqdm import tqdm
 

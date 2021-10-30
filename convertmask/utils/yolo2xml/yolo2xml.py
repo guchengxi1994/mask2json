@@ -11,7 +11,7 @@ import glob
 import os
 # import xml.etree.ElementTree as ET
 
-from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
+from convertmask.utils.img2xml.processor_multi_object import img2xml_multiobj
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.xml2yolo.xml2yolo import readLabels
 from skimage import io

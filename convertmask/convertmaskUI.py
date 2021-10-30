@@ -31,8 +31,8 @@ from convertmask import (__appname__, __reserved_methods__,
                          __support_img_types__, __support_methods__,
                          __version__)
 from convertmask.UI.utils import __UI_NAME__, __UI_VERSION__
-from convertmask.UI.utils.getAllTypeFiles import getFiles
-from convertmask.utils.auglib.OperatorWithoutLabel import \
+from convertmask.UI.utils.get_all_type_files import getFiles
+from convertmask.utils.auglib.operator_without_label import \
     MainOperatorWithoutLabel
 from convertmask.utils.methods.img2base64 import img_b64_to_arr
 
@@ -289,7 +289,7 @@ class MainWindow(QMainWindow):
         if self.comboBox.currentText() == "json2mask":
             try:
                 _p = BASE_DIR + os.sep + 'test_imgs' + os.sep + "cache"
-                from convertmask.utils.json2mask.convertWithLabel import \
+                from convertmask.utils.json2mask.convert_with_label import \
                     processor
                 annoPath = self.annolist[self.__currentAnnoIndex]
                 print(annoPath)

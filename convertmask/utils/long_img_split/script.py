@@ -17,12 +17,12 @@ from multiprocessing import Pool
 import tqdm
 from convertmask import __CPUS__, baseDecorate, do_nothing
 from convertmask.utils.auglib.optional.paddingAndCut import padForSplitScript
-from convertmask.utils.methods.getMultiShapes import getMultiObjs_voc_withYaml
+from convertmask.utils.methods.get_multi_shapes import getMultiObjs_voc_withYaml
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.xml2mask import x2m
 from skimage import io
 
-from .splitImg import reshape_dengbili, splitImg_cover, splitImg_dengbili
+from .split_img import reshape_dengbili, splitImg_cover, splitImg_dengbili
 
 # import json
 # from convertmask.utils.json2xml.json2xml import j2xConvert

@@ -16,7 +16,7 @@ import random
 import cv2
 import numpy as np
 import skimage.util.noise as snoise
-from convertmask.utils.auglib.imgAug import _getZoomedImg
+from convertmask.utils.auglib.img_aug import _getZoomedImg
 # from convertmask.utils.methods.entity import Ori_Pro, do_nothing
 from convertmask import do_nothing,Ori_Pro
 

@@ -12,7 +12,7 @@ import os
 from multiprocessing import Pool
 
 from convertmask import __CPUS__
-from convertmask.utils.auglib import imgAug, imgAug_nolabel, imgAug_xmls
+from convertmask.utils.auglib import img_aug, img_aug_nolabel, img_aug_xmls
 from convertmask.utils.methods.logger import logger
 from tqdm import tqdm
 
@@ -21,7 +21,7 @@ def proc_xml(img, imgPath, xmlpath, number):
     i_xml = img.replace(imgPath,
                         xmlpath) if os.path.isdir(xmlpath) else xmlpath
     i_xml = i_xml.replace('.jpg', '.xml')
-    imgAug_xmls.aug_labelimg(img, i_xml, num=number)
+    img_aug_xmls.aug_labelimg(img, i_xml, num=number)
 
 
 def imgAug_withLabels(imgPath, labelPath, number=1, yamlFilePath=''):
@@ -52,7 +52,7 @@ def imgAug_withLabels(imgPath, labelPath, number=1, yamlFilePath=''):
             i_json = i.replace(
                 imgPath, labelPath) if os.path.isdir(labelPath) else labelPath
             i_json = i_json.replace('.jpg', '.json')
-            imgAug.aug_labelme(i, i_json, num=num, yamlFilePath=yamlFilePath)
+            img_aug.aug_labelme(i, i_json, num=num, yamlFilePath=yamlFilePath)
         # num += 1
 
 
@@ -73,7 +73,7 @@ def imgAug_withoutLabels(imgPath, number=1):
             number = 1
     for num in range(0, number):
         for i in tqdm(oriImgs):
-            imgAug_nolabel.aug(i, num=num)
+            img_aug_nolabel.aug(i, num=num)
         # num += 1
 
 

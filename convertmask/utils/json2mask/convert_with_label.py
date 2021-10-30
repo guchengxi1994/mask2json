@@ -17,7 +17,7 @@ import cv2
 import numpy as np
 import PIL
 import yaml
-from convertmask.labelme_sub import utils as lUtils
+from labelme import utils as lUtils
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.xml2mask.x2m import labels2yaml
 from tqdm import tqdm
@@ -300,7 +300,11 @@ def draw_label(label, img=None, label_names=None, colormap=None, **kwargs):
 def _validate_colormap(colormap, n_labels):
     # print(n_labels)
     if colormap is None:
-        colormap = lUtils.label_colormap(n_labels)
+        try:
+            colormap = lUtils.label_colormap(n_labels)
+        except:
+            from convertmask.utils.draw import label_colormap
+            colormap = label_colormap(n_labels)
     else:
         assert colormap.shape == (colormap.shape[0], 3), \
             'colormap must be sequence of RGB values'

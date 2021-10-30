@@ -8,6 +8,7 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-11-19 10:42:38
 '''
 
+import json
 import os
 import sys
 import traceback
@@ -21,8 +22,8 @@ from PyQt5.QtCore import QStringListModel
 from PyQt5.QtGui import QIcon, QImage, QPixmap
 from PyQt5.QtWidgets import (QAction, QApplication, QFileDialog,
                              QGraphicsPixmapItem, QGraphicsScene, QHBoxLayout,
-                             QLabel, QMainWindow, QMessageBox, QVBoxLayout,
-                             QWidget, qApp)
+                             QLabel, QMainWindow, QMessageBox, QPushButton,
+                             QVBoxLayout, QWidget, qApp)
 from skimage import io
 
 from convertmask import (__appname__, __reserved_methods__,
@@ -33,6 +34,7 @@ from convertmask.UI.utils import __UI_NAME__, __UI_VERSION__
 from convertmask.UI.utils.getAllTypeFiles import getFiles
 from convertmask.utils.auglib.OperatorWithoutLabel import \
     MainOperatorWithoutLabel
+from convertmask.utils.methods.img2base64 import img_b64_to_arr
 
 BASE_DIR = os.path.abspath(os.curdir)
 
@@ -198,6 +200,8 @@ class MainWindow(QMainWindow):
         self.slm = QStringListModel()
         # mask image
         self.subSlm = QStringListModel()
+        # annotation json/xml list
+        self.annoSlm = QStringListModel()
 
         QtCore.QMetaObject.connectSlotsByName(self)
 
@@ -212,16 +216,18 @@ class MainWindow(QMainWindow):
         self.labellistView.clicked.connect(self.clickAnno)
         self.subImgListView.clicked.connect(self.clickSubImgList)
 
+        # yaml or txt path
         self.__labelPath = ""
         self.__subImgList = []
         self.__subImgFolder = ''
         self.comboBox.currentIndexChanged.connect(self.__indexChangedAction)
         self.__augs = ''
+        self.__currentAnnoIndex = -1
 
     def __indexChangedAction(self):
         # print(self.comboBox.currentText())
         if self.comboBox.currentText() == "augmentation":
-            from convertmask.UI.components.augForm import AugForm
+            from convertmask.UI.components.augment_form import AugForm
             d = AugForm()
             d.exec_()
             print(d.chosenMethod.text())
@@ -237,10 +243,10 @@ class MainWindow(QMainWindow):
             return ""
 
     def __execAction(self):
-        if len(self.imglist) == 0:
-            return
-        print(self.imglist[self.__currentImgIndex])
         if self.comboBox.currentText() == "mask2json":
+            if len(self.imglist) == 0:
+                return
+            print(self.imglist[self.__currentImgIndex])
             if self.textClassBrowser.toPlainText() == "":
                 self.openClassInfo()
             a = self.getMaskImgPath(self.imglist[self.__currentImgIndex])
@@ -256,6 +262,9 @@ class MainWindow(QMainWindow):
             self.textBrowser.setText(_j)
 
         if self.comboBox.currentText() == "augmentation":
+            if len(self.imglist) == 0:
+                return
+            print(self.imglist[self.__currentImgIndex])
             try:
                 _p = BASE_DIR + os.sep + 'test_imgs' + os.sep + "cache"
                 # print(BASE_DIR + os.sep + 'test_imgs' + os.sep + "cache")
@@ -274,6 +283,33 @@ class MainWindow(QMainWindow):
                 self.subImgListView.setModel(self.subSlm)
                 self.__updateSubImage(self.__subImgList[0])
 
+            except:
+                traceback.print_exc()
+
+        if self.comboBox.currentText() == "json2mask":
+            try:
+                _p = BASE_DIR + os.sep + 'test_imgs' + os.sep + "cache"
+                from convertmask.utils.json2mask.convertWithLabel import \
+                    processor
+                annoPath = self.annolist[self.__currentAnnoIndex]
+                print(annoPath)
+                _jsonData = json.load(open(annoPath))
+                array = img_b64_to_arr(_jsonData.get("imageData"))
+                self.__updateImage("",array)
+
+                if self.__labelPath == "" or self.__labelPath is None:
+                    QMessageBox.warning(
+                        self, "Warning",
+                        "Json to mask without yamls is not recommended.",
+                        QMessageBox.Yes | QMessageBox.No, QMessageBox.Yes)
+                    return
+                path = processor(annoPath, self.__labelPath)
+                viz = getFiles(path + os.sep+ "mask_viz" + os.sep,__support_img_types__)
+                self.subSlm.setStringList(viz)
+                self.__subImgList = viz
+                self.subImgListView.setModel(self.subSlm)
+                self.__updateSubImage(self.__subImgList[0])
+                
             except:
                 traceback.print_exc()
 
@@ -296,7 +332,7 @@ class MainWindow(QMainWindow):
 
     def _test(self):
         # pass
-        from convertmask.UI.components.augForm import AugForm
+        from convertmask.UI.components.augment_form import AugForm
         d = AugForm(name=1, sex=2)
         d.exec_()
 
@@ -362,31 +398,32 @@ class MainWindow(QMainWindow):
         self.__subImgList = qSubList
         self.imglistView.setModel(self.slm)
         self.subImgListView.setModel(self.subSlm)
-        self.__currentImgIndex = 0
-        self.imglistView.setCurrentIndex(self.slm.index(
-            self.__currentImgIndex))
-        self.__updateImage(self.imglist[self.__currentImgIndex])
-        try:
-            _fp, _ = os.path.split(self.imglist[self.__currentImgIndex])
-            __tmp = self.imglist[self.__currentImgIndex].replace(
-                _fp, self.__subImgFolder).split(".")[0]
-            __file = list(filter(lambda x: __tmp in x, self.__subImgList))[0]
-            self.__updateSubImage(__file)
-            index = self.__subImgList.index(__file)
-            self.subImgListView.setCurrentIndex(self.subSlm.index(index))
-        except:
-            self.subGraphicsView.setScene(None)
+        if len(self.imglist)>0:
+            self.__currentImgIndex = 0
+            self.imglistView.setCurrentIndex(self.slm.index(
+                self.__currentImgIndex))
+            self.__updateImage(self.imglist[self.__currentImgIndex])
+            try:
+                _fp, _ = os.path.split(self.imglist[self.__currentImgIndex])
+                __tmp = self.imglist[self.__currentImgIndex].replace(
+                    _fp, self.__subImgFolder).split(".")[0]
+                __file = list(filter(lambda x: __tmp in x, self.__subImgList))[0]
+                self.__updateSubImage(__file)
+                index = self.__subImgList.index(__file)
+                self.subImgListView.setCurrentIndex(self.subSlm.index(index))
+            except:
+                self.subGraphicsView.setScene(None)
 
     def openAnnoFolder(self):
-        dir_path = QFileDialog.getExistingDirectory(self, "select folder",
-                                                    os.getcwd())
+        dir_path = QFileDialog.getExistingDirectory(
+            self, "select annotation folder", os.getcwd())
         res = getFiles(dir_path, __support_anno_types__)
         # print(res)
         # slm = QStringListModel()
         qlist = res
-        self.slm.setStringList(qlist)
+        self.annoSlm.setStringList(qlist)
         self.annolist = qlist
-        self.labellistView.setModel(self.slm)
+        self.labellistView.setModel(self.annoSlm)
 
     def showHelpInformation(self):
         url = 'https://github.com/guchengxi1994/mask2json/tree/test'
@@ -415,8 +452,11 @@ class MainWindow(QMainWindow):
         index = self.__subImgList.index(imgpath)
         self.subImgListView.setCurrentIndex(self.subSlm.index(index))
 
-    def __updateImage(self, imgpath: str):
-        img = io.imread(imgpath)
+    def __updateImage(self, imgpath: str,imgArray=None):
+        if imgArray is  None:   
+            img = io.imread(imgpath)
+        else:
+            img = imgArray
         # print(img.shape)
         x = img.shape[1]  #获取图像大小
         y = img.shape[0]
@@ -449,6 +489,7 @@ class MainWindow(QMainWindow):
 
     def clickAnno(self, qModelIndex):
         self.textBrowser.clear()
+        self.__currentAnnoIndex = qModelIndex.row()
         annoPath = self.annolist[qModelIndex.row()]
         with open(annoPath, 'r', encoding='utf-8', errors='ignore') as f:
             txt = f.readlines()

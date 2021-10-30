@@ -12,8 +12,8 @@ import sys
 sys.path.append("..")
 import os
 
-from convertmask.utils.methods.getMultiShapes import getMultiShapes
-from convertmask.utils.auglib.imgAug import (aug_labelimg, aug_labelme, imgFlip,
+from convertmask.utils.methods.get_multi_shapes import getMultiShapes
+from convertmask.utils.auglib.img_aug import (aug_labelimg, aug_labelme, imgFlip,
                                       imgNoise, imgRotation, imgTranslation,
                                       imgZoom)
 from skimage import io

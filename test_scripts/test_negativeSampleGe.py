@@ -12,7 +12,7 @@ import sys
 sys.path.append("..")
 
 import os
-from convertmask.utils.negativeSampleGenerate.genrate import NegativeSampleGenerater
+from convertmask.utils.negative_sample_generate.genrate import NegativeSampleGenerater
 from skimage import io
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'

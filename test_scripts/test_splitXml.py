@@ -13,7 +13,7 @@ sys.path.append("..")
 import glob
 import os
 
-from convertmask.utils.longImgSplit import script as sc
+from convertmask.utils.long_img_split import script as sc
 
 save_dir = os.path.abspath(os.path.dirname(
     os.getcwd())) + os.sep + 'static' + os.sep + "testXmlSplit" + os.sep

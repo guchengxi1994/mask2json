@@ -11,7 +11,7 @@ import sys
 
 sys.path.append('..')
 
-import convertmask.utils.methods.configUtils as ccfg
+import convertmask.utils.methods.config_utils as ccfg
 
 print(ccfg.config_ROOT)
 

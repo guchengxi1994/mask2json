@@ -10,7 +10,7 @@ LastEditTime: 2020-10-20 09:44:02
 import sys
 
 sys.path.append("..")
-from convertmask.utils.methods import getMultiShapes
+from convertmask.utils.methods import get_multi_shapes
 
 if __name__ == "__main__":
-    getMultiShapes.test()
+    get_multi_shapes.test()

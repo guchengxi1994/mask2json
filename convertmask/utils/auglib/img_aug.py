@@ -20,18 +20,18 @@ import random
 import shutil
 import traceback
 
-import convertmask.utils.methods.configUtils as ccfg
+import convertmask.utils.methods.config_utils as ccfg
 import cv2
 import numpy as np
 import skimage.util.noise as snoise
 from convertmask.utils.json2mask.convert import processor
-from convertmask.utils.json2mask.convertWithLabel import \
+from convertmask.utils.json2mask.convert_with_label import \
     processor as processorWithLabel
 from convertmask.utils.json2xml.json2xml import j2xConvert
 from convertmask.utils.methods import rmQ
 # from convertmask.utils.methods.entity import *
 from convertmask import do_nothing,Ori_Pro,Img_clasId
-from convertmask.utils.methods.getMultiShapes import getMultiShapes
+from convertmask.utils.methods.get_multi_shapes import getMultiShapes
 from convertmask.utils.methods.img2base64 import imgEncode
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.xml2json.xml2json import x2jConvert_pascal

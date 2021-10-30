@@ -10,7 +10,7 @@ import cv2
 import numpy as np
 import skimage
 from convertmask.utils.auglib.optional.resize import resize_img
-from convertmask.utils.img2xml.processor_multiObj import img2xml_multiobj
+from convertmask.utils.img2xml.processor_multi_object import img2xml_multiobj
 from convertmask.utils.methods.logger import logger
 from convertmask.utils.xml2yolo.xml2yolo import convert as x2yVert
 from convertmask.utils.yolo2xml.yolo2xml import convert as y2xVert

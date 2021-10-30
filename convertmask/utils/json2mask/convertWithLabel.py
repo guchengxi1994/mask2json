@@ -81,7 +81,8 @@ def processor(json_file, yaml_file, encoding='utf-8', flag=False):
                                   'w') as f:
                             yaml.safe_dump(info, f, default_flow_style=False)
 
-                        print("Saved to " + parent_path + 'masks_')
+                        # print("Saved to " + parent_path + 'masks_')
+                        return parent_path + 'masks_'
                     else:
                         # print('============>{}'.format(np.max(res)))
                         return res
@@ -145,7 +146,8 @@ def processor(json_file, yaml_file, encoding='utf-8', flag=False):
                                   'w') as f:
                             yaml.safe_dump(info, f, default_flow_style=False)
 
-                        print('Saved to: %s' % out_dir1)
+                        # print('Saved to: %s' % out_dir1)
+                        return out_dir1
                     except Exception as e:
                         # print(e)
                         logger.error(e)
@@ -205,7 +207,7 @@ def readYamlFile(yamlFile):
 
     elif isinstance(yamlFile, dict):
         try:
-            res = x['label_names']
+            res = yamlFile['label_names']
             return res
         except:
             return None

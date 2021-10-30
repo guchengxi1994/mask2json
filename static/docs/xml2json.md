@@ -13,6 +13,8 @@
 
 ## How to use.
 
+```python
+
     import os
     from convertmask.utils.xml2json.xml2json import getPolygon, x2jConvert, x2jConvert_pascal
 
@@ -24,3 +26,4 @@
 
         x2jConvert_pascal(BASE_DIR + os.sep + 'bbox_label.xml',
                         BASE_DIR + os.sep + 'bbox_label.jpg')
+```

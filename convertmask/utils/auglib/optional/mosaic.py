@@ -3,7 +3,10 @@ import copy
 import datetime
 import os
 import random
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 from xml.etree.ElementTree import Element
 
 import cv2

@@ -11,7 +11,10 @@ import math
 import os
 import random
 import shutil
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 
 import cv2
 import numpy as np

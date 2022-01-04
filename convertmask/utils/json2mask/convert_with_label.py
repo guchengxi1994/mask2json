@@ -191,7 +191,8 @@ def readYamlFile(yamlFile):
     if isinstance(yamlFile, str) and os.path.exists(yamlFile):
         if yamlFile.endswith('.yaml'):
             f = open(yamlFile, 'r', encoding='utf-8')
-            x = yaml.load(f.read(), Loader=yaml.FullLoader)
+            # x = yaml.load(f.read(), Loader=yaml.FullLoader)
+            x = yaml.safe_load(f.read())
             try:
                 res = x['label_names']
                 return res
@@ -224,7 +225,8 @@ def readYamlFileVals(classInfomation: dict, k: str):
 def getYamlKeys(yamlFile):
     f = open(yamlFile, 'r', encoding='utf-8')
     if yamlFile.endswith('.yaml'):
-        x = yaml.load(f.read(), Loader=yaml.FullLoader)
+        # x = yaml.load(f.read(), Loader=yaml.FullLoader)
+        x = yaml.safe_load(f.read())
         f.close()
         return x['label_names']
     else:

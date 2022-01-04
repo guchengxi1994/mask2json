@@ -9,7 +9,10 @@ LastEditTime: 2021-02-01 13:23:47
 '''
 import math
 import os
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 from glob import glob
 from multiprocessing import Pool
 

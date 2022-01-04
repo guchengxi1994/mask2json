@@ -8,7 +8,10 @@ LastEditors: xiaoshuyui
 LastEditTime: 2021-02-19 16:50:40
 '''
 import os
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 from xml.dom.minidom import parse
 
 import xmltodict

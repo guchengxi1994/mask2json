@@ -7,7 +7,10 @@ Date: 2020-08-24 08:55:17
 LastEditors: xiaoshuyui
 LastEditTime: 2020-10-10 15:45:45
 '''
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 # import pickle
 import os
 # from os import listdir, getcwd

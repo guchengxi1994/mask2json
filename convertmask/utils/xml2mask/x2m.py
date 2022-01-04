@@ -9,7 +9,10 @@ LastEditTime: 2021-02-19 16:39:11
 '''
 import glob
 import os
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 
 import numpy as np
 import yaml

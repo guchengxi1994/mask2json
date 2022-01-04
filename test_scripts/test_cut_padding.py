@@ -12,7 +12,10 @@ import glob
 import cv2
 import numpy as np
 from skimage import io
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 
 import tqdm
 

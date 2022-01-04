@@ -10,7 +10,10 @@ LastEditTime: 2021-02-19 16:47:41
 import copy
 import os
 import shutil
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 from glob import glob
 from multiprocessing import Pool
 

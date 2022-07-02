@@ -10,7 +10,10 @@ LastEditTime: 2021-02-19 16:40:13
 import json
 import os
 import traceback
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 
 from convertmask.utils.methods.img2base64 import imgEncode
 from convertmask.utils.methods.logger import logger
@@ -21,9 +24,7 @@ from skimage import io
 try:
     from labelme import __version__ as labelmeVersion
 except:
-    from convertmask.labelme_sub import __version__ as labelmeVersion
-
-    # __version__ = '4.2.9'
+    labelmeVersion = '4.2.9'
 
 
 def x2jConvert(xmlpath, originImgPath, flag=True):

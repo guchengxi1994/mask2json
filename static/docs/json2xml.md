@@ -11,10 +11,13 @@
 
 ## How to use.
 
+```python
+
     import os
     from convertmask.utils.json2xml.json2xml import j2xConvert
 
     BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
     j2xConvert(BASE_DIR + '/label_255_p.json')
+```
 
 It is a simple function.

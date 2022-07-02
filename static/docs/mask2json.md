@@ -11,6 +11,8 @@
 
 ## How to use.
 
+```python
+
     from convertmask.utils.methods import getMultiShapes
 
     imgPath = 'D:\\testALg\\mask2json\\mask2json\\static\\multi_objs_test.jpg'
@@ -20,3 +22,4 @@
     getMultiShapes.getMultiShapes(imgPath, maskPath, savePath, yamlPath)  # with yaml
 
     getMultiShapes.getMultiShapes(imgPath, maskPath, savePath)  # without yaml
+```

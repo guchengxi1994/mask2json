@@ -47,6 +47,6 @@ setup(
     long_description=open_file('README.md').read(),
     zip_safe=True,
     entry_points={
-        'console_scripts': ['convertmask = convertmask.main_v_0_5_any:script']
+        'console_scripts': ['convertmask = convertmask.main:script']
     },
 )

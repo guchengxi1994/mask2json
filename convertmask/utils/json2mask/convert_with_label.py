@@ -5,7 +5,7 @@ version: beta
 Author: xiaoshuyui
 Date: 2020-10-20 16:50:35
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-21 14:57:44
+LastEditTime: 2022-07-02 19:31:24
 '''
 
 import io
@@ -158,7 +158,7 @@ def generateMaskFile(data, yamlFile):
     imageWidth = data["imageWidth"]
     mask = np.zeros((imageHeight, imageWidth)).astype(np.uint8)
     yamlInfomation = readYamlFile(yamlFile)
-    # print(yamlInfomation)
+    print(yamlInfomation)
     try:
         shapes = data['shapes']
         # print(shapes)
@@ -181,8 +181,7 @@ def generateMaskFile(data, yamlFile):
 
 
 def draw_mask(polygon: list, mask: np.ndarray, val: int):
-    area = np.array([polygon])
-    # mask = cv2.merge([mask,mask,mask])
+    area = np.array([polygon],dtype=np.int32)
     cv2.fillPoly(mask, area, val)
     return mask
 

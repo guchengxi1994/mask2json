@@ -37,7 +37,7 @@ setup(
         'Programming Language :: Python :: 3.6',
     ],
     install_requires=[
-        'labelme==4.2.9', 'numpy==1.18.4', 'opencv-python>=4.2.0.32',
+        'labelme==4.2.9', 'numpy==1.22.0', 'opencv-python>=4.2.0.32',
         'xmltodict==0.12.0', 'matplotlib==3.1.0', 'scikit_image==0.15.0',
         'Pillow>=8.3.2', 'PyYAML>=5.4', 'scipy==1.5.1', 
         'termcolor==1.1.0', 'lxml>=4.6.2', 'tqdm==4.32.1'

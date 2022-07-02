@@ -11,7 +11,7 @@ import sys
 
 sys.path.append("..")
 
-from convertmask.utils.imgAug_script import *
+from convertmask.utils.img_augment_script import *
 
 if __name__ == "__main__":
     imgAug_withoutLabels('D:\\testALg\\mask2json\\mask2json\\static\\testAug')

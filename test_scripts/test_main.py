@@ -15,7 +15,7 @@ import os
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd()))
 
-import convertmask.main_v_0_5_any as mainScript
+import convertmask.main as mainScript
 from convertmask.utils.methods.logger import logger
 
 mainScriptPath = mainScript.__file__

@@ -11,6 +11,8 @@
 
 ## How to use.
 
+```python
+
     import os
     import glob
     from convertmask.utils.longImgSplit import script as sc
@@ -29,5 +31,6 @@
             imgName = i.split(os.sep)[-1][:-4]
             img = imgPath + os.sep + imgName + ".jpg"
             sc.convertImgSplit(img, i, yamlPath=save_dir + 'info2.yaml', bias=2000)
+```
 
 # This function maybe some errors.

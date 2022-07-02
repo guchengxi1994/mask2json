@@ -16,8 +16,8 @@ import glob
 import json
 import os
 
-from convertmask.utils.methods import getMultiShapes
-from convertmask.utils.methods import getShape, img2base64, rmQ
+from convertmask.utils.methods import get_multi_shapes
+from convertmask.utils.methods import get_shape, img2base64, rmQ
 
 
 def test():
@@ -25,7 +25,7 @@ def test():
     oriImg = "D:\\testALg\mask2json\mask2json\static\\1-2cvt.jpg"
     imgShape = cv2.imread(img).shape
 
-    region = getShape.process(img)
+    region = get_shape.process(img)
     # print(type(region))
     # print(region.shape)
     points = []
@@ -80,7 +80,7 @@ def getJsons(imgPath, maskPath, savePath, yamlPath=''):
         i_mask = i.replace(imgPath, maskPath)
         print(i)
 
-        getMultiShapes.getMultiShapes(i, i_mask, savePath, yamlPath)
+        get_multi_shapes.getMultiShapes(i, i_mask, savePath, yamlPath)
 
 
 if __name__ == "__main__":
@@ -93,6 +93,6 @@ if __name__ == "__main__":
     maskPath = 'D:\\github_repo\\mask2json\\static\\multi_objs_json\\label.png'
     savePath = 'D:\\github_repo\\mask2json\\static\\multi_objs_json\\1025\\'
     yamlPath = 'D:\\github_repo\\mask2json\\static\\multi_objs_json\\info.yaml'
-    getMultiShapes.getMultiShapes(imgPath, maskPath, savePath, yamlPath)  # with yaml
+    get_multi_shapes.getMultiShapes(imgPath, maskPath, savePath, yamlPath)  # with yaml
 
     # getMultiShapes.getMultiShapes(imgPath, maskPath, savePath)  # without yaml

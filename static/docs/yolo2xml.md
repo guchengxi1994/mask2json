@@ -13,6 +13,8 @@
 
 ## How to use.
 
+``` python
+
     import os
     from convertmask.utils.yolo2xml.yolo2xml import *
 
@@ -24,3 +26,4 @@
         imgpath = BASE_DIR + 'test.jpg'
         labelPath = BASE_DIR + 'voc.names'
         y2xConvert(txtPath=txtpath,imgPath=imgpath,labelPath=labelPath)
+```

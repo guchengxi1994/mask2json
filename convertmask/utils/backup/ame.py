@@ -11,8 +11,10 @@ import cv2
 import math
 import numpy as np
 import os
-# import pdb
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 
 
 class ImgAugemention():

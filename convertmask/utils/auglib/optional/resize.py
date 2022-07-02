@@ -8,7 +8,10 @@ LastEditors: xiaoshuyui
 LastEditTime: 2020-11-20 14:12:40
 '''
 import os
-import xml.etree.ElementTree as ET
+try:
+    import defusedxml.ElementTree as ET
+except:
+    import xml.etree.ElementTree as ET
 
 import numpy as np
 import skimage

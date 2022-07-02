@@ -11,7 +11,7 @@ LastEditTime: 2021-02-01 14:35:10
 import sys
 
 sys.path.append("..")
-from convertmask.utils.longImgSplit.script import splitLongImagesWithOverlay
+from convertmask.utils.long_img_split.script import splitLongImagesWithOverlay
 
 if __name__ == '__main__':
     splitLongImagesWithOverlay('D:\\129\\defects\\images\\hbtjy\\','D:\\129\\tjysign\\','D:\\129\\defects\\save\\')

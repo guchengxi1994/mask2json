@@ -10,7 +10,7 @@ LastEditTime: 2020-10-10 15:44:40
 import sys
 
 sys.path.append("..")
-from convertmask.utils.img2xml import processor_singleObj
+from convertmask.utils.img2xml import processor_single_object
 
 if __name__ == "__main__":
     """
@@ -20,6 +20,6 @@ if __name__ == "__main__":
 
     f = open("./test_img2xml", 'w')
     f.writelines(
-        processor_singleObj.img2xml("test", "aa", "test\\test.xx", 12, 23,
+        processor_single_object.img2xml("test", "aa", "test\\test.xx", 12, 23,
                                     "aaa", 123, 444, 4523, 664))
     f.close()

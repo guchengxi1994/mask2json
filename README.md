@@ -14,7 +14,7 @@
 # Issues and advices wanted.
 
 
-[![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=test)
+[![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://app.travis-ci.com/guchengxi1994/mask2json.svg?branch=master)
 
 # Introduction
 
@@ -60,9 +60,15 @@ Under this version, these tools are provided.
 
 # CHANGE LOGS
 
+## 2021.10.31
+
+### 1.bump to 0.6.0
+
+### 2. UI update
+
 ## 2021.1.14
 
-### 1.update spliting yolo-like dataset into train and val datasets AUTOMATICLY.See [testYoloLike.py](./test_scripts/testYoloLike.py). The test dataset can be found in ./test/ , 68 txts totally.
+### 1.update spliting yolo-like dataset into train and val datasets AUTOMATICLY.See [testYoloLike.py](./test_scripts/test_yololike_generate.py). The test dataset can be found in ./test/ , 68 txts totally.
 
 ![split-yolo](./backup/splitYolo.gif)
 
@@ -78,11 +84,11 @@ Under this version, these tools are provided.
 
 ## 2020.11.16
 
-### 1.support converting widerface annotations to xmls. see [here](./test_scripts/test_convertWiderface.py)
+### 1.support converting widerface annotations to xmls. see [here](./test_scripts/test_convert_widerface.py)
 
 ## 2020.11.10
 
-### 1. object-oriented rewrite augumentation optional module. See [here](./convertmask/utils/auglib/optionsOperatorWithoutLabel.py). Test script can be found [here](./test_scripts/test_optionalOperation.py)
+### 1. object-oriented rewrite augumentation optional module. See [here](./convertmask/utils/auglib/options_operator_without_label.py). Test script can be found [here](./test_scripts/test_optional_operation.py)
 
 
 ## 2020.10.25
@@ -113,7 +119,7 @@ Under this version, these tools are provided.
 
 ![img-distort](./backup/multi_objs_distort.jpg)
 
-see [here](./convertmask/utils/auglib/optional/distort.py) or [test-script](./test_scripts/test_localWrap.py) for details.
+see [here](./convertmask/utils/auglib/optional/distort.py) or [test-script](./test_scripts/test_local_wrap.py) for details.
 
 
 ## 2020.10.13
@@ -124,7 +130,7 @@ see [here](./convertmask/utils/auglib/optional/distort.py) or [test-script](./te
 
 ## 2020.10.12
 
-### 1.image augumentation support generating several annotation/images with single image/annotation(json,xml). See [here](./test_scripts/test_multiAug.py)
+### 1.image augumentation support generating several annotation/images with single image/annotation(json,xml). See [here](./test_scripts/test_multi_augment.py)
 
 
 ## 2020.9.24
@@ -255,7 +261,7 @@ auto_labeled image
 
 ## 6. ~~re-write main [script](./convertmask/main_v_0_3_any.py)~~ (2020.10)
 
-## 7. solve PyYmal installation error(currently write a [script](./convertmask/utils/methods/yamlUtils.py) by myself. maybe failure in the end.)
+## 7. ~~ solve PyYmal installation error(currently write a [script](./convertmask/utils/methods/yamlUtils.py) by myself. maybe failure in the end.)~~
 
 ## 8. ~~image augmentation zoooom~~ (2020.10.14) 
 

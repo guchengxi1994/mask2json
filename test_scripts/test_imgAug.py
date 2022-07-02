@@ -5,7 +5,7 @@
 @Author: xiaoshuyui
 @Date: 2020-07-17 15:49:30
 LastEditors: xiaoshuyui
-LastEditTime: 2020-10-23 09:40:03
+LastEditTime: 2022-07-02 19:59:08
 '''
 import sys
 
@@ -20,8 +20,9 @@ from skimage import io
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.getcwd())) + os.sep + 'static'
 # print(BASE_DIR)
-imgPath = BASE_DIR + os.sep + 'multi_objs.jpg'
-labelPath = BASE_DIR + os.sep + 'multi_objs.json'
+imgPath = BASE_DIR + os.sep + 'test702.jpg'
+labelPath = BASE_DIR + os.sep + 'test702.json'
+yamlPath = BASE_DIR + os.sep + 'test702.yaml'
 
 imgPath2 = BASE_DIR + os.sep + 'label_255.png'
 labelPath2 = BASE_DIR + os.sep + 'label_255.xml'
@@ -90,7 +91,7 @@ if __name__ == "__main__":
 
     #### test3
 
-    aug_labelme(imgPath, labelPath)
+    aug_labelme(imgPath, labelPath,yamlFilePath=yamlPath)
 
     #### test4
 

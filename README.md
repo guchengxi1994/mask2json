@@ -7,6 +7,13 @@
  * @LastEditors: xiaoshuyui
  * @LastEditTime: 2021-01-12 16:57:40
 --> 
+
+# Visit [simple-tools-for-machine-learning](https://github.com/guchengxi1994/simple-tools-for-machine-learning) for a newer tool, which written in `python3.8`,`skimage`,`numpy` and without `opencv-python`. This repo will not be upgraded any more. 
+
+
+
+
+
 <h1 align="center">
   <img src="convertmask/UI/statics/look.png"><br/>convertmask
 </h1>

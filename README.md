@@ -12,8 +12,6 @@
 
 
 
-
-
 <h1 align="center">
   <img src="convertmask/UI/statics/look.png"><br/>convertmask
 </h1>
@@ -33,7 +31,7 @@
 
  Try:
 
-    pip install -r requestments.txt
+    pip install -r requirements.txt
 
  IF ERROR, try:
 
@@ -286,7 +284,6 @@ auto_labeled image
 if you test the [json2mask.py](./test_scripts/json2mask.py) script, you should change the path first and make sure the file is valid(maybe i have deleted :) )
 
 Also, this script is just a reverse of mask2json, for a more COOOOOL method, see [here](./convertmask/utils/json2mask/convert.py) , try convert.processor
-
 
 
 

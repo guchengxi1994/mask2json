@@ -43,3 +43,4 @@
 /convertmask/test_imgs/
 
 *.pyc
+.venv

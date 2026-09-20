@@ -1,297 +1,107 @@
-<!--
- * @lanhuage: markdown
- * @Descripttion: 
- * @version: 
- * @Author: xiaoshuyui
- * @Date: 2020-06-09 16:23:03
- * @LastEditors: xiaoshuyui
- * @LastEditTime: 2021-01-12 16:57:40
---> 
+# convertmask
+
+Annotation-format conversion, image augmentation with label
+synchronization, and dataset quality analysis — for labelme JSON, Pascal
+VOC XML, YOLO txt and class-id mask images.
+
+This is a ground-up rewrite of the original 2020-era `mask2json` tool
+(see [CHANGELOG](CHANGELOG.md)): every conversion goes through a single
+intermediate representation, augmentation always transforms image and
+labels together, and nothing fails silently.
 
-# Visit [simple-tools-for-machine-learning](https://github.com/guchengxi1994/simple-tools-for-machine-learning) for a newer tool, which written in `python3.8`,`skimage`,`numpy` and without `opencv-python`. This repo will not be upgraded any more. 
+## Install
 
+```bash
+pip install .                # core: convert / augment / analyze
+pip install '.[web]'         # + web UI (fastapi/uvicorn)
+pip install '.[dev]'         # + pytest / ruff
+```
 
+Requires Python 3.10+. Runtime dependencies are just numpy,
+opencv-python-headless, Pillow, PyYAML and tqdm.
 
-<h1 align="center">
-  <img src="convertmask/UI/statics/look.png"><br/>convertmask
-</h1>
+## CLI
 
-# Issues and advices wanted.
+```text
+convertmask convert <method> [inputs]
+convertmask augment  --imgs DIR [--labels DIR] [options]
+convertmask analyze  --annos DIR [--imgs DIR] [options]
+convertmask serve    [--host H] [--port P]
+```
 
+Methods (aliases in brackets): `mask2json [m2j]`, `mask2xml [m2x]`,
+`json2mask [j2m]`, `json2xml [j2x]`, `xml2json [x2j]`, `xml2yolo [x2y]`,
+`yolo2xml [y2x]`, `xml2mask`. Every method accepts single files or
+directories (jpg/jpeg/png/bmp) and an optional class file
+(`.txt` names, `.names`, or labelme `info.yaml` name->value map).
 
-[![Build Status](https://travis-ci.org/guchengxi1994/mask2json.svg?branch=master)](https://app.travis-ci.com/guchengxi1994/mask2json.svg?branch=master)
+```bash
+# masks (with a class file) -> labelme JSON
+convertmask convert mask2json --imgs imgs/ --masks masks/ --classes classes.txt
 
-# Introduction
+# VOC xmls -> YOLO txts (+ labels.txt, stable ids across all files)
+convertmask convert xml2yolo --xmls xmls/ --classes classes.txt
 
- A small tool for image augmentation, including mask files to json/xml files , image augmentation(flip,rotation,noise,...) and so on
+# augment with labels following the pixels, reproducible
+convertmask augment --imgs imgs/ --labels labels/ \
+    --methods rotation,noise,flip --number 3 --seed 42
 
- ## HOW TO USE.
+# check a dataset: bounds, duplicates, class drift, image quality
+convertmask analyze --annos labels/ --imgs imgs/ --classes classes.txt
 
- ### Installation.
+# web UI
+convertmask serve --port 8000
+```
 
- Try:
+The legacy flat form is still accepted and translated:
+`convertmask m2j -i imgs masks classes.txt`.
 
-    pip install -r requirements.txt
+## Library
 
- IF ERROR, try:
+```python
+from convertmask.converters import convert
+outputs = convert("mask2json", imgs="imgs/", masks="masks/", classes="c.txt")
 
-    pip install -r requirements.txt --ignore-installed
+from convertmask.augment import augment_images
+outputs = augment_images("imgs/", "labels/", methods=["rotation", "noise"],
+                         number=2, seed=7, out="aug/")
 
+from convertmask.analyze import analyze_dataset
+report = analyze_dataset("labels/", imgs="imgs/", out="analysis/")
+```
 
-### Use.
+## Web UI
 
-Under this version, these tools are provided.
+`convertmask serve` starts a local web app: drag-and-drop upload
+(images / labels / class files are grouped automatically; tick *treat
+dropped images as masks* for mask2json), run conversions/augmentations,
+preview images with label overlays drawn in the browser, view the
+analysis report (issue table, class distribution, quality metrics) and
+download results as zip.
 
-#### 1.[augmentation](./static/docs/augment.md)
+## What the analyzer checks
 
-#### 2.[img2xml](./static/docs/img2xml.md)
+- annotation consistency: out-of-bounds / degenerate / tiny boxes,
+  same-class near-duplicates (IoU), empty annotations, unknown classes
+  vs your class file, annotation-vs-image size mismatches
+- augmentation safety: per-class area drift against a baseline set,
+  class-distribution drift, before/after image-quality deltas
+  (brightness, contrast, sharpness, noise, saturation)
+- every image gets an overlay PNG with problematic shapes highlighted
 
-#### 3.[json2mask](./static/docs/json2mask.md)
+## Development
 
-#### 4.[json2xml](./static/docs/json2xml.md)
+```bash
+pip install -e '.[dev,web]'
+pytest          # 75 tests: round-trips, legacy-bug regressions, server API
+ruff check .
+./web/build.sh  # rebuild web UI (needs npx; built assets are committed)
+```
 
-#### 5.[longImgSplit](./static/docs/longImgSplit.md)
+Fixtures live in `static/`. Roadmap for v1.1: WIDER-face conversion,
+long-image splitting, negative-sample generation, train/val split and
+k-means anchors.
 
-#### 6.[xml2json](./static/docs/xml2json.md)
+## License
 
-#### 7.[xml2mask](./static/docs/xml2mask.md)
-
-#### 8.[xml2yolo](./static/docs/xml2yolo.md)
-
-#### 9.[yolo2xml](./static/docs/yolo2xml.md)
-
-#### 10.[mask2json](./static/docs/mask2json.md)
-
-
-# CHANGE LOGS
-
-## 2021.10.31
-
-### 1.bump to 0.6.0
-
-### 2. UI update
-
-## 2021.1.14
-
-### 1.update spliting yolo-like dataset into train and val datasets AUTOMATICLY.See [testYoloLike.py](./test_scripts/test_yololike_generate.py). The test dataset can be found in ./test/ , 68 txts totally.
-
-![split-yolo](./backup/splitYolo.gif)
-
-## 2020.11.25
-
-### 1. negative sample AUTOMATICLY randomly generate. I am not sure if it is helpful to my face detection cnn.
-
-![img-negative](./backup/negative.png)
-
-### 2. rewrite [mosaic.py](./convertmask/utils/auglib/optional/mosaic.py)(without resize the origin images). See [here](./test_scripts/test_mosiac.py).
-
-![img-mosiac](./backup/mosiac2.png)
-
-## 2020.11.16
-
-### 1.support converting widerface annotations to xmls. see [here](./test_scripts/test_convert_widerface.py)
-
-## 2020.11.10
-
-### 1. object-oriented rewrite augumentation optional module. See [here](./convertmask/utils/auglib/options_operator_without_label.py). Test script can be found [here](./test_scripts/test_optional_operation.py)
-
-
-## 2020.10.25
-
-### 1. bump to 0.5.3
-
-### 2. code structure change
-
-### 3. mosiac(yolov4) augumentation supported(auto labeled for labelImg,for labelme will be updated as fast as i can). Script can be found [here](./test_scripts/test_mosiac.py)
-
-![img-mosiac](./backup/mosiac.png)
-
-
-## 2020.10.24
-
-### 1.image crop supported.(single and multiple crops,rectangle and polygon support. See [here](./convertmask/utils/auglib/optional/crop.py))
-
-![img-crop](./backup/testCrop.jpg)
-
-### 2.image resize supported (auto labeled). See [here](./convertmask/utils/auglib/optional/resize.py) and the test script is [here](./test_scripts/test_resize.py)
-
-![img-resize](./backup/resize1.png)
-
-
-## 2020.10.23
-
-### 1.image distortion supported.
-
-![img-distort](./backup/multi_objs_distort.jpg)
-
-see [here](./convertmask/utils/auglib/optional/distort.py) or [test-script](./test_scripts/test_local_wrap.py) for details.
-
-
-## 2020.10.13
-
-### 1.image augumentation support convert yolo txts to xmls(pascal). See [here](./test_scripts/test_yolo2xml.py)
-
-### 2.speed up by using multiprocess
-
-## 2020.10.12
-
-### 1.image augumentation support generating several annotation/images with single image/annotation(json,xml). See [here](./test_scripts/test_multi_augment.py)
-
-
-## 2020.9.24
-
-### 1.inspired by [LabelImgTool](https://github.com/lzx1413/LabelImgTool), convert xmls to jsons is useful. Also ,i forked this repo and add some pyqt5/py3 support,see [here](https://github.com/guchengxi1994/LabelImgTool).
-
-examples:
-
-script [here](./test_scripts/test_xml2json.py)
-
-![xml2json](./backup/xml2json.gif)
-
-
-
-## 2020.8.24
-
-### 1.support convert xml files to yolo files. see [here](./test_scripts/test_xml2yolo.py)
-
-examples:
-
-
-![xml2yolo](./backup/xml2yolo.gif)
-
-
-## 2020.8.19
-
-### 1. image translation supported.
-
-![img-translation](./backup/translation.png)
-
-combination of every augmentation method.
-
-![img-combination](./backup/combine.png)
-
-### 2. besides, a simple way convert json file(labelme) to xml file(labelImg) is provided. see [here](./test_scripts/test_json2xml.py)
-
-![json2xml](./backup/json2xml.png)
-
-
-## 2020.8.17
-
-### 1. bug fix.
-
-### 2. support image augmentation methods: noise,flip,rotation. try [test_imgAug.py](./test_scripts/test_imgAug.py) !
-
-here are some examples:
-
-### flip
-
-![img-flip-h](./backup/flip_h.png)
-
-![img-flip-v](./backup/flip_v.png)
-
-![img-flip-v-h](./backup/flip_v_h.png)
-
-### noise
-
-![img-noise](./backup/noise.png)
-
-### rotation
-
-![img-rotation](./backup/rotation.png)
-
-
-## 2020.8.14
-
-### 1. add image augmentation  (image flip) test. see [test_imgAug.py](./test_scripts/test_imgAug.py) !
-
-
-## 2020.7.14
-
-### 1.bugfix , test multi objects to xml files, pretty xmls
-
-eg:
-
-![mask2xml](./backup/auto_mask2xml.png)
-
-
-## 2020.7.13
-
-### 1. convert multi objects to xml files supported (untested)
-
-
-## 2020.7.10
-
-### 1. a lot of things to do ,such as many warnings related to labelme.
-
-
-## 2020.6.12
-
-### 1.support multiple objects mask to json
-
-try [test.py](./test_scripts/test.py) !
-
-#### 1.1 multiple objects in different classes
-
-manually_labeled image
-
-![manually_labeled_multi_objs](./backup/manually_labeled_multi_objs.png)
-
-auto_labeled image
-
-![auto_labeled_multi_objs](./backup/auto_labeled_multi_objs.png)
-
-#### 1.2 multiple objects in same classes
-
-manually_labeled image
-
-![manually_labeled_multi_objs_samelabel](./backup/manually_labeled_multi_objs_samelabel.png)
-
-auto_labeled image
-
-![auto_labeled_labeled_multi_objs_samelabel](./backup/auto_labeled_labeled_multi_objs_samelabel.png)
-
-
-
-# what to do next
-
-## 1. ~~support multiple files image augmentation~~ (2020.8.21)
-
-## 2. ~~support image augmentation without a label/json file~~  (2020.8.21)
-
-## 3. ~~support image augmentation with a labeled file (just support json file right now)~~ (2020.9)
-
-## 4. image augmentation supports custom parameters (auto augmented right now)
-
-## 5. do something more interesting
-
-## 6. ~~re-write main [script](./convertmask/main_v_0_3_any.py)~~ (2020.10)
-
-## 7. ~~ solve PyYmal installation error(currently write a [script](./convertmask/utils/methods/yamlUtils.py) by myself. maybe failure in the end.)~~
-
-## 8. ~~image augmentation zoooom~~ (2020.10.14) 
-
-## 9. yolo txts split train/val dataset automaticly.
-
-
-
-# OTHERS
-
-1. [issue:json2mask has no output](https://github.com/guchengxi1994/mask2json/issues/3)
-
-
-![json2mask](./backup/json2mask.gif)
-
-if you test the [json2mask.py](./test_scripts/json2mask.py) script, you should change the path first and make sure the file is valid(maybe i have deleted :) )
-
-Also, this script is just a reverse of mask2json, for a more COOOOOL method, see [here](./convertmask/utils/json2mask/convert.py) , try convert.processor
-
-
-
-#  SHORTCOMING
-
-1.~~objects connected to each other is not supported yet.~~
-
-this may happen if you labelling multiple-object-images with only 2 labels .Or some objects are of the same type and are connected to each other(eg. a bunch of grapes,it is hard to split one to the other).
-
-
-2.Image Binarization [issue](https://github.com/guchengxi1994/mask2json/issues/14)
+Apache-2.0

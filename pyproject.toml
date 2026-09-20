@@ -60,3 +60,6 @@ ignore = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# make `from tests.conftest import ...` work with a bare `pytest` run
+# (python -m pytest puts cwd on sys.path; the pytest binary does not)
+pythonpath = ["."]

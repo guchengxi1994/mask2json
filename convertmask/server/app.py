@@ -5,11 +5,10 @@ from __future__ import annotations
 import io
 import logging
 import zipfile
-
-import cv2
 from pathlib import Path
 from typing import Annotated
 
+import cv2
 from fastapi import FastAPI, HTTPException, Query, UploadFile
 from fastapi.params import File
 from fastapi.responses import FileResponse, StreamingResponse

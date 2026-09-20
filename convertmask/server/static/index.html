@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>convertmask</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-slate-100 min-h-screen text-slate-800">
+  <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center gap-3">
+    <span class="text-lg font-semibold tracking-tight">convertmask</span>
+    <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 font-medium">v1.0.0</span>
+    <span class="text-sm text-slate-400 hidden sm:inline">annotation conversion · augmentation · quality analysis</span>
+  </header>
+
+  <main class="max-w-7xl mx-auto p-4 grid grid-cols-12 gap-4">
+    <!-- Left: upload + files -->
+    <section class="col-span-12 lg:col-span-4 flex flex-col gap-4">
+      <div id="dropzone" class="bg-white rounded-xl border-2 border-dashed border-slate-300 p-6 text-center cursor-pointer hover:border-indigo-400 transition">
+        <p class="text-sm font-medium">Drop images / labels / class files here</p>
+        <p class="text-xs text-slate-400 mt-1">or click to browse · grouped automatically</p>
+        <input id="file-input" type="file" multiple class="hidden" />
+      </div>
+      <label class="bg-white rounded-xl border border-slate-200 px-4 py-2 flex items-center gap-2 text-sm">
+        <input id="upload-as-mask" type="checkbox" />
+        treat dropped <em>images</em> as masks <span class="text-xs text-slate-400">(for mask2json / mask2xml)</span>
+      </label>
+      <div id="status" class="hidden text-sm rounded-lg px-3 py-2"></div>
+
+      <div class="bg-white rounded-xl border border-slate-200">
+        <div class="px-4 py-2 border-b border-slate-100 flex items-center justify-between">
+          <span class="text-sm font-medium">Files</span>
+          <button id="refresh-files" class="text-xs text-indigo-600 hover:underline">refresh</button>
+        </div>
+        <div id="file-tree" class="p-3 text-xs space-y-3 max-h-80 overflow-auto"></div>
+      </div>
+
+      <div class="bg-white rounded-xl border border-slate-200 p-3 text-xs">
+        <div class="font-medium mb-2">Download</div>
+        <button data-dl="outputs" class="dl-btn px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 mr-2">outputs.zip</button>
+        <button data-dl="analysis" class="dl-btn px-2 py-1 rounded bg-slate-100 hover:bg-slate-200">analysis.zip</button>
+      </div>
+    </section>
+
+    <!-- Right: actions + preview -->
+    <section class="col-span-12 lg:col-span-8 flex flex-col gap-4">
+      <div class="bg-white rounded-xl border border-slate-200">
+        <div class="flex border-b border-slate-100 text-sm font-medium">
+          <button data-tab="convert" class="tab-btn px-4 py-2 border-b-2 border-indigo-500 text-indigo-600">Convert</button>
+          <button data-tab="augment" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700">Augment</button>
+          <button data-tab="analyze" class="tab-btn px-4 py-2 border-b-2 border-transparent text-slate-500 hover:text-slate-700">Analyze</button>
+        </div>
+
+        <div id="tab-convert" class="tab-panel p-4 space-y-3">
+          <label class="block text-sm">Method
+            <select id="conv-method" class="mt-1 w-full rounded-lg border-slate-300 border px-2 py-1.5 text-sm"></select>
+          </label>
+          <p id="conv-hint" class="text-xs text-slate-400"></p>
+          <button id="run-convert" class="run-btn">Run conversion</button>
+        </div>
+
+        <div id="tab-augment" class="tab-panel hidden p-4 space-y-3">
+          <div id="aug-methods" class="flex flex-wrap gap-3 text-sm"></div>
+          <div class="flex gap-4 text-sm">
+            <label>Rounds <input id="aug-number" type="number" min="1" value="1" class="w-16 rounded border-slate-300 border px-2 py-1" /></label>
+            <label>Seed <input id="aug-seed" type="number" placeholder="random" class="w-28 rounded border-slate-300 border px-2 py-1" /></label>
+          </div>
+          <label class="flex items-center gap-2 text-sm"><input id="aug-mask" type="checkbox" /> also save class-id masks</label>
+          <button id="run-augment" class="run-btn">Run augmentation</button>
+        </div>
+
+        <div id="tab-analyze" class="tab-panel hidden p-4 space-y-3">
+          <p class="text-xs text-slate-400">Checks annotations against images (bounds, duplicates, class drift…) and computes image-quality metrics.</p>
+          <button id="run-analyze" class="run-btn">Run analysis</button>
+        </div>
+      </div>
+
+      <div id="report-panel" class="bg-white rounded-xl border border-slate-200 hidden"></div>
+
+      <div class="bg-white rounded-xl border border-slate-200">
+        <div class="px-4 py-2 border-b border-slate-100 flex items-center justify-between">
+          <span id="preview-title" class="text-sm font-medium">Preview</span>
+          <label class="flex items-center gap-1.5 text-xs text-slate-500">
+            <input id="overlay-toggle" type="checkbox" checked /> overlay labels
+          </label>
+        </div>
+        <div class="p-3 flex justify-center bg-[repeating-conic-gradient(#f1f5f9_0%_25%,#ffffff_0%_50%)] bg-[length:20px_20px] rounded-b-xl">
+          <canvas id="preview-canvas" class="max-w-full rounded"></canvas>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

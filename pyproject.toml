@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "convertmask"
+version = "1.0.0"
+description = "Annotation-format conversion (labelme JSON / VOC XML / YOLO / mask), image augmentation with label sync, and dataset quality analysis"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+authors = [{ name = "Chengxi Gu", email = "guchengxi1994@qq.com" }]
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "opencv-python-headless>=4.7",
+    "Pillow>=9.0",
+    "PyYAML>=6.0",
+    "tqdm>=4.64",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: Apache Software License",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+
+[project.optional-dependencies]
+web = [
+    "fastapi>=0.100",
+    "uvicorn>=0.23",
+    "python-multipart>=0.0.6",
+]
+dev = [
+    "pytest>=7.0",
+    "ruff>=0.4",
+    "httpx>=0.24",
+]
+
+[project.urls]
+Homepage = "https://github.com/guchengxi1994/mask2json"
+
+[project.scripts]
+convertmask = "convertmask.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["convertmask*"]
+
+[tool.setuptools.package-data]
+"convertmask.server" = ["static/**/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

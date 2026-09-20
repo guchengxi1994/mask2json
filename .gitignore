@@ -41,3 +41,5 @@
 /convertmask/utils/train_val_dataset_split/__pycache__
 /test_scripts/DevLog/*
 /convertmask/test_imgs/
+
+*.pyc

@@ -339,6 +339,37 @@ function renderReport(report) {
       ${chip(s.warnings, "warnings", s.warnings ? "bg-amber-100 text-amber-700" : "bg-slate-100")}
     </div>`;
 
+  const stats = report.stats || {};
+  const health = report.health;
+  if (health) {
+    const gradeCls = health.grade === "A" ? "bg-emerald-600"
+      : health.grade === "B" ? "bg-lime-600"
+      : health.grade === "C" ? "bg-amber-500" : "bg-red-600";
+    const pen = Object.entries(health.penalties || {})
+      .filter(([, v]) => v > 0)
+      .map(([k, v]) => `${k} -${v}`).join(", ") || "none";
+    html += `<div class="px-4 pb-4">
+      <div class="flex items-center gap-4 rounded-xl border border-slate-200 p-4">
+        <div class="text-center">
+          <div class="text-4xl font-bold ${health.grade === "A" || health.grade === "B" ? "text-emerald-600" : "text-amber-600"}">${health.score}</div>
+          <span class="px-2 py-0.5 rounded-full ${gradeCls} text-white text-xs font-semibold">grade ${health.grade}</span>
+        </div>
+        <div class="text-xs text-slate-500 leading-5">
+          <div><span class="font-medium text-slate-700">Dataset health</span> — 0 to 100 from issue counts and statistics.</div>
+          <div>penalties: <span class="text-slate-700">${pen}</span></div>
+        </div>
+        <div class="ml-auto grid grid-cols-2 gap-x-6 gap-y-1 text-xs text-slate-600">
+          <div>pos : neg <span class="font-semibold text-slate-800">${stats.pos_neg_ratio ?? "-"}</span></div>
+          <div>objects/img <span class="font-semibold text-slate-800">${stats.objects_per_image?.mean ?? "-"}</span></div>
+          <div>classes <span class="font-semibold text-slate-800">${stats.classes ?? "-"}</span></div>
+          <div>imbalance <span class="font-semibold text-slate-800">${stats.imbalance_ratio ?? "-"}</span></div>
+          <div>tiny objs <span class="font-semibold text-slate-800">${(100 * (stats.tiny_object_fraction ?? 0)).toFixed(1)}%</span></div>
+          <div>foreground <span class="font-semibold text-slate-800">${(100 * (stats.foreground_ratio_mean ?? 0)).toFixed(1)}%</span></div>
+        </div>
+      </div>
+    </div>`;
+  }
+
   if (Object.keys(s.class_distribution || {}).length) {
     html += `<div class="px-4 pb-3"><div class="text-xs font-medium text-slate-500 uppercase mb-2">Class distribution</div>`;
     for (const [name, count] of Object.entries(s.class_distribution)) {
@@ -350,6 +381,17 @@ function renderReport(report) {
         <span class="w-8 text-right">${count}</span></div>`;
     }
     html += `</div>`;
+  }
+
+  const dups = report.duplicates || [];
+  if (dups.length) {
+    html += `<div class="px-4 pb-3">
+      <div class="text-xs font-medium text-red-500 uppercase mb-2">Near-duplicate images (${dups.length} pair${dups.length > 1 ? "s" : ""})</div>
+      <div class="text-xs text-slate-500 space-y-1 max-h-32 overflow-auto">`;
+    for (const d of dups.slice(0, 20)) {
+      html += `<div class="truncate"><span class="text-red-400">dup</span> ${d.a.split("/").pop()} ≈ ${d.b.split("/").pop()} (hamming ${d.hamming})</div>`;
+    }
+    html += `</div></div>`;
   }
 
   const filesWithIssues = report.files.filter(f => f.issues.length);

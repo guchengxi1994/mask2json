@@ -26,6 +26,7 @@ opencv-python-headless, Pillow, PyYAML and tqdm.
 convertmask convert <method> [inputs]
 convertmask augment  --imgs DIR [--labels DIR] [options]
 convertmask analyze  --annos DIR [--imgs DIR] [options]
+convertmask split    --txts DIR [--val-ratio 0.1] [--seed S]
 convertmask serve    [--host H] [--port P]
 ```
 
@@ -48,6 +49,9 @@ convertmask augment --imgs imgs/ --labels labels/ \
 
 # check a dataset: bounds, duplicates, class drift, image quality
 convertmask analyze --annos labels/ --imgs imgs/ --classes classes.txt
+
+# stratified train/val split of YOLO labels (rare classes placed first)
+convertmask split --txts labels/ --out split/ --val-ratio 0.1 --seed 42
 
 # web UI
 convertmask serve --port 8000
@@ -84,6 +88,13 @@ download results as zip.
 - annotation consistency: out-of-bounds / degenerate / tiny boxes,
   same-class near-duplicates (IoU), empty annotations, unknown classes
   vs your class file, annotation-vs-image size mismatches
+- dataset statistics: positive:negative sample ratio (images without
+  objects count as negatives), objects-per-image distribution, class
+  counts and imbalance ratio, foreground coverage, tiny-object fraction
+- dataset **health score** (0-100, grade A-D): a transparent composite of
+  the penalties above — every component is listed in the report
+- near-duplicate images (dhash) — catches the same source image slipping
+  into an augmented/synthetic dataset multiple times
 - augmentation safety: per-class area drift against a baseline set,
   class-distribution drift, before/after image-quality deltas
   (brightness, contrast, sharpness, noise, saturation)
@@ -99,8 +110,7 @@ ruff check .
 ```
 
 Fixtures live in `static/`. Roadmap for v1.1: WIDER-face conversion,
-long-image splitting, negative-sample generation, train/val split and
-k-means anchors.
+long-image splitting, negative-sample generation and k-means anchors.
 
 ## License
 

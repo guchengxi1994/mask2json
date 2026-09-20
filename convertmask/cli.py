@@ -74,6 +74,13 @@ def build_parser() -> argparse.ArgumentParser:
     p_ana.add_argument("--baseline-imgs", help="images belonging to the baseline set")
     p_ana.add_argument("--out", help="output dir (default: <annos>/../analysis)")
 
+    p_split = sub.add_parser("split", help="stratified train/val split of YOLO label dirs")
+    p_split.add_argument("--txts", required=True, help="YOLO label txt file or dir")
+    p_split.add_argument("--out", help="output dir for train.txt / val.txt")
+    p_split.add_argument("--val-ratio", type=float, default=0.1,
+                         help="target validation fraction per class")
+    p_split.add_argument("--seed", type=int, default=None)
+
     p_serve = sub.add_parser("serve", help="start the web UI (needs convertmask[web])")
     p_serve.add_argument("--host", default="127.0.0.1")
     p_serve.add_argument("--port", type=int, default=8000)
@@ -137,13 +144,37 @@ def _run_analyze(args) -> int:
         baseline_imgs=args.baseline_imgs,
     )
     s = report["summary"]
+    health = report.get("health", {})
+    stats = report.get("stats", {})
     print(
         f"{s['annotations']} annotation(s), {s['images']} image(s): "
         f"{s['errors']} error(s), {s['warnings']} warning(s)"
     )
+    if health:
+        print(
+            f"health: {health['score']}/100 (grade {health['grade']}); "
+            f"pos:neg = {stats.get('pos_neg_ratio', '-')}, "
+            f"{stats.get('objects_per_image', {}).get('mean', 0)} objects/image"
+        )
     for code, count in list(s["issue_counts"].items())[:10]:
         print(f"  {code}: {count}")
     return 1 if s["errors"] else 0
+
+
+def _run_split(args) -> int:
+    from convertmask.tools import train_val_split
+
+    result = train_val_split(
+        txts=args.txts, out=args.out, val_ratio=args.val_ratio, seed=args.seed
+    )
+    print(f"train: {len(result['train'])} file(s), val: {len(result['val'])} file(s)")
+    for cls, count in result["class_counts"].items():
+        print(f"  class {cls}: {count} object(s)")
+    if args.out:
+        print(f"written to {args.out}/train.txt and {args.out}/val.txt")
+    else:
+        print("--out not given; nothing written")
+    return 0
 
 
 def _run_serve(args) -> int:
@@ -228,8 +259,8 @@ def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     argv = list(sys.argv[1:] if argv is None else argv)
 
-    if argv and argv[0] not in {"convert", "augment", "analyze", "serve", "-v",
-                                "--version", "-h", "--help"}:
+    if argv and argv[0] not in {"convert", "augment", "analyze", "split", "serve",
+                                "-v", "--version", "-h", "--help"}:
         translated = _legacy_to_subcommand(argv)
         if translated is not None:
             argv = translated
@@ -246,6 +277,8 @@ def main(argv: list[str] | None = None) -> int:
             return _run_augment(args)
         if args.command == "analyze":
             return _run_analyze(args)
+        if args.command == "split":
+            return _run_split(args)
         if args.command == "serve":
             return _run_serve(args)
     except (ValueError, FileNotFoundError, TypeError) as exc:

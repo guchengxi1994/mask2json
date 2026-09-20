@@ -14,6 +14,7 @@ from convertmask.analyze.checks import (
 )
 from convertmask.analyze.image_metrics import image_metrics, metric_deltas
 from convertmask.analyze.overlay import save_overlay
+from convertmask.analyze.stats import dataset_stats, find_duplicate_images, health_score
 from convertmask.converters.common import collect_files, collect_images
 from convertmask.core.annotation import Annotation
 from convertmask.core.classfile import load_class_map
@@ -93,6 +94,12 @@ def analyze_dataset(
         },
         "files": files_section,
     }
+
+    stats = dataset_stats(parsed)
+    duplicates = find_duplicate_images(image_files) if image_files else []
+    report["stats"] = stats
+    report["duplicates"] = duplicates
+    report["health"] = health_score(n_errors, n_warnings, stats, len(duplicates))
 
     if baseline is not None:
         base_imgs_by_stem = (

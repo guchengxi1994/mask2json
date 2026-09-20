@@ -18,6 +18,13 @@ on a clean architecture with tests.
   duplicates, size mismatches, unknown classes), image-quality metrics
   (brightness/contrast/sharpness/noise/saturation), overlay PNGs,
   baseline comparison (class drift, area drift, metric deltas).
+- Dataset statistics: positive:negative sample ratio, objects per image,
+  class imbalance, foreground coverage, tiny-object fraction, near-
+  duplicate image detection (dhash), and a transparent 0-100 health
+  score with per-penalty breakdown.
+- `convertmask split`: stratified train/val split for YOLO label
+  directories (rarest classes placed first, seeded-deterministic, no
+  file in both sets; legacy version leaked state across calls).
 - Web UI: `convertmask serve` (FastAPI + vanilla JS/Tailwind), drag-and-
   drop upload, browser-side label overlays, report view, zip download.
   Install extra: `pip install convertmask[web]`.
@@ -58,7 +65,7 @@ on a clean architecture with tests.
 
 ### Deferred to 1.1
 WIDER-face conversion, long-image splitting, negative-sample
-generation, train/val split, k-means anchors.
+generation, k-means anchors.
 
 ## 0.6.0 and earlier
 

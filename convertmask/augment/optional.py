@@ -97,10 +97,11 @@ class Perspective(Augmentation):
     def variants(self, img, ann, rng):
         h, w = img.shape[:2]
         f = self.factor
-        # corner order TL, TR, BR, BL for BOTH point sets
+        # corner order TL, TR, BR, BL for BOTH point sets; both arrays must
+        # stay float32 — getPerspectiveTransform rejects float64 input
         src = np.float32([[0, 0], [w - 1, 0], [w - 1, h - 1], [0, h - 1]])
         offsets = rng.uniform(0, f, (4, 2)) * np.array([[w, h]])
-        dst = src + offsets
+        dst = np.float32(src + offsets)
         m = cv2.getPerspectiveTransform(src, dst)
         warped = cv2.warpPerspective(img, m, (w, h))  # dsize is (width, height)
         shapes = transform_shapes(ann.shapes, np.asarray(m), w, h) if ann else []

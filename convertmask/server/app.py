@@ -5,6 +5,8 @@ from __future__ import annotations
 import io
 import logging
 import zipfile
+
+import cv2
 from pathlib import Path
 from typing import Annotated
 
@@ -119,7 +121,7 @@ def _register_routes(app: FastAPI) -> None:
             kwargs.setdefault("out", base / "outputs")
         try:
             outputs = convert(method, **kwargs)
-        except (ValueError, FileNotFoundError, TypeError) as exc:
+        except (ValueError, FileNotFoundError, TypeError, cv2.error) as exc:
             raise HTTPException(400, str(exc)) from exc
         return {"outputs": [str(p.relative_to(base)) for p in outputs]}
 
@@ -146,7 +148,7 @@ def _register_routes(app: FastAPI) -> None:
                 label_fmt=body.get("label_fmt"),
                 save_mask=bool(body.get("save_mask", False)),
             )
-        except (ValueError, FileNotFoundError, TypeError) as exc:
+        except (ValueError, FileNotFoundError, TypeError, cv2.error) as exc:
             raise HTTPException(400, str(exc)) from exc
         return {"outputs": [str(p.relative_to(base)) for p in outputs]}
 

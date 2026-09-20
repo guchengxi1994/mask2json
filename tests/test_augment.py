@@ -210,3 +210,38 @@ def test_pipeline_unknown_method_raises(tmp_path):
     imgs, _ = _write_env(tmp_path)
     with pytest.raises(ValueError, match="unknown augmentation"):
         augment_images(imgs, None, methods=["nope"], out=tmp_path / "aug")
+
+
+# --------------------------------------------------------------------- #
+# every augmentation method must run end-to-end (labeled)
+
+ALL_LABELED_METHODS = [
+    "flip", "rotation", "translation", "zoom", "noise",
+    "crop", "distort", "inpaint", "perspective", "resize",
+]
+
+
+@pytest.mark.parametrize("method", ALL_LABELED_METHODS)
+def test_every_method_runs_labeled(tmp_path, method):
+    imgs, labels = _write_env(tmp_path)
+    written = augment_images(imgs, labels, methods=[method], number=1, seed=5,
+                             out=tmp_path / "aug")
+    jpgs = [p for p in written if p.suffix == ".jpg"]
+    anns = [p for p in written if p.suffix in {".json", ".xml"}]
+    assert jpgs, f"{method} produced no image"
+    assert len(jpgs) == len(anns), f"{method}: image/annotation count mismatch"
+
+
+def test_mixup_cutmix_with_other_image(rgb_image):
+    from convertmask.augment import build
+
+    ann = Annotation(width=120, height=80, image_path=Path("a.jpg"),
+                     shapes=[Shape("cat", [[20, 20], [40, 20], [40, 50], [20, 50]])])
+    rng = np.random.default_rng(0)
+    for method, kwargs in (("mixup", {}), ("cutmix", {"factor": 0.3})):
+        stage = build(method, {"other": make_image(60, 40), **kwargs})
+        outs = stage.variants(make_image(), ann, rng)
+        assert len(outs) == 1
+        out_img, out_ann, tag = outs[0]
+        assert out_img.shape[:2] == (80, 120)
+        assert tag == method
